@@ -6,7 +6,14 @@ cache:
     - $HOME/.cache/pip
     - $HOME/.ccache  # https://github.com/travis-ci/travis-ci/issues/5853
 
+
+env:
+  global:
+    # Doctr deploy key for leilakhalili87/gbpy
+    - secure: "OKm2e5usWoQlpJEdsM5KS6029Yw9vphjxyepop5PTapAoPF5mNtiQmvyQ4ozzOgyQbnvYVqp2A0Mxn9yw5Pq3xGJU/zof/Sol5VHQm5beTheuJklkIGKVvxmUfCe9+1zqE3JHajtVkOerDxWwD3kFoFmgWVhZSWOGQMwgnUEwYwAIh19dL5wtJiZWIj03+IgjmMysVvnXi/RK3mlpDOKgNtaI87DyEM8DTMlA+r6FBcEJ8esBDloIm/q6SeLGDDzrSZdaYD8yhEaTloueLF5ImF50yjKHNYCXLybngekxl//l6wqw10p8RtQCwt2LQVsF3ekN1FnuCHEmekqGBWlgS7ylEWs9ynrn+g6bXIXO6zsY1p8d8GvpYl4Jp7axOZ51LU3cahjEfU2zgjez8dT3UtRAM1t0x9v9fnPY+U+VxCK8NJsVyy2y+Mu88JjBDbXZNJU7otty+e5WLfn99SqRxX8skUb70nqAKb9Gu1307YIsJGAvs9EySTLWlUJv5SgRg5kGJtw0t5dAAJidKg9TVALi32R7+k98qPs8et3W3PZgkjeOBu3y62H7jAv6o2gUsS6PXfVDs6nPnmoor0B2nhCj6RSZ+M8WU3KxFkeZvZChdeDc9J1V4dIkJ9OhXEB8iwBr+cjQodVXqpCXOb+OXfiapRgyS7iSMJ26vZ5P9M="
 install:
+  - sudo apt-get install -y
+    pandoc
   # Install this package and the packages listed in requirements.txt.
   - pip install .
   # Install extra requirements for running tests and building docs.
@@ -17,4 +24,7 @@ script:
   - coverage report -m  # Generate test coverage report.
   - codecov  # Upload the report to codecov.
   - flake8  # Enforce code style ('relaxed' line length limit is set in .flake8 config file).
+  - set -e
   - make -C docs html  # Build the documentation.
+  - pip install doctr
+  - doctr deploy --built-docs docs/build/html .
