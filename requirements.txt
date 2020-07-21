@@ -1,1 +1,9 @@
 # List required packages in this file, one per line.
+numpy
+scipy
+pyhull
+ovito
+nbsphinx
+jupyter-client
+nbconvert
+pandoc
