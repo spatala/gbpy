@@ -1,7 +1,0 @@
-=========
-Tutorials
-=========
-
-.. toctree::
-
-    tot
