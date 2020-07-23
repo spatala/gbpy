@@ -1,8 +1,8 @@
 
 import numpy as np
 import pytest
-import gbmc_v0.pad_dump_file as pdf
-import gbmc_v0.util_funcs as uf
+import gbpy.pad_dump_file as pdf
+import gbpy.util_funcs as uf
 
 
 @pytest.mark.parametrize('filename0, rCut, lat_par, non_p',

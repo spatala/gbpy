@@ -1,5 +1,5 @@
 import pytest
-from gbmc_v0.util_funcs import compute_ovito_data
+from gbpy.util_funcs import compute_ovito_data
 
 
 def test_compute_ovito_data():

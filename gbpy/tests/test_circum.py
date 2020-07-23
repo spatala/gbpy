@@ -1,7 +1,7 @@
 
 import numpy as np
 import pytest
-from gbmc_v0.vv_props import Circum_O_R
+from gbpy.vv_props import Circum_O_R
 
 
 def point_gen(v_low, v_high):

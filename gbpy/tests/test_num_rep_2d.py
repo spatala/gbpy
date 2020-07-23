@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-import gbmc_v0.pad_dump_file as pdf
+import gbpy.pad_dump_file as pdf
 
 
 @pytest.mark.parametrize('rCut, a_x, a_y, b_x, b_y, actual_nx, actual_ny',

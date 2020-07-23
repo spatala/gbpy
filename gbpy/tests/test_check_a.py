@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-import gbmc_v0.util_funcs as uf
+import gbpy.util_funcs as uf
 from ovito.data import NearestNeighborFinder
 
 
