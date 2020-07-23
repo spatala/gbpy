@@ -2,7 +2,7 @@ import numpy as np
 import ovito.io as oio
 import ovito.modifiers as ovm
 from itertools import islice
-import pad_dump_file as pdf
+from . import pad_dump_file as pdf
 import bisect
 
 def compute_ovito_data(filename0):
