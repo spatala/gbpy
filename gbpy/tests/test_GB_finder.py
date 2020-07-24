@@ -13,11 +13,10 @@ def test_GB_finder(filename0, lat_par, num_GBregion, actual_min_z_gbreg, actual_
                    actual_w_bottom_SC, actual_w_top_SC):
     data = uf.compute_ovito_data(filename0)
     non_p = uf.identify_pbc(data)
-    # GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pad.GB_finder(data, lat_par, non_p, 'ptm', '.1')
+    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pad.GB_finder(data, lat_par, non_p, 'ptm', '.1')
 
-    # assert np.abs((actual_w_bottom_SC - w_bottom_SC)/actual_w_bottom_SC) < .5
-    # assert np.abs((actual_w_top_SC - w_top_SC)/actual_w_top_SC) < .5
-    # assert np.abs(GbRegion[0] - actual_min_z_gbreg) < 1e-3
-    # assert np.abs(GbRegion[1] - actual_max_z_gbreg) < 1e-3
-    # assert np.shape(GbIndex)[0] == num_GBregion
-    assert non_p == 2
+    assert np.abs((actual_w_bottom_SC - w_bottom_SC)/actual_w_bottom_SC) < .5
+    assert np.abs((actual_w_top_SC - w_top_SC)/actual_w_top_SC) < .5
+    assert np.abs(GbRegion[0] - actual_min_z_gbreg) < 1e-3
+    assert np.abs(GbRegion[1] - actual_max_z_gbreg) < 1e-3
+    assert np.shape(GbIndex)[0] == num_GBregion
