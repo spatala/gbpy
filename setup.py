@@ -51,12 +51,7 @@ setup(
     },
     include_package_data=True,
     package_data={
-        'gbpy': [
-            # When adding files here, remember to update MANIFEST.in as well,
-            # or else they will not be included in the distribution on PyPI!
-            # 'path/to/data_file',
-            'data/dump_1'
-        ]
+        'gbpy': ['tests/data/dump_1'],
     },
     install_requires=requirements,
     license="BSD (3-clause)",

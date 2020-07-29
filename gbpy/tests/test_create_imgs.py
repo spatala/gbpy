@@ -6,13 +6,13 @@ import gbpy.util_funcs as uf
 
 
 @pytest.mark.parametrize('filename0, rCut, lat_par, non_p',
-                         [("data/dump_1", 8.1, 4.05, 2),
-                          ("data/dump_1", 30, 4.05, 2),
-                          ("data/dump_2", 8.1, 4.05, 1)])
+                         [("gbpy/tests/data/dump_1", 8.1, 4.05, 2),
+                          ("gbpy/tests/data/dump_1", 30, 4.05, 2),
+                          ("gbpy/tests/data/dump_2", 8.1, 4.05, 1)])
 def test_create_imgs(filename0, rCut, lat_par, non_p):
     data = uf.compute_ovito_data(filename0)
     arr = pdf.p_arr(non_p)
-    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data, lat_par, non_p)
+    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data, lat_par, non_p, 'ptm', .1)
     sim_cell = data.cell[...]
     sim_1vec = np.array(sim_cell[:, arr[0]])
     sim_2vec = np.array(sim_cell[:, arr[1]])
