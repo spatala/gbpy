@@ -6,8 +6,8 @@ import gbpy.util_funcs as uf
 
 
 @pytest.mark.parametrize('filename0, rCut, lat_par, non_p',
-                         [("data/dump_1", 8.1, 4.05, 2),
-                          ("data/dump_2", 8.1, 4.05, 1)])
+                         [("data/trash/dump_1", 8.1, 4.05, 2),
+                          ("data/trash/dump_2", 8.1, 4.05, 1)])
 def test_pad_dump_file(filename0, rCut, lat_par, non_p):
     data = uf.compute_ovito_data(filename0)
     arr = pdf.p_arr(non_p)
