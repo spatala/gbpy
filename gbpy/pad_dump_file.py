@@ -136,7 +136,7 @@ def GB_finder(data, lat_par, non_pbc, str_alg, csc_tol):
         gb_index = np.where((ptm_struct != 1) & (position_np < NoSurfArea[1]) & (position_np > NoSurfArea[0]))[0]
     else:
         gb_index = np.where((csc > csc_tol) & (position_np < NoSurfArea[1]) & (position_np > NoSurfArea[0]))[0]
-    
+
     outlierConstant = 1.51
     upper_quartile = np.percentile(position_np[gb_index], 75)
     lower_quartile = np.percentile(position_np[gb_index], 25)
@@ -294,7 +294,7 @@ def create_imgs(pts1, n1, n2, sim_1vec, sim_2vec, non_p):
         inds_array[ind_st:ind_stop+1] = tinds1
         ct1 = ct1 + 1
 
-    return pts_w_imgs, inds_array
+    return pts_w_imgs, inds_array.astype(int)
 
 
 def slice_along_planes(orig, sim_1vec, sim_2vec, sim_nonp_vec, rCut, pts_w_imgs, gb1_inds, non_p, inds_arr):
