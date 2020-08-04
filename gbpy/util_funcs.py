@@ -2,8 +2,9 @@ import numpy as np
 import ovito.io as oio
 import ovito.modifiers as ovm
 from itertools import islice
-from . import pad_dump_file as pdf
+import pad_dump_file as pdf
 import bisect
+
 
 def compute_ovito_data(filename0):
     """
@@ -82,7 +83,6 @@ def define_bounds(box_bound):
     --------
     untilted : np.array
         values of xlo, xhi, ylo, yhi, zlo, zhi.
-        
     tilt : np.array
         For box type "block" this values id [].
         For box type "prism" this value is [xy, yz, xz].
@@ -128,7 +128,6 @@ def RemProb(data, CohEng, GbIndex):
 
     Return
     ----------------
-
     AtomicRemProb : float
         The probabilty of removing an atom
     """
@@ -154,15 +153,14 @@ def RemIns_decision(p_rm):
 
     Return
     ----------------
-
-    AtomicRemProb : float
-        The probabilty of removing an atom
+    ID2change : integer
+        The ID of the atom which will be removed/inserted
     """
     CS_prob = np.cumsum(p_rm)
     rand_num = np.random.uniform(0, 1)
     location = (bisect.bisect_left(CS_prob, rand_num))
     if CS_prob[location] == rand_num or location == 0:
-        ID2change = location 
+        ID2change = location
     else:
         ID2change = location - 1
     return ID2change
@@ -170,37 +168,36 @@ def RemIns_decision(p_rm):
 
 def radi_normaliz(cc_rad):
     """
-    The function finds The atomic removal probabilty.
+    The function finds the atomic insertion probabilty.
 
     Parameters
     --------------
-    cc_rad : 
-        
+    cc_rad :
+        The circum-radius of the tetrahedrons.
 
     Return
     ----------------
-
-    rad_norm : 
-        
+    rad_norm :
+        Probability of inserting an atom in every tetrahedron.
     """
-    min_rad = np.min(cc_rad)
-    max_rad = np.max(cc_rad)
-    rad_norm = (cc_rad - min_rad) / (max_rad - min_rad)
+    # min_rad = np.min(cc_rad)
+    # max_rad = np.max(cc_rad)
+    # rad_norm = (cc_rad - min_rad) / (max_rad - min_rad)
+    rad_norm = cc_rad / np.sum(cc_rad)
     return rad_norm
 
 
 def choos_rem_ins():
     """
-    The function 
+    The function makes the decision whether the trail operation is insertion or removal.
 
     Parameters
     --------------
 
     Return
     ----------------
-
     decision : string
-        
+        removal or insertion
     """
     rand_num = np.random.uniform(0, 1)
     if rand_num > 0.5:
@@ -211,17 +208,19 @@ def choos_rem_ins():
 
 def atom_insertion(filename0, path2dump, cc_coors1, atom_id):
     """
-    The function 
+    The function adds the inserted atom to the lammps dump file.
 
     Parameters
     --------------
     filename0 : string
-        The lammps dump file
-    path2dump	: 
-
+        The initial lammps dump file
+    path2dump :
+        The path to dump the lammps dump file
      cc_coors1 :
+        The coordinates of the circum-center of the tetrahedrons.
 
-    atom_id    
+    atom_id :
+        The atom ID of the inserted atom which is the ID of last atom + 1
 
     Return
     ----------------
@@ -229,9 +228,9 @@ def atom_insertion(filename0, path2dump, cc_coors1, atom_id):
     """
     lines = open(filename0, 'r').readlines()
     lines[1] = '0\n'
-    lines[3] = str(int(lines[3]) + 1) 
+    lines[3] = str(int(lines[3]) + 1)
     new_line = str(atom_id) + ' 1 ' + str(cc_coors1[0]) + ' ' + str(cc_coors1[1]) + ' '\
-            + str(cc_coors1[2] ) + ' .1 .2\n'
+        + str(cc_coors1[2]) + ' .1 .2\n'
     lines[3] = lines[3] + '\n'
 
     out = open(path2dump + 'ins_dump', 'w')
@@ -242,94 +241,82 @@ def atom_insertion(filename0, path2dump, cc_coors1, atom_id):
 
 def atom_removal(filename0, path2dump, ID2change, var):
     """
-    The function finds The atomic removal probabilty.
+    The function removes the chosen atom from the lammps dump file.
 
     Parameters
     --------------
     filename0 : string
         The lammps dump file
-    path2dump	: 
-
-    ID2change
-
-    var
+    path2dump :
+        The path to dump the lammps dump file
+    ID2change :
+        The ID of the atom which will be removed
+    var :
+        The indices of the atom which will be removed.
+        This is just to check.
 
     Return
     ----------------
 
     """
     lines = open(filename0, 'r').readlines()
-    lines[1] = '0\n'  #  step should be 0 
+    lines[1] = '0\n'  # step should be 0
     lines[3] = str(int(lines[3]) - 1) + '\n'
-    assert lines[ID2change + 9 ].split(" ", 1)[0] == str(var)
-    lines[ID2change + 9] = ''  #  8 for the number of lines on the header
+    assert lines[ID2change + 9].split(" ", 1)[0] == str(var)
+    lines[ID2change + 9] = ''  # 8 for the number of lines on the header
 
     out = open(path2dump + 'rem_dump', 'w')
     out.writelines(lines)
     out.close()
 
-    # pipeline = oio.import_file(filename0)
-    # pipeline.modifiers.append(ovm.ExpressionSelectionModifier(expression = 'ParticleIdentifier == ' + str(ID2change+1)))
-    # pipeline.modifiers.append( ovm.DeleteSelectedModifier() )
-    # dump_name = path2dump + 'rem_dump'
-    # oio.export_file(pipeline, dump_name,format = "lammps_dump",
-    #     columns=["Particle Identifier",
-    #                 "Particle Type",
-    #                 "Position.X",
-    #                 "Position.Y",
-    #                 "Position.Z",
-    #                 "c_eng",
-    #                 "c_csym" ])
-    # lines = open(filename0, 'r').readlines()
-    # lines[1] = '0\n'  #  step should be 0 
-    # out = open(path2dump + 'rem_dump', 'w')
-    # out.writelines(lines)
-    # out.close()
-
 
 def cal_area(data, non_p):
     """
-    The function finds The atomic removal probabilty.
+    The function finds the area of the GB plane.
 
     Parameters
     --------------
-    data : 
-        
-    non_p	: 
+    data : class
+        all the attributes of data
+    non_p :
+        The non-periodic direction. 0 , 1 or 2 which corresponds to
+        x, y and z direction, respectively.
 
 
     Return
     ----------------
 
-    area : 
+    area : float
+        The surface area of the GB plane.
     """
     sim_cell = data.cell
     arr0 = pdf.p_arr(non_p)
     area = np.linalg.norm(np.cross(sim_cell[:, arr0[0]], sim_cell[:, arr0[1]]))
-    return area  #  in A
+    return area  # in A
 
 
 def cal_GB_E(data, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol):
     """
-    The function finds The atomic removal probabilty.
+    The function finds the energy of the GB.
 
     Parameters
     --------------
-    data : 
-      
+    data : class
+        all the attributes of data
+    non_p :
+        The non-periodic direction. 0 , 1 or 2 which corresponds to
+        x, y and z direction, respectively.
 
-    non_p
-
-    lat_par
-    CohEng
-        
+    lat_par :
+        Lattice parameter for the crystal being simulated.
+    CohEng : float
+        The cohesive energy
 
     Return
     ----------------
-
-    E_GB : 
+    E_GB : float
+        The enrgy of GB plane
     """
-    weight_2 = 1- weight_1
     GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data, lat_par, non_p, str_alg, csc_tol)
 
     top_min = GbRegion[1]
@@ -344,7 +331,7 @@ def cal_GB_E(data, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol):
 
     position_np = data.particles['Position'][...][:, non_p]
     atom_id = np.where((position_np > min_pos_area) & (position_np < max_pos_area))[0]
-    E_excess =  data.particles['c_eng'][...][atom_id] - CohEng
+    E_excess = data.particles['c_eng'][...][atom_id] - CohEng
     area = cal_area(data, non_p)
     E_GB = 16021.7733 * np.sum(E_excess) / area  # convert to mj/m^2
     return E_GB
@@ -352,22 +339,25 @@ def cal_GB_E(data, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol):
 
 def p_boltz_func(dE, area, Tm):
     """
-    The function finds The atomic removal probabilty.
+    The function finds the botzman probability of acceptance.
 
     Parameters
     --------------
-    dE : 
-    area	: 
-    
-    Tm
+    dE : float
+        The energy difference the initial structure and the structure after the trial operation.
+    area : float
+        The surface area of the GB plane.
+    Tm : float
+        The melting temperature of the material
+
 
     Return
     ----------------
-
-    p_boltz : 
+    p_boltz : float
+        The boltzman probaility
     """
     T = Tm / 2  # in K
-    kb = 1.3806485279 * 10e-23 * 1e3 # mj/K
+    kb = 1.3806485279 * 10e-23 * 1e3  # mj/K
     dE = dE * area * 1e-20
     p_boltz = np.exp(-dE / kb / T)
     return p_boltz
@@ -375,22 +365,23 @@ def p_boltz_func(dE, area, Tm):
 
 def decide(p_boltz):
     """
-    The function finds The atomic removal probabilty.
+    The function decides whether the new structure is accepted or not.
 
     Parameters
     --------------
-    p_boltz
+    p_boltz : float
+        The boltzman probaility
 
     Return
     ----------------
-
-    decision :
+    decision : string
+        The decision is either "accept" or "reject"
     """
     rand_num = np.random.uniform(0, 1)
     if rand_num > p_boltz:
         return "reject"
     else:
-        return "accept"    
+        return "accept"
 
 
 def check_SC_reg(data, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol):
@@ -413,6 +404,7 @@ def check_SC_reg(data, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_t
         The user defined tolerance for the size of rigid translation region in lammps simulation.
     SC_tol : float
         The user defined tolerance for the minimum size of single crystal region.
+
     Returns
     ----------
     SC_boolean :

@@ -39,6 +39,7 @@ def pad_dump_file(data, lat_par, rCut, non_p, str_alg, csc_tol):
     non_pbc : int
         The non-periodic direction. 0 , 1 or 2 which corresponds to
         x, y and z direction, respectively.
+
     Returns
     ----------
     pts_w_imgs :
@@ -101,7 +102,7 @@ def GB_finder(data, lat_par, non_pbc, str_alg, csc_tol):
     # num_particles = data.particles.count
     ptm_struct = data.particles['Structure Type'][...]
     position_np = data.particles['Position'][...][:, non_pbc]
-    if str_alg=="csc":
+    if str_alg == "csc":
         csc = data.particles['c_csym'][...]
 
     NoSurfArea = []
@@ -172,7 +173,6 @@ def num_rep_2d(xvec, yvec, rCut):
     [int(m_x), int(m_y)] :
         int(m_x) is the number of replications in x direction, int(m_y)
         is the number of replication in z direction.
-
     """
     c_vec_norm = np.linalg.norm(np.cross(xvec, yvec))
     d_y = c_vec_norm/(np.linalg.norm(yvec))
@@ -294,7 +294,7 @@ def create_imgs(pts1, n1, n2, sim_1vec, sim_2vec, non_p):
         inds_array[ind_st:ind_stop+1] = tinds1
         ct1 = ct1 + 1
 
-    return pts_w_imgs, inds_array.astype(int)
+    return pts_w_imgs, inds_array
 
 
 def slice_along_planes(orig, sim_1vec, sim_2vec, sim_nonp_vec, rCut, pts_w_imgs, gb1_inds, non_p, inds_arr):
@@ -323,6 +323,7 @@ def slice_along_planes(orig, sim_1vec, sim_2vec, sim_nonp_vec, rCut, pts_w_imgs,
         x, y and z direction, respectively.
     inds_arr :
         The atom indices of the initial unit cell with no replicates.
+
     Returns
     ------------
     pts_w_imgs

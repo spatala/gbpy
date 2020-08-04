@@ -55,7 +55,7 @@ def triang_inds(pts_w_imgs, gb1_inds, inds_arr):
         The position of atoms which are inside the main box and within rCut to the main box.
     gb1_inds :
         Indices of the GB atoms
-    inds_arr :
+    inds_arr : numpy array
         The atom indices of the initial unit cell with no replicates.
 
     Returns
@@ -77,50 +77,10 @@ def triang_inds(pts_w_imgs, gb1_inds, inds_arr):
     tarr1 = np.zeros((np.shape(pts_w_imgs)[0], ))
     tarr1[gb1_inds] = 1
     gb_tri_inds = np.where(np.sum(tarr1[tri_vertices], axis=1))[0]
-    # i1, ia = np.unique(gb_tri_inds, return_index=True, axis=0)
-    i1, ia = np.unique(inds2[gb_tri_inds,:], return_index=True, axis=0)
+    i1, ia = np.unique(inds2[gb_tri_inds,:], return_index=True, axis=0))
     gb_tri_inds1 = gb_tri_inds[ia]
 
     return tri_vertices, gb_tri_inds1
-
-# def triang_inds_wimgs(pts_w_imgs, gb1_inds, inds_arr):
-#     """
-#     Function finds the indices of atoms which make tetrahedrons with at least one GB atom.
-
-#     Parameters
-#     -------------
-#     pts_w_imgs :
-#         The position of atoms which are inside the main box and within rCut to the main box.
-#     gb1_inds :
-#         Indices of the GB atoms
-#     inds_arr :
-#         The atom indices of the initial unit cell with no replicates.
-
-#     Returns
-#     ------------
-#     tri_vertices :
-#         Tetrahedrons with at least one corner in the GB region.
-#     gb_tri_inds1 :
-#         The indices of atoms which make tri_vertices tetrahedrons.
-#     """
-#     tri_simplices = qdelaunay("i Qt", pts_w_imgs)
-#     num_tri = int(tri_simplices[0])
-#     tri_vertices = np.zeros((num_tri, 4), dtype='int')
-#     for ct1 in range(num_tri):
-#         tri_vertices[ct1, :] = np.array([int(i) for i in str.split(tri_simplices[ct1+1])])
-
-#     inds1 = (inds_arr[tri_vertices])
-#     inds2 = np.copy(inds1)
-#     inds2.sort(axis=1)
-#     tarr1 = np.zeros((np.shape(pts_w_imgs)[0], ))
-#     tarr1[gb1_inds] = 1
-#     gb_tri_inds = np.where(np.sum(tarr1[tri_vertices], axis=1))[0]
-
-#     # i1, ia = np.unique(gb_tri_inds, return_index=True, axis=0)
-#     # i1, ia = np.unique(inds2[gb_tri_inds,:], return_index=True, axis=0)
-#     # gb_tri_inds1 = gb_tri_inds[ia]
-
-#     return tri_vertices, inds2, gb_tri_inds
 
 
 def vv_props(pts_w_imgs, tri_vertices, gb_tri, lat_par):
@@ -142,9 +102,9 @@ def vv_props(pts_w_imgs, tri_vertices, gb_tri, lat_par):
     Returns
     ------------
     cc_coors1 :
-        Tetrahedrons with at least one corner in the GB region.
+        The coordinates of the circum-center of the tetrahedrons
     cc_rad1 :
-        The indices of atoms which make tri_vertices tetrahedrons.
+        The circum-radius of the tetrahedrons.
     """
     num_tri = np.shape(gb_tri)[0]
     cc_coors = np.zeros((num_tri, 3))
