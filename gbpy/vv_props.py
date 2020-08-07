@@ -77,7 +77,7 @@ def triang_inds(pts_w_imgs, gb1_inds, inds_arr):
     tarr1 = np.zeros((np.shape(pts_w_imgs)[0], ))
     tarr1[gb1_inds] = 1
     gb_tri_inds = np.where(np.sum(tarr1[tri_vertices], axis=1))[0]
-    i1, ia = np.unique(inds2[gb_tri_inds,:], return_index=True, axis=0))
+    i1, ia = np.unique(inds2[gb_tri_inds,:], return_index=True, axis=0)
     gb_tri_inds1 = gb_tri_inds[ia]
 
     return tri_vertices, gb_tri_inds1
