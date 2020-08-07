@@ -51,7 +51,7 @@ setup(
     },
     include_package_data=True,
     package_data={
-        'gbpy': ['tests/data/dump_1'],
+        'gbpy': ['gbpy/tests/data/dump_1'],
     },
     install_requires=requirements,
     license="BSD (3-clause)",
