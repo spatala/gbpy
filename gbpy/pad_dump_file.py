@@ -294,7 +294,7 @@ def create_imgs(pts1, n1, n2, sim_1vec, sim_2vec, non_p):
         inds_array[ind_st:ind_stop+1] = tinds1
         ct1 = ct1 + 1
 
-    return pts_w_imgs, inds_array
+    return pts_w_imgs, inds_array.astype(int)
 
 
 def slice_along_planes(orig, sim_1vec, sim_2vec, sim_nonp_vec, rCut, pts_w_imgs, gb1_inds, non_p, inds_arr):
