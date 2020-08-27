@@ -8,7 +8,7 @@ from ovito.pipeline import StaticSource, Pipeline
 import ovito.modifiers as ovm
 from shutil import copyfile
 import numpy as np
-
+import sys
 #  --------------------------------------------------------------------------
 #  Define the input
 #  --------------------------------------------------------------------------
@@ -22,8 +22,8 @@ SC_tol = 5 * lat_par
 # str_alg = "ptm"
 str_alg = "csc"
 csc_tol = .1
-# method = "anneal"
-method = "min"
+method = "anneal"
+# method = "min"
 Etol_val=1e-25
 Ftol_val=1e-25
 if method=="anneal":
@@ -33,20 +33,39 @@ else:
     Etol_val0=1e-25
     Ftol_val0=1e-25
 
-MaxIter_val=5000
+MaxIter_val=10000
 MaxEval_val=10000
 Iter_heat_val=1000
 Iter_equil_val=3000
 Iter_cool_val=1000
+gb_name = sys.argv[1]
+
+print('=============================================================================')
+print(gb_name)
+print('=============================================================================')
 #  --------------------------------------------------------------------------
 #  Define the path to dump files
 #  --------------------------------------------------------------------------
+#######For my local pc#########################################
+
 lammps_exe_path = '/home/leila/Downloads/mylammps/src/lmp_mpi'
-pot_path = './lammps_dump/'  # the path for the potential
-dump_path = './lammps_dump/test/'
-pkl_file = './tests/data/gb_attr_Al_S3_1_N1_4_-1_-3_N2_-3_4_-1.pkl'
-initial_dump = 'tests/data/dump_1'  # the name of the dump file that
+main_path = './lammps_dump/'
+pot_path = main_path   # the path for the potential
+dump_path = main_path + 'output/' + str(gb_name) + '/'
+pkl_file = main_path + 'data/' + str(gb_name) + '.pkl'
+initial_dump = main_path + 'output/' + str(gb_name) + '/dump_1'  # the name of the dump file that
+# initial_dump = main_path + 'output/' + str(gb_name) + '/dump.29'
 output =  dump_path + 'dump_min'
+
+####For HPC############################################################
+# lammps_exe_path = '/usr/local/usrapps/spatala/lammps-12Dec18/src/lmp_mpi'
+# main_path = '/gpfs_common/share02/spatala/Leila_lammps/GBMC/'
+# pot_path = main_path   # the path for the potential
+# dump_path = main_path + 'output/' + str(gb_name) + '/'
+# pkl_file = main_path + 'data/' + str(gb_name) + '.pkl'
+# initial_dump = main_path + 'output/' + str(gb_name) + '/dump_1'  # the name of the dump file that
+# output =  dump_path + 'dump_min'
+####################################################################################
 #  --------------------------------------------------------------------------
 #  Create lammps dump file for pkl file
 #  --------------------------------------------------------------------------
@@ -56,37 +75,19 @@ ldw.write_lammps_dump(initial_dump, box_bound, dump_lamp, box_type)  # writing t
 #  --------------------------------------------------------------------------
 #  Define the path to dump files
 #  --------------------------------------------------------------------------
-out_min_1 = dump_path + 'dump.0' # the output of previous step
+filename_0 = dump_path + 'dump.0' # the output of previous step
 fil_name = 'in.min_1'  # the initila minimization lammps script write the in.min script and run it and create dump_minimized
-lsw.run_lammps_min(initial_dump, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, out_min_1,\
-               step=1, Etol=Etol_val0, Ftol=Ftol_val0, MaxIter=MaxIter_val, MaxEval=MaxEval_val)
-if method == "anneal":
-    fil_name1 = 'in.anneal'
-    out_heat = dump_path + 'heat.0'
-    lsw.run_lammps_anneal(out_min_1, fil_name1, pot_path, lat_par, tol_fix_reg, lammps_exe_path, out_heat,\
+
+lsw.run_lammps_anneal(initial_dump, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_0,\
                     Tm,  step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
-
-    lines = open(out_heat, 'r').readlines()
-    lines[1] = '0\n'
-    out = open(out_heat, 'w')
-    out.writelines(lines)
-    out.close()
-
-    fil_name2 = 'in.min_2'
-    out_min_2 = dump_path + 'dump.1'
-    lsw.run_lammps_min(out_heat, fil_name2, pot_path, lat_par, tol_fix_reg, lammps_exe_path, out_min_2,\
-                step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val)
-
-    filename_0 = out_min_2
-else:
-    filename_0 = out_min_1
+                
 
 #  --------------------------------------------------------------------------
 #  Start MC
 #  --------------------------------------------------------------------------
 iter = 5000
 ff = open('output', 'w')
-for i in range(1, iter, 1):
+for i in range(366, iter, 1):
     print(i)
     
     #  read the data
@@ -118,29 +119,13 @@ for i in range(1, iter, 1):
         # copyfile(filename_rem, dump_path + 'rem/rem_dump_' + str(i))
         filename_1 = dump_path + 'dump.' + str(i)
         #  --------------------------------------------------------------------------------------------------
-        lsw.run_lammps_min(filename_rem, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_1,\
-               step=2, Etol=Etol_val0, Ftol=Ftol_val0, MaxIter=MaxIter_val, MaxEval=MaxEval_val)
-        copyfile(filename_rem, dump_path + 'rem/min1_' + str(i))
-
-        if method == "anneal":
-            fil_name1 = 'in.anneal'
-            out_heat = dump_path + 'heat.0'
-            lsw.run_lammps_anneal(filename_1, fil_name1, pot_path, lat_par, tol_fix_reg, lammps_exe_path, out_heat,\
-                                Tm,  step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
-
-            lines = open(out_heat, 'r').readlines()
-            lines[1] = '0\n'
-            out = open(out_heat, 'w')
-            out.writelines(lines)
-            out.close()
-            copyfile(out_heat, dump_path + 'rem/heat_' + str(i))
-
-
-            fil_name2 = 'in.min_2'
-            out_min_2 = dump_path + 'dump.' + str(i)
-            lsw.run_lammps_min(out_heat, fil_name2, pot_path, lat_par, tol_fix_reg, lammps_exe_path, out_min_2,\
-                            step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val)
-            filename_1 = out_min_2
+        lsw.run_lammps_anneal(filename_rem, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_1,\
+                            Tm,  step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
+        lines = open(filename_1, 'r').readlines()
+        lines[1] = '0\n'
+        out = open(filename_1, 'w')
+        out.writelines(lines)
+        out.close()
 
         #  --------------------------------------------------------------------------------------------------
         
@@ -168,6 +153,7 @@ for i in range(1, iter, 1):
             print("accepted in botlzman removal")
             print(GbIndex[ID2change])
             copyfile(filename_1, dump_path + 'accepted/dump.' + str(i))
+
             filename_0 = filename_1
 
     #  --------------------------------------------------------------------------
@@ -192,31 +178,20 @@ for i in range(1, iter, 1):
 
         fil_name = 'in.min_1'  # the initila minimization lammps script write the in.min script and run it and create dump_minimized
         filename_ins = dump_path + 'ins_dump'
-        # copyfile(filename_rem, dump_path + 'rem/rem_dump_' + str(i))
         filename_1 = dump_path + 'dump.' + str(i)
         #  --------------------------------------------------------------------------------------------------
-        lsw.run_lammps_min(filename_ins, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_1,\
-               step=2, Etol=Etol_val0, Ftol=Ftol_val0, MaxIter=MaxIter_val, MaxEval=MaxEval_val)
-        copyfile(filename_1, dump_path + 'ins/min1_' + str(i))
-        if method == "anneal":
-            fil_name1 = 'in.anneal'
-            out_heat = dump_path + 'heat.0'
-            lsw.run_lammps_anneal(filename_1, fil_name1, pot_path, lat_par, tol_fix_reg, lammps_exe_path, out_heat,\
+
+        # copyfile(filename_1, dump_path + 'ins/min1_' + str(i))
+        lsw.run_lammps_anneal(filename_ins, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_1,\
                                 Tm,  step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
 
-            lines = open(out_heat, 'r').readlines()
-            lines[1] = '0\n'
-            out = open(out_heat, 'w')
-            out.writelines(lines)
-            out.close()
-            copyfile(out_heat, dump_path + 'ins/heat_' + str(i))
+        lines = open(filename_1, 'r').readlines()
+        lines[1] = '0\n'
+        out = open(filename_1, 'w')
+        out.writelines(lines)
+        out.close()
+        # copyfile(out_heat, dump_path + 'ins/heat_' + str(i))
 
-
-            fil_name2 = 'in.min_2'
-            out_min_2 = './lammps_dump/final'
-            lsw.run_lammps_min(out_heat, fil_name2, pot_path, lat_par, tol_fix_reg, lammps_exe_path, out_min_2,\
-                            step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val)
-            filename_1 = out_min_2
 
 
         data_1 = uf.compute_ovito_data(filename_1)
@@ -235,6 +210,7 @@ for i in range(1, iter, 1):
 
         if decision == "accept":
             copyfile(filename_1, dump_path + 'accepted/dump.' + str(i))
+
             filename_0 = filename_1
 
 ff.close()
