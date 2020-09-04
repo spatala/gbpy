@@ -79,7 +79,7 @@ filename_0 = dump_path + 'dump.0' # the output of previous step
 fil_name = 'in.min_1'  # the initila minimization lammps script write the in.min script and run it and create dump_minimized
 
 lsw.run_lammps_anneal(initial_dump, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_0,\
-                    Tm,  step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
+                    Tm,  step=1, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
                 
 
 #  --------------------------------------------------------------------------
