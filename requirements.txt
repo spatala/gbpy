@@ -7,3 +7,5 @@ nbsphinx
 jupyter-client
 nbconvert
 pandoc
+byxtal
+sympy
