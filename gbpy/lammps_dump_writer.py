@@ -99,6 +99,12 @@ def write_lammps_dump(filename0, box_bound, dump_lamp, box_type):
     Returns
     ----------
     """
+    p_x = box_bound[0,1] - box_bound[0,0]
+    p_y = box_bound[1,1] - box_bound[1,0]
+    p_z = box_bound[2,1] - box_bound[2,0]
+
+    non_p_dir = np.argmax([p_x, p_y, p_z])
+
     num_atoms = np.shape(dump_lamp)[0]
     file = open(filename0, "w")
     file.write("ITEM: TIMESTEP\n")
@@ -107,9 +113,21 @@ def write_lammps_dump(filename0, box_bound, dump_lamp, box_type):
     file.write(str(num_atoms) + "\n")
     # file.write("ITEM: BOX BOUNDS xy xz yz pp ff pp\n")
     if box_type == "prism":
-        file.write("ITEM: BOX BOUNDS xy xz yz pp pp ff\n")
+        if non_p_dir == 0:
+            file.write("ITEM: BOX BOUNDS xy xz yz ff pp pp\n")
+        elif non_p_dir ==1:
+            file.write("ITEM: BOX BOUNDS xy xz yz pp ff pp\n")
+        else:
+            file.write("ITEM: BOX BOUNDS xy xz yz pp pp ff\n")
+        
     else:
-        file.write("ITEM: BOX BOUNDS pp pp ff\n")
+        if non_p_dir == 0:
+            file.write("ITEM: BOX BOUNDS ff pp pp\n")
+        elif non_p_dir ==1:
+            file.write("ITEM: BOX BOUNDS pp ff pp\n")
+        else:
+            file.write("ITEM: BOX BOUNDS pp pp ff\n")
+        
     file.write(' '.join(map(str, box_bound[0])) + "\n")
     file.write(' '.join(map(str, box_bound[1])) + "\n")
     file.write(' '.join(map(str, box_bound[2])) + "\n")
