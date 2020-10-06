@@ -677,7 +677,7 @@ def script_main_anneal(fil_name, lat_par, tol_fix_reg, dump_name, pot_path, non_
 
 
 def run_lammps_anneal(filename0, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path,
-                      output, Tm,  step=2, Etol=1e-25, Ftol=1e-25, MaxIter=5000, MaxEval=10000,
+                      output, Tm,check,   step=2, Etol=1e-25, Ftol=1e-25, MaxIter=5000, MaxEval=10000,
                       Iter_heat=1000, Iter_equil=10000, Iter_cool=12000):
     """
     Function 
@@ -706,10 +706,10 @@ def run_lammps_anneal(filename0, fil_name, pot_path, lat_par, tol_fix_reg, lammp
     """
     data = uf.compute_ovito_data(filename0)
     non_p = uf.identify_pbc(data)
-    run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil, Iter_cool,lat_par, filename0, pot_path, output )
+    run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil, Iter_cool,lat_par, filename0, pot_path, output, check )
     os.system('mpirun -np 2 ' + str(lammps_exe_path) + ' -in ' + fil_name)
 
-def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil, Iter_cool,lat_par, dump_name, pot_path,output):
+def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil, Iter_cool,lat_par, dump_name, pot_path,output, check):
     fiw, file_name = file_gen(fil_name)
     if non_p == 0:
         bound = 'f p p'
@@ -786,7 +786,10 @@ def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil,
     line.append('neigh_modify delay 10 check yes\n')
     line.append('group lower type 2 \n')
     line.append('group upper type 1\n')
-    line.append('delete_atoms overlap ${OverLap}  upper lower\n')
+    if check == "sc":
+        line.append('delete_atoms overlap ${OverLap}  all all\n')
+    else:
+        line.append('delete_atoms overlap ${OverLap}  upper lower\n')
     line.append('# ---------- Run Minimization ---------------------\n') 
     line.append('reset_timestep 0\n')
 

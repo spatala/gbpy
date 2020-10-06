@@ -38,18 +38,59 @@ def lammps_box(lat_par, pkl_name):
     l_type = np.zeros((len_l, 1)) + 2
 
     sim_cell = gb_attr['cell']
-    origin_o = sim_cell[:, 3]
+    # origin_o = sim_cell[:, 3]
 
-    # “origin” at (xlo,ylo,zlo)
+    # # “origin” at (xlo,ylo,zlo)
+    # xlo = origin_o[0]
+    # ylo = origin_o[1]
+    # zlo = origin_o[2]
+    # # a = (xhi-xlo,0,0);
+    # xhi = sim_cell[0, 0] + xlo
+    # # b = (xy,yhi-ylo,0);
+    # xy = sim_cell[0, 1]
+    # yhi = sim_cell[1, 1] + ylo
+    # # c = (xz,yz,zhi-zlo)
+    # xz = sim_cell[0, 2]
+    # yz = sim_cell[1, 2]
+    # zhi = sim_cell[2, 2] + zlo
+
+    # if xy or xz or yz != 0:
+    #     box_type = "prism"
+    # else:
+    #     box_type = "block"
+
+    # xlo_bound = xlo + np.min(np.array([0, xy, xz, xy + xz]))
+    # xhi_bound = xhi + np.max(np.array([0, xy, xz, xy + xz]))
+    # ylo_bound = ylo + np.min(np.array([0, yz]))
+    # yhi_bound = yhi + np.max(np.array([0, yz]))
+    # zlo_bound = zlo
+    # zhi_bound = zhi
+
+    upper = np.concatenate((u_type, u_pts), axis=1)
+    lower = np.concatenate((l_type, l_pts), axis=1)
+
+    all_atoms = np.concatenate((lower, upper))
+    num_atoms = len_u + len_l
+    ID = np.arange(num_atoms).reshape(num_atoms, 1) + 1
+    dump_lamp = np.concatenate((ID, all_atoms), axis=1)
+    box_bound, box_type = box_bound_func(sim_cell)
+
+    # if box_type == "block":
+    #     box_bound = np.array([[xlo_bound, xhi_bound], [ylo_bound, yhi_bound], [zlo_bound, zhi_bound]])
+    # else:
+    #     box_bound = np.array([[xlo_bound, xhi_bound, xy], [ylo_bound, yhi_bound,  xz], [zlo_bound, zhi_bound, yz]])
+
+    return box_bound, dump_lamp, box_type
+
+def box_bound_func(sim_cell):
+    origin_o = sim_cell[:, 3]
     xlo = origin_o[0]
     ylo = origin_o[1]
     zlo = origin_o[2]
-    # a = (xhi-xlo,0,0);
+
     xhi = sim_cell[0, 0] + xlo
-    # b = (xy,yhi-ylo,0);
     xy = sim_cell[0, 1]
     yhi = sim_cell[1, 1] + ylo
-    # c = (xz,yz,zhi-zlo)
     xz = sim_cell[0, 2]
     yz = sim_cell[1, 2]
     zhi = sim_cell[2, 2] + zlo
@@ -66,20 +107,11 @@ def lammps_box(lat_par, pkl_name):
     zlo_bound = zlo
     zhi_bound = zhi
 
-    upper = np.concatenate((u_type, u_pts), axis=1)
-    lower = np.concatenate((l_type, l_pts), axis=1)
-
-    all_atoms = np.concatenate((lower, upper))
-    num_atoms = len_u + len_l
-    ID = np.arange(num_atoms).reshape(num_atoms, 1) + 1
-    dump_lamp = np.concatenate((ID, all_atoms), axis=1)
-
     if box_type == "block":
         box_bound = np.array([[xlo_bound, xhi_bound], [ylo_bound, yhi_bound], [zlo_bound, zhi_bound]])
     else:
         box_bound = np.array([[xlo_bound, xhi_bound, xy], [ylo_bound, yhi_bound,  xz], [zlo_bound, zhi_bound, yz]])
-
-    return box_bound, dump_lamp, box_type
+    return box_bound, box_type
 
 
 def write_lammps_dump(filename0, box_bound, dump_lamp, box_type):

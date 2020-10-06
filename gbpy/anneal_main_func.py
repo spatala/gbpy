@@ -79,15 +79,15 @@ filename_0 = dump_path + 'dump.0' # the output of previous step
 fil_name = 'in.min_1'  # the initila minimization lammps script write the in.min script and run it and create dump_minimized
 
 lsw.run_lammps_anneal(initial_dump, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_0,\
-                    Tm,  step=1, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
+                    Tm,  "aneal",step=1, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
                 
 
 #  --------------------------------------------------------------------------
 #  Start MC
 #  --------------------------------------------------------------------------
-iter = 5000
+iter = 5001
 ff = open('output', 'w')
-for i in range(366, iter, 1):
+for i in range(0, iter, 1):
     print(i)
     
     #  read the data
@@ -98,7 +98,7 @@ for i in range(366, iter, 1):
 
     #  decide between remove and insertion
     choice = uf.choos_rem_ins()
-    
+    choice ="removal"
     #  --------------------------------------------------------------------------
     #  If the choice is removal
     #  --------------------------------------------------------------------------
@@ -120,7 +120,7 @@ for i in range(366, iter, 1):
         filename_1 = dump_path + 'dump.' + str(i)
         #  --------------------------------------------------------------------------------------------------
         lsw.run_lammps_anneal(filename_rem, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_1,\
-                            Tm,  step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
+                            Tm,"aneal",  step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
         lines = open(filename_1, 'r').readlines()
         lines[1] = '0\n'
         out = open(filename_1, 'w')
@@ -136,7 +136,13 @@ for i in range(366, iter, 1):
             assert data_0.particles['Structure Type'][GbIndex[ID2change]] !=1
         else:
             assert data_0.particles['c_csym'][GbIndex[ID2change]] > .1
-        assert SC_boolean == [True, True]
+        if SC_boolean == False:
+            sim_cell = data_1.cell[...]
+            # box_bound, box_type = ldw.box_bound_func(sim_cell)
+            uniq_atoms = uf.add_sc(pkl_file, data_1, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol, box_bound)
+            ldw.write_lammps_dump(filename_rem, box_bound, uniq_atoms, box_type)
+            lsw.run_lammps_anneal(filename_rem, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_1,\
+                    Tm, "sc",  step=1, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
     
         E_1 = uf.cal_GB_E(data_1, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol)  #  after removal
         E_0 = uf.cal_GB_E(data_0, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol)
@@ -183,7 +189,7 @@ for i in range(366, iter, 1):
 
         # copyfile(filename_1, dump_path + 'ins/min1_' + str(i))
         lsw.run_lammps_anneal(filename_ins, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_1,\
-                                Tm,  step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
+                                Tm, "aneal", step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
 
         lines = open(filename_1, 'r').readlines()
         lines[1] = '0\n'
@@ -196,7 +202,14 @@ for i in range(366, iter, 1):
 
         data_1 = uf.compute_ovito_data(filename_1)
         SC_boolean = uf.check_SC_reg(data_1, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol)
-        assert SC_boolean == [True, True]
+        if SC_boolean == False:
+            sim_cell = data_1.cell[...]
+            # box_bound, box_type = ldw.box_bound_func(sim_cell)
+            uniq_atoms = uf.add_sc(pkl_file, data_1, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol, box_bound)
+            ldw.write_lammps_dump(filename_ins, box_bound, uniq_atoms, box_type)
+            lsw.run_lammps_anneal(filename_ins, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_1,\
+                    Tm, "sc",  step=1, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
+
 
         E_1 = uf.cal_GB_E(data_1, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol)  #  after removal
         E_0 = uf.cal_GB_E(data_0, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol)
