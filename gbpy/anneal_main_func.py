@@ -85,7 +85,7 @@ lsw.run_lammps_anneal(initial_dump, fil_name, pot_path, lat_par, tol_fix_reg, la
 #  --------------------------------------------------------------------------
 #  Start MC
 #  --------------------------------------------------------------------------
-iter = 5001
+iter = 5000
 ff = open('output', 'w')
 for i in range(0, iter, 1):
     print(i)
@@ -98,7 +98,6 @@ for i in range(0, iter, 1):
 
     #  decide between remove and insertion
     choice = uf.choos_rem_ins()
-    choice ="removal"
     #  --------------------------------------------------------------------------
     #  If the choice is removal
     #  --------------------------------------------------------------------------
