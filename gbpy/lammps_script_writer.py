@@ -58,7 +58,7 @@ def file_gen(fil_name):
 
 # def lammps_script_var_anneal(fiw, lat_par, Etol, Ftol, MaxIter, MaxEval, Iter_heat, Iter_equil, Iter_cool):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -108,7 +108,7 @@ def file_gen(fil_name):
 
 # def script_init_sim(fiw, non_p):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -144,7 +144,7 @@ def file_gen(fil_name):
 
 # def define_box(fiw, untilted, tilt, box_type):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -184,7 +184,7 @@ def file_gen(fil_name):
 
 # def script_pot(fiw, pot_path):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -212,7 +212,7 @@ def file_gen(fil_name):
 
 # def script_read_dump(fiw, dump_name):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -233,7 +233,7 @@ def file_gen(fil_name):
 
 # def script_overlap(fiw, untilted, tol_fix_reg, non_p, step):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -270,7 +270,7 @@ def file_gen(fil_name):
 
 # def script_compute(fiw):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -297,7 +297,7 @@ def file_gen(fil_name):
 
 # def script_min_sec(fiw, output, non_p, box_type):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -369,7 +369,7 @@ def file_gen(fil_name):
 
 # def script_heating(fiw, output, Tm, non_p):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -422,7 +422,7 @@ def file_gen(fil_name):
 
 # def script_equil(fiw, output, Tm, non_p):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -467,7 +467,7 @@ def file_gen(fil_name):
 
 # def script_cooling(fiw, output, Tm, non_p):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -513,7 +513,7 @@ def file_gen(fil_name):
 
 # def script_nve_nvt(fiw, output, Tm, non_p, Iter_heat, Iter_equil, Iter_cool):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -573,7 +573,7 @@ def file_gen(fil_name):
 # def script_main_min(fil_name, lat_par, tol_fix_reg, dump_name, pot_path, non_p, output,
 #                     step, Etol, Ftol, MaxIter, MaxEval):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -610,7 +610,7 @@ def file_gen(fil_name):
 # def run_lammps_min(filename0, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path,
 #                    output, step=2, Etol=1e-25, Ftol=1e-25, MaxIter=10000, MaxEval=10000):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -640,7 +640,7 @@ def file_gen(fil_name):
 # def script_main_anneal(fil_name, lat_par, tol_fix_reg, dump_name, pot_path, non_p, output,
 #                        Tm, step, Etol, Ftol, MaxIter, MaxEval, Iter_heat, Iter_equil, Iter_cool):
 #     """
-#     Function 
+#     Function
 
 #     Parameters
 #     ------------
@@ -677,10 +677,10 @@ def file_gen(fil_name):
 
 
 def run_lammps_anneal(filename0, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path,
-                      output, Tm,check,   step=2, Etol=1e-25, Ftol=1e-25, MaxIter=5000, MaxEval=10000,
+                      output, Tm, check,   step=2, Etol=1e-25, Ftol=1e-25, MaxIter=5000, MaxEval=10000,
                       Iter_heat=1000, Iter_equil=10000, Iter_cool=12000):
     """
-    Function 
+    Function
 
     Parameters
     ------------
@@ -706,10 +706,13 @@ def run_lammps_anneal(filename0, fil_name, pot_path, lat_par, tol_fix_reg, lammp
     """
     data = uf.compute_ovito_data(filename0)
     non_p = uf.identify_pbc(data)
-    run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil, Iter_cool,lat_par, filename0, pot_path, output, check )
+    run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval, Iter_heat, Iter_equil, Iter_cool,
+            lat_par, filename0, pot_path, output, check)
     os.system('mpirun -np 2 ' + str(lammps_exe_path) + ' -in ' + fil_name)
 
-def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil, Iter_cool,lat_par, dump_name, pot_path,output, check):
+
+def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval, Iter_heat, Iter_equil, Iter_cool, lat_par,
+            dump_name, pot_path, output, check):
     fiw, file_name = file_gen(fil_name)
     if non_p == 0:
         bound = 'f p p'
@@ -741,9 +744,6 @@ def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil,
     line.append('\n')
     line.append('variable OverLap equal ' + str(overlap_cte) + '\n')
     line.append('\n')
-
-
-
     line.append('# -----------Initializing the Simulation-----------\n')
     line.append('\n')
     line.append('clear\n')
@@ -764,8 +764,6 @@ def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil,
                      + ' units box'
 
     create_box = 'create_box 2 whole\n'
-
-
     line.append('compute csym all centro/atom fcc\n')
     line.append('compute eng all pe/atom\n')
     line.append('compute eatoms all reduce sum c_eng\n')
@@ -790,7 +788,7 @@ def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil,
         line.append('delete_atoms overlap ${OverLap}  all all\n')
     else:
         line.append('delete_atoms overlap ${OverLap}  upper lower\n')
-    line.append('# ---------- Run Minimization ---------------------\n') 
+    line.append('# ---------- Run Minimization ---------------------\n')
     line.append('reset_timestep 0\n')
 
     line.append('thermo 10\n')
@@ -831,10 +829,10 @@ def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil,
     line.append('min_style cg\n')
     line.append('minimize 1e-25 1e-25 5000 10000\n')
 
-    line.append('#----------------------Run minimization 2--------------------\n') 
+    line.append('#----------------------Run minimization 2--------------------\n')
     line.append('reset_timestep 0 \n')
     line.append('reset_ids\n')
-    line.append('thermo 100\n')  
+    line.append('thermo 100\n')
     line.append('thermo_modify lost ignore\n')
     if non_p == 0:
         if box_type == "block":
@@ -851,13 +849,11 @@ def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval,Iter_heat, Iter_equil,
             line.append('fix 1 all box/relax x 0 y 0 vmax .001\n')
         else:
             line.append('fix 1 all box/relax x 0 y 0 xy 0 vmax .001\n')
-    line.append('dump 2 all custom 1000 ' + str(output) +  ' id type x y z c_csym c_eng\n')   
+    line.append('dump 2 all custom 1000 ' + str(output) + ' id type x y z c_csym c_eng\n')
     line.append('dump_modify 2 every 1000 sort id first yes\n')
-    line.append('run 0 \n')   
+    line.append('run 0 \n')
     line.append('undump 2\n')
-     
-    #fix 1 all box/relax y 0.0 vmax 0.001
-    
+
     for i in line:
         fiw.write(i)
 
