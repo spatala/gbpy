@@ -75,12 +75,8 @@ def lammps_box(lat_par, pkl_name):
     dump_lamp = np.concatenate((ID, all_atoms), axis=1)
     box_bound, box_type = box_bound_func(sim_cell)
 
-    # if box_type == "block":
-    #     box_bound = np.array([[xlo_bound, xhi_bound], [ylo_bound, yhi_bound], [zlo_bound, zhi_bound]])
-    # else:
-    #     box_bound = np.array([[xlo_bound, xhi_bound, xy], [ylo_bound, yhi_bound,  xz], [zlo_bound, zhi_bound, yz]])
-
     return box_bound, dump_lamp, box_type
+
 
 def box_bound_func(sim_cell):
     origin_o = sim_cell[:, 3]
@@ -131,9 +127,9 @@ def write_lammps_dump(filename0, box_bound, dump_lamp, box_type):
     Returns
     ----------
     """
-    p_x = box_bound[0,1] - box_bound[0,0]
-    p_y = box_bound[1,1] - box_bound[1,0]
-    p_z = box_bound[2,1] - box_bound[2,0]
+    p_x = box_bound[0, 1] - box_bound[0, 0]
+    p_y = box_bound[1, 1] - box_bound[1, 0]
+    p_z = box_bound[2, 1] - box_bound[2, 0]
 
     non_p_dir = np.argmax([p_x, p_y, p_z])
 
@@ -147,19 +143,19 @@ def write_lammps_dump(filename0, box_bound, dump_lamp, box_type):
     if box_type == "prism":
         if non_p_dir == 0:
             file.write("ITEM: BOX BOUNDS xy xz yz ff pp pp\n")
-        elif non_p_dir ==1:
+        elif non_p_dir == 1:
             file.write("ITEM: BOX BOUNDS xy xz yz pp ff pp\n")
         else:
             file.write("ITEM: BOX BOUNDS xy xz yz pp pp ff\n")
-        
+
     else:
         if non_p_dir == 0:
             file.write("ITEM: BOX BOUNDS ff pp pp\n")
-        elif non_p_dir ==1:
+        elif non_p_dir == 1:
             file.write("ITEM: BOX BOUNDS pp ff pp\n")
         else:
             file.write("ITEM: BOX BOUNDS pp pp ff\n")
-        
+
     file.write(' '.join(map(str, box_bound[0])) + "\n")
     file.write(' '.join(map(str, box_bound[1])) + "\n")
     file.write(' '.join(map(str, box_bound[2])) + "\n")
