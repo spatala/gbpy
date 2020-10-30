@@ -143,7 +143,8 @@ def GB_finder(data, lat_par, non_pbc, str_alg, csc_tol):
     lower_quartile = np.percentile(position_np[gb_index], 25)
     IQR = (upper_quartile - lower_quartile) * outlierConstant
     quartileSet = (lower_quartile - IQR, upper_quartile + IQR)
-    GbIndex = gb_index[np.where((position_np[gb_index] < quartileSet[1]) & (position_np[gb_index] > quartileSet[0]))[0]]
+    GbIndex = gb_index[np.where((position_np[gb_index] < quartileSet[1]) &
+                                (position_np[gb_index] > quartileSet[0]))[0]]
 
     GbZ = position_np[GbIndex]
     GbRegion = [np.min(GbZ), np.max(GbZ)]
