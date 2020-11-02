@@ -181,9 +181,6 @@ def radi_normaliz(cc_rad):
     rad_norm :
         Probability of inserting an atom in every tetrahedron.
     """
-    # min_rad = np.min(cc_rad)
-    # max_rad = np.max(cc_rad)
-    # rad_norm = (cc_rad - min_rad) / (max_rad - min_rad)
     rad_norm = cc_rad / np.sum(cc_rad)
     return rad_norm
 
@@ -230,8 +227,8 @@ def atom_insertion(filename0, path2dump, cc_coors1, atom_id):
     lines = open(filename0, 'r').readlines()
     lines[1] = '0\n'
     lines[3] = str(int(lines[3]) + 1)
-    new_line = str(atom_id) + ' 1 ' + str(cc_coors1[0]) + ' ' + str(cc_coors1[1]) + ' '\
-        + str(cc_coors1[2]) + ' .1 .2\n'
+    new_line = str(atom_id) + ' 1 ' + str(cc_coors1[0]) + ' ' + str(cc_coors1[1]) + ' '
+    + str(cc_coors1[2]) + ' .1 .2\n'
     lines[3] = lines[3] + '\n'
 
     out = open(path2dump + 'ins_dump', 'w')
@@ -430,66 +427,65 @@ def add_sc(pkl_file, data_0, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg,
     gb_attr = pkl.load(jar)
     jar.close()
     sim_cell = gb_attr['cell']
-    origin_o = sim_cell[:, 3]
     point1 = gb_attr['lpts']
     point2 = gb_attr['upts']
-    sum_p1 = np.sum(point1,axis=0)
-    sum_p2 = np.sum(point2,axis=0)
-    if sum_p1[non_p]<0:
+    sum_p1 = np.sum(point1, axis=0)
+    sum_p2 = np.sum(point2, axis=0)
+    if sum_p1[non_p] < 0:
         l_pts = point1
         u_pts = point2
     else:
         l_pts = point2
-        u_pts = point1 
-    
-    if non_p ==0:
-        d1 = sim_cell[:,1]
-        d2 = sim_cell[:,2]
-    elif non_p==1:
-        d1 = sim_cell[:,0]
-        d2 = sim_cell[:,2]
-    else:
-        d1 = sim_cell[:,0]
-        d2 = sim_cell[:,1]
+        u_pts = point1
 
-    img_vec = np.array([[1,0], [-1,0], [0,1], [0,-1], [1,1], [-1,1], [1,-1], [-1,-1]])
-    if GbRegion[0]<0:
+    if non_p == 0:
+        d1 = sim_cell[:, 1]
+        d2 = sim_cell[:, 2]
+    elif non_p == 1:
+        d1 = sim_cell[:, 0]
+        d2 = sim_cell[:, 2]
+    else:
+        d1 = sim_cell[:, 0]
+        d2 = sim_cell[:, 1]
+
+    img_vec = np.array([[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]])
+    if GbRegion[0] < 0:
         l_pts0 = l_pts
         for i in range(8):
-            new = l_pts0 + img_vec[i,0]*d1 + img_vec[i,1]*d2
-            l_pts = np.concatenate((l_pts,new), axis=0 )
-    elif GbRegion[1]>0:
+            new = l_pts0 + img_vec[i, 0] * d1 + img_vec[i, 1] * d2
+            l_pts = np.concatenate((l_pts, new), axis=0)
+    elif GbRegion[1] > 0:
         u_pts0 = u_pts
         for i in range(8):
-            new = u_pts0 + img_vec[i,0]*d1 + img_vec[i,1]*d2
-            u_pts = np.concatenate((u_pts,new), axis=0 )
+            new = u_pts0 + img_vec[i, 0] * d1 + img_vec[i, 1] * d2
+            u_pts = np.concatenate((u_pts, new), axis=0)
 
-    if GbRegion[0]<0:
+    if GbRegion[0] < 0:
         min_gb = GbRegion[0] - lat_par
         id2del = np.where(position[:, non_p] < min_gb)[0]
         new_atoms = np.delete(position, id2del, axis=0)
-        atom_id = np.argmin(new_atoms[:,non_p])
+        atom_id = np.argmin(new_atoms[:, non_p])
         ref_atom = new_atoms[atom_id]
         l_pts = l_pts + ref_atom
         new_l_con = np.concatenate((l_pts, new_atoms), axis=0)
-    elif GbRegion[1]>0:
+    elif GbRegion[1] > 0:
         max_gb = GbRegion[1] + lat_par
         id2del = np.where(position[:, non_p] > max_gb)[0]
         new_atoms = np.delete(position, id2del, axis=0)
-        atom_id = np.argmax(new_atoms[:,non_p])
+        atom_id = np.argmax(new_atoms[:, non_p])
         ref_atom = new_atoms[atom_id]
         u_pts = u_pts + ref_atom
         new_l_con = np.concatenate((u_pts, new_atoms), axis=0)
-    
-    new_l_con[:,non_p] = new_l_con[:,non_p] -  np.mean(GbRegion)
-    new_l_con = new_l_con[np.where((new_l_con[:,non_p]<box_bound[non_p,1]) & (new_l_con[:,non_p]>box_bound[non_p,0]))[0]]
-    uniq_atoms = np.unique(new_l_con,axis=0)
+
+    new_l_con[:, non_p] = new_l_con[:, non_p] - np.mean(GbRegion)
+    new_l_con = new_l_con[np.where((new_l_con[:, non_p] < box_bound[non_p,1]) &
+                                    new_l_con[:, non_p] > box_bound[non_p, 0]))[0]]
+    uniq_atoms = np.unique(new_l_con, axis=0)
     len_all = len(uniq_atoms)
-    ID = np.arange(len_all).reshape(-1,1)
-    type_atom = np.zeros(len_all) 
+    ID = np.arange(len_all).reshape(-1, 1)
+    type_atom = np.zeros(len_all)
     type_atom[0:len(new_atoms)] = 1
     type_atom[len(new_atoms):len_all] = 2
-    type_atom = type_atom.reshape(-1,1)
+    type_atom = type_atom.reshape(-1, 1)
     uniq_atoms = np.concatenate((ID, type_atom,  uniq_atoms), axis=1)
     return uniq_atoms
-
