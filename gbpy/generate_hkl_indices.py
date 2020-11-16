@@ -12,8 +12,9 @@ import byxtal.disorient_symm_props as dsp;
 import byxtal.find_csl_dsc as fcd;
 import byxtal.integer_manipulations as iman;
 import byxtal.pick_fz_bpl as pfb;
-import byxtal.bp_basis as bpb;
-import byxtal.lll_tools as lt;
+import byxtal.bp_basis as bpb
+from . import reduce_po_lat as rpl
+# import byxtal.lll_tools as lt;
 
 from sympy.matrices import Matrix, eye, zeros;
 
@@ -208,7 +209,7 @@ def sig_hnf_mats(sig_num):
     #####################################################################
     return hnf_mats;
 
-def compute_hnf_props(hnf_mats, l_bp_p, l_p_po):
+def compute_hnf_props(hnf_mats, l_bp_p, l_p_po, tol):
     num_hnf = len(hnf_mats);
     l_sig_p_mats = np.zeros((num_hnf, 3, 2));
     l_sig_po_mats = np.zeros((num_hnf, 3, 2));
@@ -216,7 +217,8 @@ def compute_hnf_props(hnf_mats, l_bp_p, l_p_po):
         # print(hct1)
         l_sig_p = np.dot(l_bp_p, hnf_mats[hct1]);
         # l_sig1_p = lll_reduction_bpl_basis(l_sig_p, l_p_po);
-        l_sig1_p = lt.reduce_po_lat(l_sig_p, Matrix(l_p_po), 1e-6)
+        l_sig1_sig = rpl.reduce_po_lat(l_sig_p, Matrix(l_p_po), tol)
+        l_sig1_p = l_sig_p.dot(l_sig1_sig)
         l_sig_p_mats[hct1] = l_sig1_p;
         l_sig_po = np.dot(l_p_po, l_sig1_p);
         l_sig_po_mats[hct1] = l_sig_po;
