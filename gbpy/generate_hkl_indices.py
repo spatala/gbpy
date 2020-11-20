@@ -1,22 +1,24 @@
-import os;
-import random;
+import os
+import random
 
-import byxtal.tools as gbt;
-import byxtal.lattice as gbl;
-import pickle as pkl;
-import math as mt;
-import numpy as np;
-import byxtal.quaternion as gbq;
-import byxtal.misorient_fz as mfz;
-import byxtal.disorient_symm_props as dsp;
-import byxtal.find_csl_dsc as fcd;
-import byxtal.integer_manipulations as iman;
-import byxtal.pick_fz_bpl as pfb;
+import byxtal.tools as gbt
+import byxtal.lattice as gbl
+import pickle as pkl
+import math as mt
+import numpy as np
+import byxtal.quaternion as gbq
+import byxtal.misorient_fz as mfz
+import byxtal.disorient_symm_props as dsp
+import byxtal.find_csl_dsc as fcd
+import byxtal.integer_manipulations as iman
+import byxtal.pick_fz_bpl as pfb
 import byxtal.bp_basis as bpb
-from . import reduce_po_lat as rpl
-# import byxtal.lll_tools as lt;
+import byxtal.reduce_po_lat as rpl
 
-from sympy.matrices import Matrix, eye, zeros;
+# from . import reduce_po_lat as rpl
+# import byxtal.lll_tools as lt
+
+from sympy.matrices import Matrix, eye, zeros
 
 def order_ptgrp(bp_symm_grp):
     prop_grps = ['C1', 'C2', 'C3', 'C4', 'C6', 'D2', 'D3', 'D4', 'D6', 'D8', 'T', 'O']
@@ -148,7 +150,8 @@ def symm_fz_hkl(l_csl_props, hkl_inds):
     for ct1 in range(num1):
         n1_po = nv_unq[ct1];
         n1_rp = np.dot(l_po_rp,n1_po);
-        T1 = iman.int_finder(n1_rp);
+        # T1 = iman.int_finder(n1_rp);
+        T1, tm1 = iman.int_approx(n1_rp);
         hkl_inds[ct1,:] = np.array(T1.reshape(1,3), dtype='double');
     ################################################################################
     return hkl_inds;
@@ -157,10 +160,12 @@ def compute_hkl_bpb(hkl_inds):
     num1 = np.shape(hkl_inds)[0];
     l_p2_p = np.zeros((num1,3,3)); l_bpb_p = np.zeros((num1,3,2));
     for ct1 in range(num1):
+        print(ct1)
         hkl1 = hkl_inds[ct1]; hkl1 = hkl1.astype(int);
         bp1 = bpb.bp_basis(hkl1);
         a_vec = bp1[:,0]; b_vec = bp1[:,1];
         l_bpb_p[ct1,:,:] = np.copy(bp1);
+    print("Check-1")
     return l_bpb_p;
 
 def gen_Acut_bpb(l_bpb_p, l_p_po, r_cut, A_cut):
@@ -186,7 +191,7 @@ def gen_Acut_bpb(l_bpb_p, l_p_po, r_cut, A_cut):
         ind2 = np.array([], dtype='int64');
         while (np.size(ind2) == 0):
             hnf_mats = sig_hnf_mats(sig_num);
-            l_sig_p_mats, l_sig_po_mats = compute_hnf_props(hnf_mats, l_bp_p, l_p_po);
+            l_sig_p_mats, l_sig_po_mats = compute_hnf_props(hnf_mats, l_bp_p, l_p_po, 0.01);
             ind2 = ind_min_cost(l_sig_po_mats, r_cut);
             sig_num = sig_num + 1;
 
@@ -214,10 +219,11 @@ def compute_hnf_props(hnf_mats, l_bp_p, l_p_po, tol):
     l_sig_p_mats = np.zeros((num_hnf, 3, 2));
     l_sig_po_mats = np.zeros((num_hnf, 3, 2));
     for hct1 in range(num_hnf):
-        # print(hct1)
+        print('Check-2')
+        print(hct1)
         l_sig_p = np.dot(l_bp_p, hnf_mats[hct1]);
         # l_sig1_p = lll_reduction_bpl_basis(l_sig_p, l_p_po);
-        l_sig1_sig = rpl.reduce_po_lat(l_sig_p, Matrix(l_p_po), tol)
+        l_sig1_sig = rpl.reduce_po_lat(l_sig_p, l_p_po, tol)
         l_sig1_p = l_sig_p.dot(l_sig1_sig)
         l_sig_p_mats[hct1] = l_sig1_p;
         l_sig_po = np.dot(l_p_po, l_sig1_p);

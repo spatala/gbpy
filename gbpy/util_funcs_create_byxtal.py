@@ -1,11 +1,12 @@
 ## Import modules
-import math as mt;
-import numpy as np;
-import byxtal.find_csl_dsc as fcd;
-import byxtal.integer_manipulations as iman;
-import byxtal.bp_basis as bpb;
-from sympy.matrices import Matrix, eye, zeros;
-import byxtal.pick_fz_bpl as pfb;
+import math as mt
+import numpy as np
+import byxtal.find_csl_dsc as fcd
+import byxtal.integer_manipulations as iman
+import byxtal.bp_basis as bpb
+# from sympy.matrices import Matrix, eye, zeros;
+import byxtal.pick_fz_bpl as pfb
+import numpy.linalg as nla
 
 import ovito.data as ovd
 from ovito.pipeline import StaticSource, Pipeline
@@ -35,26 +36,34 @@ def find_int_solns(a_vec, b_vec):
         A 3x3 numpy array of integers that forms the new basis for the lattice.
 
     """
-    if isinstance(a_vec, Matrix):
-        a_vec = np.array(a_vec, dtype='int64')
-    if isinstance(b_vec, Matrix):
-        b_vec = np.array(b_vec, dtype='int64')
+    a1 = a_vec[0]
+    a2 = a_vec[1]
+    a3 = a_vec[2]
 
-    a1 = a_vec[0];a2 = a_vec[1];a3 = a_vec[2]
-    b1 = b_vec[0];b2 = b_vec[1];b3 = b_vec[2]
-    a = a2*b3 - a3*b2; b = -(a1*b3 - a3*b1); c = a1*b2 - a2*b1
+    b1 = b_vec[0]
+    b2 = b_vec[1]
+    b3 = b_vec[2]
+
+    a = a2*b3 - a3*b2
+    b = -(a1*b3 - a3*b1)
+    c = a1*b2 - a2*b1
+
     d = 1
-    a = int(a); b = int(b); c = int(c); d = int(d)
+    a = int(a)
+    b = int(b)
+    c = int(c)
+    d = int(d)
 
     ####
     p = mt.gcd(a,b)
     if p==0:
         if c == 1:
-            y1 = 0; y2 = 0; y3 = 1
+            y1 = 0
+            y2 = 0
+            y3 = 1
 
-            # l_p2_p1 = np.transpose(np.vstack((a_vec, b_vec, np.array([y1,y2,y3]))));
             l_p2_p1 = (np.hstack((a_vec, b_vec, np.array([[y1],[y2],[y3]]))))
-            det1 = np.linalg.det(l_p2_p1)
+            det1 = nla.det(l_p2_p1)
             if ((np.abs(det1)-1) > 1e-10):
                 raise Exception('Error with Diophantine solution')
             else:
@@ -63,42 +72,55 @@ def find_int_solns(a_vec, b_vec):
         else:
             raise Exception('Error with boundary-plane indices')
     else:
-        a1 = int(a/p); b1 = int(b/p)
+        a1 = int(a/p)
+        b1 = int(b/p)
+
         # Let u0 and v0 any solution of a'u + b'v = c
         int_soln1 = bpb.lbi_dioph_soln(a1, b1, c)
-        u0 = int(int_soln1[0]); v0 = int(int_soln1[1])
+        u0 = int(int_soln1[0])
+        v0 = int(int_soln1[1])
+
         # z0, t0 any solution of cz + pt = d
         int_soln2 = bpb.lbi_dioph_soln(c, p, d)
-        z0 = int(int_soln2[0]); t0 = int(int_soln2[1])
+        z0 = int(int_soln2[0])
+        t0 = int(int_soln2[1])
+
         # x0, y0 any solution of a'x + b'y = t0
         int_soln3 = bpb.lbi_dioph_soln(a1, b1, t0)
-        x0 = int(int_soln3[0]); y0 = int(int_soln3[1])
+        x0 = int(int_soln3[0])
+        y0 = int(int_soln3[1])
+
         # The general solution of ax + by + cz = d is :
         # x = x0 + b'k - u0m
         # y = y0 - a'k - v0m
-        # z = z0 + pm with k and m any integer in Z
+        # z = z0 + pm with k and m any integer in \mathbb{Z}
         tn1 = 10
         ival = np.arange(-(tn1),tn1+1)
         k1, m1 = np.meshgrid(ival, ival)
-        k1 = k1.flatten(); m1 = m1.flatten()
-        x = (x0 + b1*k1 - u0*m1)
-        y = (y0 - a1*k1 - v0*m1)
-        z = (z0 + p*m1)
+        k1 = k1.flatten()
+        m1 = m1.flatten()
+
+        x = x0 + b1*k1 - u0*m1
+        y = y0 - a1*k1 - v0*m1
+        z = z0 + p*m1
 
         l2_val = x**2 + y**2 + z**2
-        ind1 = np.where(l2_val == np.min(l2_val))[0][0]
-        y1 = x[ind1]; y2 = y[ind1]; y3 = z[ind1]
 
-        # l_p2_p1 = np.transpose(np.vstack((a_vec, b_vec, np.array([y1,y2,y3]))));
-        l_p2_p1 = (np.hstack((a_vec, b_vec, np.array([[y1],[y2],[y3]]))))
-        det1 = np.linalg.det(l_p2_p1)
+        ind1 = np.where(l2_val == np.min(l2_val))[0][0]
+        y1 = x[ind1]
+        y2 = y[ind1]
+        y3 = z[ind1]
+
+        l_p2_p1 = (np.vstack((a_vec, b_vec, np.array([ y1, y2, y3 ])))).transpose()
+        
+        det1 = nla.det(l_p2_p1)
         if (np.abs(det1-1) > (1e-10*np.max(np.abs(l_p2_p1)))):
             raise Exception('Error with Diophantine solution')
         else:
             if det1 == -1:
                 l_p2_p1[:,2] = -l_p2_p1[:,2]
 
-    return Matrix((l_p2_p1).astype(int))
+    return (l_p2_p1).astype(int)
 
 def compute_rCut(l2d_bp_po):
     """
@@ -116,9 +138,11 @@ def compute_rCut(l2d_bp_po):
     rCut: float
         The cut-off radius for replicating the lattice basis.
     """
-    bv1 = l2d_bp_po[:,0]; bv2 = l2d_bp_po[:,1]
-    l1 = bv1.norm(); l2 = bv2.norm()
-    l3 = (bv1+bv2).norm()
+    bv1 = l2d_bp_po[:,0]
+    bv2 = l2d_bp_po[:,1]
+    l1 = nla.norm(bv1)
+    l2 = nla.norm(bv2)
+    l3 = nla.norm((bv1+bv2))
     rCut = np.max([l1,l2,l3])
     return rCut
 
@@ -128,17 +152,25 @@ def compute_orientation(l2d_bp_po):
     vectors in the **p1** lattice given by **l2d_bp_po** to line up
     with x-axis in the xy-plane.
     """
-    bv1 = l2d_bp_po[:,0]; bv2 = l2d_bp_po[:,1]
-    l1 = bv1.norm(); l2 = bv2.norm()
+    bv1 = l2d_bp_po[:,0]
+    bv2 = l2d_bp_po[:,1]
+    l1 = nla.norm(bv1)
+    l2 = nla.norm(bv2)
+
     ### Orientation
-    l1_uvec = bv1/l1; l2_uvec = bv2/l2
-    x_vec = Matrix(l1_uvec); y1_vec = Matrix(l2_uvec)
-    z_vec = x_vec.cross(y1_vec)
-    z_vec = z_vec/z_vec.norm()
-    y_vec = z_vec.cross(x_vec)
-    # l_po1_go = Matrix((np.vstack((x_vec, y_vec, z_vec))).transpose());
-    l_po1_go = (x_vec.row_join(y_vec)).row_join(z_vec)
-    return l_po1_go.inv()
+    l1_uvec = bv1/l1
+    l2_uvec = bv2/l2
+
+    x_vec = np.copy(l1_uvec)
+    y1_vec = np.copy(l2_uvec)
+    z_vec = np.cross(x_vec, y1_vec)
+    z_vec = z_vec/nla.norm(z_vec)
+    y_vec = np.cross(z_vec, x_vec)
+
+    # l_po1_go = (x_vec.row_join(y_vec)).row_join(z_vec)
+    l_po1_go = (np.vstack((x_vec, y_vec, z_vec))).transpose()
+
+    return nla.inv(l_po1_go)
 
 def compute_hkl_p(l2d_bp_po, l_p_po):
     """
@@ -146,15 +178,18 @@ def compute_hkl_p(l2d_bp_po, l_p_po):
     in the matrix **l2d_bp_po**.
 
     """
-    avec_po = l2d_bp_po[:,0]; bvec_po = l2d_bp_po[:,1]
-    # nvec = np.cross(avec_po, bvec_po);
-    nvec = avec_po.cross(bvec_po)
-    # nu_vec = nvec/np.linalg.norm(nvec);
-    nu_vec = nvec/nvec.norm()
+    avec_po = l2d_bp_po[:,0]
+    bvec_po = l2d_bp_po[:,1]
+
+    nvec = np.cross(avec_po, bvec_po)
+    nu_vec = nvec/nla.norm(nvec)
+
     l_rp_po = fcd.reciprocal_mat(l_p_po)
-    l_po_rp = l_rp_po.inv()
-    nu_vec_rp = l_po_rp*nu_vec
+    l_po_rp = nla.inv(l_rp_po)
+    nu_vec_rp = l_po_rp.dot(nu_vec)
+
     return iman.int_finder(nu_vec_rp)
+
 
 def num_rep_2d(xvec, yvec, rCut):
     """
@@ -162,17 +197,23 @@ def num_rep_2d(xvec, yvec, rCut):
     2D-circle of radius r_cut at the center of the primitive-cell
     lies completely inside the super-cell.
     """
-    xvec1 = xvec.col_join(Matrix([0]))
-    yvec1 = yvec.col_join(Matrix([0]))
+    b1 = np.array([0])
+    # xvec1 = xvec.col_join(Matrix([0]))
+    xvec1 = np.hstack((xvec, b1))
+    # yvec1 = yvec.col_join(Matrix([0]))
+    yvec1 = np.hstack((yvec, b1))
 
-    c_vec_norm = (xvec1.cross(yvec1)).norm()
-    d_y = c_vec_norm/(yvec.norm())
-    d_x = c_vec_norm/(xvec.norm())
-    # m_x = np.ceil(rCut/d_y);
-    # m_y = np.ceil(rCut/d_x);
-    m_x = (rCut/d_y).ceiling()
-    m_y = (rCut/d_x).ceiling()
+    # c_vec_norm = (xvec1.cross(yvec1)).norm()
+    c_vec_norm = nla.norm(np.cross(xvec1, yvec1))
+    # d_y = c_vec_norm/(yvec.norm())
+    d_y = c_vec_norm/(nla.norm(yvec))
+    # d_x = c_vec_norm/(xvec.norm())
+    d_x = c_vec_norm/(nla.norm(xvec))
 
+    # m_x = (rCut/d_y).ceiling()
+    m_x = np.ceil(rCut/d_y)
+    # m_y = (rCut/d_x).ceiling()
+    m_y = np.ceil(rCut/d_x)
     return [int(m_x), int(m_y)]
 
 
@@ -202,16 +243,21 @@ def change_basis(twoD_pts, l_bpb_po):
     Express the points in **twoD_pts** array in the reference frame
     of **l_bpb_po**.
     """
-    mat1 = (l_bpb_po).inv()
-    return np.array((mat1*(Matrix(twoD_pts.transpose()))).transpose(), dtype='double')
+    # mat1 = (l_bpb_po).inv()
+    mat1 = nla.inv(l_bpb_po)
+    # return np.array((mat1*(Matrix(twoD_pts.transpose()))).transpose(), dtype='double')
+    return (mat1.dot(twoD_pts.transpose())).transpose()
 
 def cut_box_pts(twoD_pts, tol=1e-8):
     """
     Remove all the points, in 2D, that lie outside the 2D box.
     """
-    tx1 = twoD_pts[:,0]; ty1 = twoD_pts[:,1]
-    cond1 = (tx1 >= 0-tol); cond2 = (tx1 <= 1+tol)
-    cond3 = (ty1 >= 0-tol); cond4 = (ty1 <= 1+tol)
+    tx1 = twoD_pts[:,0]
+    ty1 = twoD_pts[:,1]
+    cond1 = (tx1 >= 0-tol)
+    cond2 = (tx1 <= 1+tol)
+    cond3 = (ty1 >= 0-tol)
+    cond4 = (ty1 <= 1+tol)
     tind1 = np.where(cond1 & cond2 & cond3 & cond4)[0]
     return twoD_pts[tind1,:]
 
@@ -223,7 +269,8 @@ def knnsearch_v1(X, Y):
     number of rows as Y. Additionally returns the column vector **D** that
     contains the nearest-neighbor distances.
     """
-    num_x = np.shape(X)[0]; num_y = np.shape(Y)[0]
+    num_x = np.shape(X)[0]
+    num_y = np.shape(Y)[0]
     dval = np.zeros((num_y,))
     Idx = np.zeros((num_y,), dtype='int')
     for ct1 in range(num_y):
@@ -269,7 +316,8 @@ def remove_2d_overlaps(l_bp_po, ind1, ind2, pts1):
     """
     x0 = np.arange(-1,2)
     x1, y1 = np.meshgrid(x0, x0)
-    x2 = x1.flatten(); y2 = y1.flatten()
+    x2 = x1.flatten()
+    y2 = y1.flatten()
     mg1 = (np.vstack((x2,y2))).transpose()
     tind1 = np.where((mg1[:,0] == 0) & (mg1[:,1] == 0))[0][0]
     mg1 = np.delete(mg1, tind1, axis=0)
@@ -277,14 +325,15 @@ def remove_2d_overlaps(l_bp_po, ind1, ind2, pts1):
     #### Translate pts1[ind1,:] and remove overlaps
     tx_vec = np.array(l_bp_po[:,0], dtype='double')
     ty_vec = np.array(l_bp_po[:,1], dtype='double')
-    ####
     num_trans = np.shape(mg1)[0]
+
     for ct1 in range(num_trans):
-        # print(ct1)
-        mx = mg1[ct1,0]; my = mg1[ct1,1]
+        mx = mg1[ct1,0]
+        my = mg1[ct1,1]
         tpts1 = pts1[ind1,:]
         i2 = overlap_inds(tpts1, mx*tx_vec + my*ty_vec, 0.1)
-        tpts1 = np.delete(tpts1, i2, axis=0); ind1 = np.delete(ind1, i2)
+        tpts1 = np.delete(tpts1, i2, axis=0)
+        ind1 = np.delete(ind1, i2)
 
     twoD_pts = np.vstack((pts1[ind1,:], pts1[ind2,:]))
     return twoD_pts
@@ -297,41 +346,21 @@ def create_twoD_slab(l_bp_po, l_p_po):
     oriented such that the two vectors in **l_bp_po** are in the X-Y plane.
     """
     rCut = compute_rCut(l_bp_po)
-    ################################################################################
-    ############ Lower crystal orientation
+    ### Lower crystal orientation
     ### Find the lcryst vectors along a-vec, b-vec
     l_po1_go = compute_orientation(l_bp_po)
-    l2D_bpbSig_po1 = l_po1_go*l_bp_po
+    l2D_bpbSig_po1 = l_po1_go.dot(l_bp_po)
 
     hkl_p1 = compute_hkl_p(l_bp_po, l_p_po)
     l_bpb_p1 = bpb.bp_basis(hkl_p1)
-    l_bpb_p1 = Matrix(l_bpb_p1.astype(int))
-    l_bpb_po1 = l_p_po*l_bpb_p1
+    l_bpb_p1 = l_bpb_p1.astype(int)
+    l_bpb_po1 = l_p_po.dot(l_bpb_p1)
 
-    l2D_bpb_po1 = l_po1_go*l_bpb_po1
+    l2D_bpb_po1 = l_po1_go.dot(l_bpb_po1)
     twoD_mat = l2D_bpb_po1[:2,:]
-
     twoDSig_mat = l2D_bpbSig_po1[:2,:]
     twoD_pts = replicate_pts(twoD_mat, rCut)
-
     twoD_pts = remove_periodic_overlaps(twoD_pts, twoDSig_mat)
-    # import matplotlib.pyplot as plt; fig1 = plt.figure();
-    # import plotting_routines as pr; pr.plot_2d_box_box(twoD_mat, twoDSig_mat);
-    # pts = np.copy(twoD_pts); x1=pts[:,0];y1=pts[:,1]; plt.scatter(x1,y1); plt.show();
-
-
-    # twoD_pts_sc1 = change_basis(twoD_pts, twoDSig_mat);
-    # twoD_pts_sc1 = cut_box_pts(twoD_pts_sc1, 1e-8);
-    # tol1 = 1e-1;
-    # ind1, ind2 = find_bound_inds(twoD_pts_sc1, tol1);
-    # twoDSig_mat_inv = twoDSig_mat.inv();
-    # pts1 = change_basis(twoD_pts_sc1, twoDSig_mat_inv);
-    # twoD_pts = remove_2d_overlaps(twoDSig_mat, ind1, ind2, pts1);
-    # ################################################################################
-
-    # import matplotlib.pyplot as plt; fig2 = plt.figure();
-    # import plotting_routines as pr; pr.plot_2d_box_box(twoD_mat, twoDSig_mat);
-    # pts = np.copy(twoD_pts); x1=pts[:,0];y1=pts[:,1]; plt.scatter(x1,y1); plt.show();
 
     return l_bpb_p1, l2D_bpbSig_po1, twoD_pts
 
@@ -342,12 +371,6 @@ def create_threeD_slab(zCut, tz_vec, l_bp_po, twoD_pts):
     atoms (that satisfies the periodic boundary conditions). The plane is
     oriented such that the two vectors in **l_bp_po** are in the X-Y plane.
     """
-
-    if isinstance(tz_vec, Matrix):
-        tz_vec = np.array(tz_vec, dtype='double')
-        tz_vec = tz_vec.reshape(3,)
-    if isinstance(l_bp_po, Matrix):
-        l_bp_po = np.array(l_bp_po, dtype='double')
 
     ################################################################################
     ## Translate 2D points in the Z-direction with zCut
@@ -367,33 +390,25 @@ def create_threeD_slab(zCut, tz_vec, l_bp_po, twoD_pts):
 
     ### Simulation Cell Box
     ### Following Ovito's convention
-    sim_cell = np.zeros((3,4)); sim_avec = l_bp_po[:,0]; sim_bvec = l_bp_po[:,1]
+    sim_cell = np.zeros((3,4))
+    sim_avec = l_bp_po[:,0]
+    sim_bvec = l_bp_po[:,1]
     ### Change this with inter-planar spacing
-    sim_cvec = np.array([0,0,2*zCut]); # sim_cvec = np.array([0,0,zCut]);
-    sim_orig = np.array([0,0,-zCut]); # sim_orig = np.array([0,0,0]);
+    sim_cvec = np.array([0,0,2*zCut])
+    sim_orig = np.array([0,0,-zCut])
 
-    sim_cell[:,0] = sim_avec; sim_cell[:,1] = sim_bvec
-    sim_cell[:,2] = sim_cvec; sim_cell[:,3] = sim_orig
+    sim_cell[:,0] = sim_avec
+    sim_cell[:,1] = sim_bvec
+    sim_cell[:,2] = sim_cvec
+    sim_cell[:,3] = sim_orig
 
     box_vecs = sim_cell[:,0:3]
-    tpts1 = np.dot(np.linalg.inv(box_vecs), threeD_pts.transpose()).transpose()
+    tpts1 = np.dot(nla.inv(box_vecs), threeD_pts.transpose()).transpose()
 
     threeD_pts1 = wrap_cc(sim_cell, threeD_pts)
 
-    # import matplotlib.pyplot as plt; fig1 = plt.figure();
-    # from mpl_toolkits.mplot3d import Axes3D; ax = fig1.add_subplot(111, projection='3d');
-    # pts = np.copy(tpts1); x1=pts[:,0];y1=pts[:,1];z1=pts[:,2]; ax.scatter(x1,y1,z1); plt.show();
-
-    # import plotting_routines as pr;
-    # pr.plot_2d_pts_box(twoD_pts, l_bp_po[0:2,:]);
-    # import matplotlib.pyplot as plt;
-    # pts = np.copy(twoD_pts); x1=pts[:,0];y1=pts[:,1]; plt.scatter(x1,y1);
-    # plt.show();
-
     for ct1 in range(2):
         tpts_x = tpts1[:,ct1]
-        ## modf:
-        ## Return the fractional and integral parts of an array, element-wise.
         y1, y2 = np.modf(tpts_x)
         tpts_x = tpts_x - y2
         ind1 = np.where(tpts_x < 0)[0]
@@ -402,10 +417,6 @@ def create_threeD_slab(zCut, tz_vec, l_bp_po, twoD_pts):
 
     threeD_pts = np.dot(box_vecs, tpts1.transpose()).transpose()
 
-    # import matplotlib.pyplot as plt; fig1 = plt.figure();
-    # import plotting_routines as pr; pr.plot_3d_pts_box(fig1, threeD_pts, sim_cell[:,0:3], sim_orig); plt.show();
-
-
     return threeD_pts, sim_cell
 
 
@@ -413,20 +424,18 @@ def create_half_cryst(l_csl_p1, l_bp_CSLp, l_p_po, cryst_typ, zCut):
     """
 
     """
-    l_csl_po1 = l_p_po*l_csl_p1
-    l_bp_po1 = l_csl_po1*l_bp_CSLp
+    l_csl_po1 = l_p_po.dot(l_csl_p1)
+    l_bp_po1 = l_csl_po1.dot(l_bp_CSLp)
     l_bpb_p1, l2D_bp_po1, twoD_pts = create_twoD_slab(l_bp_po1, l_p_po)
     l_po1_go = compute_orientation(l_bp_po1)
 
-    # import plotting_routines as pr;
-    # pr.plot_2d_pts_box(twoD_pts, l2D_bp_po1[0:2,:]);
-
     ################################################################################
     #### Replicate the 2D points in 3D (either in +Z or -Z)
-    avec = l_bpb_p1[:,0]; bvec = l_bpb_p1[:,1]
+    avec = l_bpb_p1[:,0]
+    bvec = l_bpb_p1[:,1]
     l_p2_p1 = find_int_solns(avec, bvec)
-    l_p2_po1 = (l_p_po*l_p2_p1)
-    l_p2_go = (l_po1_go*l_p2_po1)
+    l_p2_po1 = (l_p_po.dot(l_p2_p1))
+    l_p2_go = (l_po1_go.dot(l_p2_po1))
 
     tz_vec = l_p2_go[:,2]
     threeD_pts, sim_cell = create_threeD_slab(zCut, tz_vec, l2D_bp_po1, twoD_pts)
@@ -441,21 +450,23 @@ def create_half_cryst(l_csl_p1, l_bp_CSLp, l_p_po, cryst_typ, zCut):
     return threeD_pts, sim_cell
 
 def get_gb_uID(l_bp_po1, l_p2_p1, l_p_po, bp_symm_grp, symm_grp_ax, sig_id):
-    # hkl_p1 = compute_hkl_p(l_bp_po1, l_p_po);
-    # hkl_po1 = l_p_po*hkl_p1;
-    bpn_go1 = l_bp_po1[:,0].cross(l_bp_po1[:,1])
-    bpn_go1 = (np.array(bpn_go1/bpn_go1.norm(),dtype='double')).T
+    """
+    """
+    bpn_go1 = np.cross(l_bp_po1[:,0], l_bp_po1[:,1])
+    bpn_go1 = bpn_go1/nla.norm(bpn_go1)
+    bpn_go1 = bpn_go1.reshape((1,3))
+
     bp_fz_norms_go1, bp_fz_stereo = pfb.pick_fz_bpl(bpn_go1, bp_symm_grp, symm_grp_ax, 1e-04)
-    bp_fz_go1 = iman.int_finder(bp_fz_norms_go1)
+    bp_fz_go1, tm1 = iman.int_approx(bp_fz_norms_go1)
 
     bp_fz_go1 = bp_fz_go1.reshape(3,1)
 
-    l_po_p = l_p_po.inv()
-    l_po2_po1 = l_p_po*l_p2_p1*l_po_p
-    l_po1_po2 = l_po2_po1.inv()
+    l_po_p = nla.inv(l_p_po)
+    l_po2_po1 = l_p_po.dot(l_p2_p1.dot(l_po_p))
+    l_po1_po2 = nla.inv(l_po2_po1)
 
-    bp_go2 = -l_po1_po2*bp_fz_go1
-    bp_go2 = iman.int_finder(bp_go2)
+    bp_go2 = -l_po1_po2.dot(bp_fz_go1)
+    bp_go2, tm1 = iman.int_approx(bp_go2)
 
     gb_id = 'Al_S'+sig_id+'_N1_'
     gb_id = gb_id + str(bp_fz_go1[0]) + '_'
@@ -507,17 +518,18 @@ def wrap_cc(cell1, pts):
 
 
 def remove_periodic_overlaps(twoD_pts, twoDSig_mat):
+    """
+    """
     twoD_pts_sc1 = change_basis(twoD_pts, twoDSig_mat)
     twoD_pts_sc1 = cut_box_pts(twoD_pts_sc1, 1e-8)
-    twoDSig_mat_inv = twoDSig_mat.inv()
+    twoDSig_mat_inv = nla.inv(twoDSig_mat)
     twoD_pts = change_basis(twoD_pts_sc1, twoDSig_mat_inv)
 
-    if isinstance(twoDSig_mat, Matrix):
-        twoD_mat = np.array(twoDSig_mat, dtype='double')
-
+    # if isinstance(twoDSig_mat, Matrix):
+    #     twoD_mat = np.array(twoDSig_mat, dtype='double')
+    twoD_mat = np.array(twoDSig_mat, dtype='double')
 
     # Use ovito nearest-neighbor alogrithm to remove overlaps
-
     cell = ovd.SimulationCell(pbc = (True, True, False))
     cell.is2D = True
     cell[0:2,0] = twoD_mat[:,0]
@@ -567,13 +579,4 @@ def remove_periodic_overlaps(twoD_pts, twoDSig_mat):
 
     return twoD_pts
 
-    # twoD_data = {};
-    # twoD_data['pts'] = twoD_pts;
-    # twoD_data['cell'] = twoD_mat;
-    # import pickle as pkl;
-    # pkl_name = 'twoD_data.pkl';
-    # jar = open(pkl_name,'wb'); pkl.dump(twoD_data,jar);
-    # jar.close();
-    # import scipy.io as sio;
-    # mat_name = 'twoD_data.mat';
-    # sio.savemat(mat_name, twoD_data);
+
