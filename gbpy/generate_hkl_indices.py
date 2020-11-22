@@ -160,12 +160,11 @@ def compute_hkl_bpb(hkl_inds):
     num1 = np.shape(hkl_inds)[0];
     l_p2_p = np.zeros((num1,3,3)); l_bpb_p = np.zeros((num1,3,2));
     for ct1 in range(num1):
-        print(ct1)
+        # print(ct1)
         hkl1 = hkl_inds[ct1]; hkl1 = hkl1.astype(int);
         bp1 = bpb.bp_basis(hkl1);
         a_vec = bp1[:,0]; b_vec = bp1[:,1];
         l_bpb_p[ct1,:,:] = np.copy(bp1);
-    print("Check-1")
     return l_bpb_p;
 
 def gen_Acut_bpb(l_bpb_p, l_p_po, r_cut, A_cut):
@@ -219,8 +218,7 @@ def compute_hnf_props(hnf_mats, l_bp_p, l_p_po, tol):
     l_sig_p_mats = np.zeros((num_hnf, 3, 2));
     l_sig_po_mats = np.zeros((num_hnf, 3, 2));
     for hct1 in range(num_hnf):
-        print('Check-2')
-        print(hct1)
+        # print(hct1)
         l_sig_p = np.dot(l_bp_p, hnf_mats[hct1]);
         # l_sig1_p = lll_reduction_bpl_basis(l_sig_p, l_p_po);
         l_sig1_sig = rpl.reduce_po_lat(l_sig_p, l_p_po, tol)

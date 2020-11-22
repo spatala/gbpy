@@ -112,7 +112,7 @@ def find_int_solns(a_vec, b_vec):
         y3 = z[ind1]
 
         l_p2_p1 = (np.vstack((a_vec, b_vec, np.array([ y1, y2, y3 ])))).transpose()
-        
+
         det1 = nla.det(l_p2_p1)
         if (np.abs(det1-1) > (1e-10*np.max(np.abs(l_p2_p1)))):
             raise Exception('Error with Diophantine solution')
