@@ -187,8 +187,9 @@ def compute_hkl_p(l2d_bp_po, l_p_po):
     l_rp_po = fcd.reciprocal_mat(l_p_po)
     l_po_rp = nla.inv(l_rp_po)
     nu_vec_rp = l_po_rp.dot(nu_vec)
-
-    return iman.int_finder(nu_vec_rp)
+    nuI_vec_rp, tm1 = iman.int_approx(nu_vec_rp)
+    nuI_vec_rp = nuI_vec_rp.astype(int)
+    return nuI_vec_rp
 
 
 def num_rep_2d(xvec, yvec, rCut):
@@ -469,13 +470,13 @@ def get_gb_uID(l_bp_po1, l_p2_p1, l_p_po, bp_symm_grp, symm_grp_ax, sig_id):
     bp_go2, tm1 = iman.int_approx(bp_go2)
 
     gb_id = 'Al_S'+sig_id+'_N1_'
-    gb_id = gb_id + str(bp_fz_go1[0]) + '_'
-    gb_id = gb_id + str(bp_fz_go1[1]) + '_'
-    gb_id = gb_id + str(bp_fz_go1[2]) + '_'
+    gb_id = gb_id + str(bp_fz_go1[0,0]) + '_'
+    gb_id = gb_id + str(bp_fz_go1[1,0]) + '_'
+    gb_id = gb_id + str(bp_fz_go1[2,0]) + '_'
     gb_id = gb_id + 'N2_'
-    gb_id = gb_id + str(bp_go2[0]) + '_'
-    gb_id = gb_id + str(bp_go2[1]) + '_'
-    gb_id = gb_id + str(bp_go2[2])
+    gb_id = gb_id + str(bp_go2[0,0]) + '_'
+    gb_id = gb_id + str(bp_go2[1,0]) + '_'
+    gb_id = gb_id + str(bp_go2[2,0])
 
     return gb_id
 

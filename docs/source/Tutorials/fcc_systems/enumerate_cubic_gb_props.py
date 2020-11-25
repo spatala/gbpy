@@ -1,81 +1,93 @@
-import byxtal.tools as gbt;
+import byxtal.tools as gbt
 import byxtal.lattice as gbl
 import pickle as pkl
 import numpy as np
 import numpy.linalg as nla
 import byxtal.misorient_fz as mfz
 import gbpy.generate_hkl_indices as ghi
+import gbpy.util_funcs_create_byxtal as uf
 
-l1=gbl.Lattice()
-csl_pkl = l1.pearson+'_Id_byxtal_props.pkl'
-l_p_po = l1.l_p_po
-jar = open(csl_pkl,'rb')
-s1=pkl.load(jar)
+
+########################################################################
+pkl_name = 'cF_Id_byxtal_props.pkl';
+jar = open(pkl_name, 'rb');
+
+csl_props = pkl.load(jar)
+sig_mats = csl_props['sig_mats']
+csl_mats = csl_props['csl_mats']
+dsc_mats = csl_props['dsc_mats']
+bxt_symm_props = csl_props['csl_symm_props']
 jar.close()
+########################################################################
 
+########################################################################
+pkl_name = 'bp_list_fcc.pkl';
+jar = open(pkl_name, 'rb');
 
-sig_mats = s1['sig_mats']
-csl_mats = s1['csl_mats']
-dsc_mats = s1['dsc_mats']
-csl_bp_props = s1['csl_bp_props']
+bp_list = pkl.load(jar)
+l_p_po = bp_list['l_p_po']
+hkl_sig_inds = bp_list['miller_inds']
 
+jar.close()
+########################################################################
 
-######################################################################
-###### Boundary-plane matrix properties with A_cut
-#####################################################################
+s1_keys = list(hkl_sig_inds.keys())
+ind1 = 0
+sig_id = s1_keys[ind1]
+hkl_inds = hkl_sig_inds[sig_id]
+l_csl_p1 = csl_mats[sig_id]
+l_csl_po1 = l_p_po.dot(l_csl_p1)
+
+l_CSLbpb_CSLp = {}
+l_CSLbpbSig_CSLp = {}
+
+l1 = gbl.Lattice('Al')
 lat_par = l1.lat_params['a']
 rCut = lat_par*3
 A_cut = (rCut+lat_par)**2
 
-num1 = 3
+tct1 = 0
+hkl1 = np.zeros((1,3), dtype='int64')
+hkl1[0,:] = hkl_inds[tct1,:]
 
-s1_keys = list(csl_bp_props.keys())
-hkl_sig_inds = {}
-lSig_CSLbpb_CSLp = {}
-lSig_CSLbpb_Rcut_CSLp = {}
+l_CSLbpb_CSLp_mat = ghi.compute_hkl_bpb(hkl1)
+l_CSLbpbSig_CSLp_mat = ghi.gen_Acut_bpb(l_CSLbpb_CSLp_mat, l_csl_po1, rCut, A_cut)
+l_CRbpb_Cp = l_CSLbpbSig_CSLp_mat[0]
 
-# for sig_id in s1_keys:
-sig_id = s1_keys[0]
+l_bp_po1 = l_csl_po1.dot(l_CRbpb_Cp)
 
-print(sig_id)
-T_p1top2_p1 = sig_mats[sig_id];
+symm_grp_ax = bxt_symm_props[sig_id]['symm_grp_ax'];
+bp_symm_grp = bxt_symm_props[sig_id]['bxt_symm_grp'];
 
-l_p_po = l1.l_p_po
-l_po_p = nla.inv(l_p_po)
+l_p2_p1 = sig_mats[sig_id]
+gb_ID = uf.get_gb_uID(l_bp_po1, l_p2_p1, l_p_po, bp_symm_grp, symm_grp_ax, sig_id)
 
-T_p1top2_po1 = l_p_po.dot(T_p1top2_p1.dot(l_po_p))
+zCut = 25*l1.lat_params['a']
 
-## Find the corresponding disorientation
-Tmat = np.copy(T_p1top2_po1)
-quat1 = gbt.mat2quat(Tmat)
-dis_quat1 = mfz.misorient_fz(quat1, l1.cryst_ptgrp)
-bp_symm_grp = csl_bp_props[sig_id]['bp_symm_grp']
-symm_grp_ax = csl_bp_props[sig_id]['symm_grp_ax']
-l_csl_p = csl_mats[sig_id]
+threeD_upts, sim_cell2 = uf.create_half_cryst(l_csl_p1, l_CRbpb_Cp, l_p_po, 'upper', zCut)
 
+l_p1_p2 = nla.inv(l_p2_p1)
+l_csl_p2 = l_p1_p2.dot(l_csl_p1)
+threeD_lpts, sim_cell1 = uf.create_half_cryst(l_csl_p2, l_CRbpb_Cp, l_p_po, 'lower', zCut)
 
-l_csl_po = l_p_po.dot(l_csl_p)
-l_csl_props = {}
+import matplotlib
+import numpy as np
+import matplotlib.pyplot as plt
+import plotting_routines as plr
+## %matplotlib inline
 
-l_csl_props['l_csl_po'] = l_csl_po
-l_csl_props['symm_grp_ax'] = symm_grp_ax
-l_csl_props['bp_symm_grp'] = bp_symm_grp
+fig1 = plt.figure()
+plr.plot_3d_pts_box(fig1, threeD_pts1, sim_cell[:,0:3], sim_orig)
+plt.show()
 
-hkl_inds, l_CSLbpb_CSLp = ghi.gen_hkl_props(l_csl_props, num1)
-l_CSLbpbSig_CSLp = ghi.gen_Acut_bpb(l_CSLbpb_CSLp, l_csl_po, rCut, A_cut)
+gb_attr = {}
+gb_attr['cell'] = sim_cell1
+gb_attr['upts'] = threeD_upts
+gb_attr['lpts'] = threeD_lpts
 
-hkl_sig_inds[sig_id] = hkl_inds
-lSig_CSLbpb_CSLp[sig_id] = l_CSLbpb_CSLp
-lSig_CSLbpb_Rcut_CSLp[sig_id] = l_CSLbpbSig_CSLp
+pkl_name = 'gb_attr_'+gb_ID+'.pkl'
+jar = open(pkl_name,'wb')
+pkl.dump(gb_attr, jar)
+jar.close()
+########################################################################################
 
-########################################################################
-pkl_name = 'cubic_gb_props.pkl';
-jar = open(pkl_name, 'wb');
-
-gb_props = {};
-gb_props['lSig_CSLbpb_CSLp'] = lSig_CSLbpb_CSLp;
-gb_props['lSig_CSLbpb_Rcut_CSLp'] = lSig_CSLbpb_Rcut_CSLp;
-gb_props['hkl_sig_inds'] = hkl_sig_inds;
-
-pkl.dump(gb_props, jar); jar.close();
-########################################################################

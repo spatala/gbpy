@@ -118,15 +118,15 @@ def remove_duplicate_hkl(hkl_inds):
 
 def conv_hkl_uvecs(hkl_inds2, l_p_po):
     ### Compute the Unit normal vectors in 'po' reference frame.
-    l_rp_po = np.array(fcd.reciprocal_mat(l_p_po), dtype='double');
+    l_rp_po = np.array(fcd.reciprocal_mat(l_p_po), dtype='double')
 
-    num1 = np.shape(hkl_inds2)[0];
-    norm_uvec = np.zeros((num1,3));
+    num1 = np.shape(hkl_inds2)[0]
+    norm_uvec = np.zeros((num1,3))
     for ct1 in range(num1):
-        hkl1 = hkl_inds2[ct1];
-        norm_vec = np.dot(l_rp_po, hkl1);
-        norm_uvec[ct1,:] = norm_vec/np.linalg.norm(norm_vec);
-    return norm_uvec;
+        hkl1 = hkl_inds2[ct1]
+        norm_vec = np.dot(l_rp_po, hkl1)
+        norm_uvec[ct1,:] = norm_vec/np.linalg.norm(norm_vec)
+    return norm_uvec
 
 def symm_fz_hkl(l_csl_props, hkl_inds):
     ### Compute all the symmetrically equivalent normals and
@@ -134,38 +134,41 @@ def symm_fz_hkl(l_csl_props, hkl_inds):
     ### the fundamental zone (given by the symmetry point grp)
 
     # symm_grp_ax = np.eye(3,3); symm_grp = 'O_h';
-    l_p_po = l_csl_props['l_csl_po'];
-    norm_uvec = conv_hkl_uvecs(hkl_inds, l_p_po);
-    symm_grp_ax = l_csl_props['symm_grp_ax'];
-    bp_symm_grp = l_csl_props['bp_symm_grp'];
-    l_rp_po = np.array(fcd.reciprocal_mat(l_p_po), dtype='double');
+    l_p_po = l_csl_props['l_csl_po']
+    norm_uvec = conv_hkl_uvecs(hkl_inds, l_p_po)
+    symm_grp_ax = l_csl_props['symm_grp_ax']
+    bp_symm_grp = l_csl_props['bp_symm_grp']
+    l_rp_po = np.array(fcd.reciprocal_mat(l_p_po), dtype='double')
 
     bp_fz_norms_go1, bp_fz_stereo = pfb.pick_fz_bpl(norm_uvec, bp_symm_grp, symm_grp_ax, x_tol=1e-04)
     nv_unq = gbt.unique_rows_tol(bp_fz_norms_go1)
     ################################################################################
     ### Convert to nv_unq to Miller indices (h k l)
-    l_po_rp = np.linalg.inv(l_rp_po);
-    num1 = np.shape(nv_unq)[0];
-    hkl_inds = np.zeros((num1, 3));
+    l_po_rp = np.linalg.inv(l_rp_po)
+    num1 = np.shape(nv_unq)[0]
+    hkl_inds1 = np.zeros((num1, 3))
     for ct1 in range(num1):
-        n1_po = nv_unq[ct1];
-        n1_rp = np.dot(l_po_rp,n1_po);
+        n1_po = nv_unq[ct1]
+        n1_rp = np.dot(l_po_rp,n1_po)
         # T1 = iman.int_finder(n1_rp);
-        T1, tm1 = iman.int_approx(n1_rp);
-        hkl_inds[ct1,:] = np.array(T1.reshape(1,3), dtype='double');
+        T1, tm1 = iman.int_approx(n1_rp)
+        hkl_inds1[ct1,:] = np.array(T1.reshape(1,3), dtype='double')
     ################################################################################
-    return hkl_inds;
+    return hkl_inds1
 
 def compute_hkl_bpb(hkl_inds):
-    num1 = np.shape(hkl_inds)[0];
-    l_p2_p = np.zeros((num1,3,3)); l_bpb_p = np.zeros((num1,3,2));
+    num1 = np.shape(hkl_inds)[0]
+    l_bpb_p = np.zeros((num1,3,2))
     for ct1 in range(num1):
         # print(ct1)
-        hkl1 = hkl_inds[ct1]; hkl1 = hkl1.astype(int);
-        bp1 = bpb.bp_basis(hkl1);
-        a_vec = bp1[:,0]; b_vec = bp1[:,1];
-        l_bpb_p[ct1,:,:] = np.copy(bp1);
-    return l_bpb_p;
+        hkl1 = hkl_inds[ct1]
+        hkl1 = hkl1.astype(int)
+        bp1 = bpb.bp_basis(hkl1)
+        a_vec = bp1[:,0]
+        b_vec = bp1[:,1]
+        l_bpb_p[ct1,:,:] = np.copy(bp1)
+    l_bpb_p = l_bpb_p.astype(int)
+    return l_bpb_p
 
 def gen_Acut_bpb(l_bpb_p, l_p_po, r_cut, A_cut):
     """Generates superlattices with a minimum area given by
@@ -263,8 +266,11 @@ def gen_hkl_props(l_csl_props, num1):
     hkl_inds = gen_hkl_inds(num1);
     hkl_inds2 = remove_duplicate_hkl(hkl_inds);
     hkl_inds = symm_fz_hkl(l_csl_props, hkl_inds2);
-    l_bpb_p = compute_hkl_bpb(hkl_inds);
-    l_bpb_p = l_bpb_p.astype(int);
-    return hkl_inds, l_bpb_p;
+    return hkl_inds
+
+# def compute_bpb(hkl)
+    # l_bpb_p = compute_hkl_bpb(hkl_inds);
+    # l_bpb_p = l_bpb_p.astype(int);
+    # return hkl_inds, l_bpb_p;
 
 
