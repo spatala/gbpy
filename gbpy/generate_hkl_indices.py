@@ -98,6 +98,23 @@ def order_ptgrp(bp_symm_grp):
         return 24;
 
 def gen_hkl_inds(num1):
+    """
+    Leila added this!
+    Created the (hkl) indices in the primitive unit cell.
+    h,k,l vary in the range $[-num1,num1]$.
+
+    Parameters
+    ------------
+    num1 : int
+        TRefinement of the grid on the 2-sphere for determining
+        boundary-plane orientations. For example, num1=3 will
+        produce approximately (of the order of) num1^3 (=27) vectors.
+
+    Returns
+    --------
+    np.delete(hkl_inds, ind1, axis=0) : numpy.ndarray
+        (hkl) indices in the primitive unit cell
+    """
     #### (hkl) indices in primitive lattice
     ## h,k,l vary in the range $[-num1,num1]$
     # num1 = 3;
@@ -109,6 +126,21 @@ def gen_hkl_inds(num1):
     return np.delete(hkl_inds, ind1, axis=0)
 
 def remove_duplicate_hkl(hkl_inds):
+    """
+    Leila added this!
+    This function removes the duplicate (h k l) indices that are scaled
+    with respect to each other.
+
+    Parameters
+    ------------
+    hkl_inds : numpy.ndarray
+        (hkl) indices in the primitive unit cell.
+
+    Returns
+    --------
+    gbt.unique_rows_tol(hkl_inds1) : numpy.ndarray
+        unique (hkl) indices in the primitive unit cell.
+    """
     ### Remove duplicate (h k l) indices that are scaled with respect
     ### to each other
     gcd_hkl=iman.gcd_array(hkl_inds, order='rows')
@@ -117,6 +149,22 @@ def remove_duplicate_hkl(hkl_inds):
     return gbt.unique_rows_tol(hkl_inds1);
 
 def conv_hkl_uvecs(hkl_inds2, l_p_po):
+    """
+    Leila added this!
+    This function computes the Unit normal vectors in 'po' reference frame.
+
+    Parameters
+    ------------
+    hkl_inds2 : numpy.ndarray
+        unique (hkl) indices in the primitive unit cell.
+    l_p_po: 
+        A 3x3 matrix with its columns being the components of basis vectors of p in po basis.
+
+    Returns
+    --------
+    norm_uvec: numpy.ndarray
+        Unit normal vectors in 'po' reference frame
+    """
     ### Compute the Unit normal vectors in 'po' reference frame.
     l_rp_po = np.array(fcd.reciprocal_mat(l_p_po), dtype='double')
 
@@ -129,6 +177,30 @@ def conv_hkl_uvecs(hkl_inds2, l_p_po):
     return norm_uvec
 
 def symm_fz_hkl(l_csl_props, hkl_inds):
+    """
+    Leila added this!
+    Compute all the symmetrically equivalent normals and
+    keep only those normals that are unique and belong to
+    the fundamental zone (given by the symmetry point grp)
+
+    Parameters
+    ------------
+    l_csl_props:dictionary
+        This dictionary contains the keys:
+        l_csl_po: The CSL lattice basis vectors in the po reference frame
+        symm_grp_ax: The axes of the symmetry point-group.
+        bp_symm_grp: The point-group symmetry of the bicrystal. This is the
+        symmetry for the Boundary-plane orientations.
+
+    hkl_inds : numpy.ndarray
+        unique (hkl) indices in the primitive unit cell.
+
+    Returns
+    --------
+    hkl_inds1 : numpy.ndarray
+        unique symmetrically equivalent normals which belong to the 
+        fundumental zone.
+    """
     ### Compute all the symmetrically equivalent normals and
     ### keep only those normals that are unique and belong to
     ### the fundamental zone (given by the symmetry point grp)
@@ -157,6 +229,7 @@ def symm_fz_hkl(l_csl_props, hkl_inds):
     return hkl_inds1
 
 def compute_hkl_bpb(hkl_inds):
+
     num1 = np.shape(hkl_inds)[0]
     l_bpb_p = np.zeros((num1,3,2))
     for ct1 in range(num1):
@@ -171,7 +244,8 @@ def compute_hkl_bpb(hkl_inds):
     return l_bpb_p
 
 def gen_Acut_bpb(l_bpb_p, l_p_po, r_cut, A_cut):
-    """Generates superlattices with a minimum area given by
+    """
+    Generates superlattices with a minimum area given by
     A_cut.
 
     elem = 'cF_Id'; l1 = GBl.Lattice(elem);
@@ -262,10 +336,32 @@ def ind_min_cost(l_sig_po_mats, r_cut):
 
 
 def gen_hkl_props(l_csl_props, num1):
-    l_p_po = l_csl_props['l_csl_po'];
-    hkl_inds = gen_hkl_inds(num1);
-    hkl_inds2 = remove_duplicate_hkl(hkl_inds);
-    hkl_inds = symm_fz_hkl(l_csl_props, hkl_inds2);
+    """
+    Leila added this!
+    This function computes the Unit normal vectors in 'po' reference frame.
+
+    Parameters
+    ------------
+    l_csl_props:dictionary
+        This dictionary contains the keys:
+        l_csl_po: The CSL lattice basis vectors in the po reference frame
+        symm_grp_ax: The axes of the symmetry point-group.
+        bp_symm_grp: The point-group symmetry of the bicrystal. This is the
+        symmetry for the Boundary-plane orientations.
+    num1 : int
+        TRefinement of the grid on the 2-sphere for determining
+        boundary-plane orientations. For example, num1=3 will
+        produce approximately (of the order of) num1^3 (=27) vectors.
+
+    Returns
+    --------
+    hkl_inds: numpy.ndarray
+        Indices of boundary-plane orientation for a given Σ-misorientation.
+    """
+    l_p_po = l_csl_props['l_csl_po']
+    hkl_inds = gen_hkl_inds(num1)
+    hkl_inds2 = remove_duplicate_hkl(hkl_inds)
+    hkl_inds = symm_fz_hkl(l_csl_props, hkl_inds2)
     return hkl_inds
 
 # def compute_bpb(hkl)
