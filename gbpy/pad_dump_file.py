@@ -13,7 +13,7 @@ def p_arr(non_p):
 
     Returns
     ----------
-    arr0 : numpy aray
+    arr0 : numpy array
         A 1*2 array having the periodic directions.
 
     """
@@ -30,11 +30,11 @@ def pad_dump_file(data, lat_par, rCut, non_p, str_alg, csc_tol):
 
     Parameters
     ------------
-    data :
+    data : class
         Data object computed using OVITO I/O
-    lat_par :
+    lat_par : float
         Lattice parameter for the crystal being simulated
-    rCut :
+    rCut : float
         Cut-off radius for computing Delaunay triangulations
     non_pbc : int
         The non-periodic direction. 0 , 1 or 2 which corresponds to
@@ -42,11 +42,11 @@ def pad_dump_file(data, lat_par, rCut, non_p, str_alg, csc_tol):
 
     Returns
     ----------
-    pts_w_imgs :
+    pts_w_imgs : numpy.ndarray
         Points of interest (GB atoms and neighbors) on which Delaunay triangulation is called.
-    gb1_inds :
+    gb1_inds : numpy.ndarray
         Indices of the GB atoms
-    inds_arr :
+    inds_arr : numpy.ndarray
         The atom indices of the initial unit cell with no replicates.
     """
 
@@ -77,9 +77,9 @@ def GB_finder(data, lat_par, non_pbc, str_alg, csc_tol):
 
     Parameters
     --------------
-    filename0 :
+    filename0 : string
         The lammps dump file
-    lat_par:
+    lat_par: float
         The lattice parameter
     non_pbc : int
         The non-periodic direction. 0 , 1 or 2 which corresponds to
@@ -87,15 +87,15 @@ def GB_finder(data, lat_par, non_pbc, str_alg, csc_tol):
 
     Returns
     -----------
-    GbRegion:
+    GbRegion: list
         The maximum and Minimum value of postion of atoms in Z direction  in the GB region.
-    GbWidth :
+    GbWidth : list
         GbRegion[1] - GbRegion[0]
-    GbIndex :
+    GbIndex : numpy.ndarray
         The index of atoms in GB
-    w_bottom_SC :'
+    w_bottom_SC : list
         The width of the region on the bottom side of GB which have single crystal structure
-    w_top_SC :
+    w_top_SC : list
         The width of the region on the top side of GB which have single crystal structure
     """
 
@@ -162,16 +162,16 @@ def num_rep_2d(xvec, yvec, rCut):
 
     Parameters
     ------------
-    xvec :
+    xvec : numpy array
         The basis vector in x direction in x-z plane
-    yvec :
+    yvec : numpy array
         The basis vector in z direction in x-z plane
-    rCut
+    rCut : float
         Cut-off radius for computing Delaunay triangulations
 
     Returns
     ------------
-    [int(m_x), int(m_y)] :
+    [int(m_x), int(m_y)] : list
         int(m_x) is the number of replications in x direction, int(m_y)
         is the number of replication in z direction.
     """
@@ -191,20 +191,23 @@ def pad_gb_perp(data, GbRegion, GbIndex, rCut, non_p):
 
     Parameters
     -------------
-    data :
+    data : class
         Data object computed using OVITO I/O
-    GbRegion :
+    GbRegion : list
         Indices of atoms in GB area
-    GbIndex :
+    GbIndex : numpy array
         Indices of atoms in GB area
-    rCut
+    rCut : float
         Cut-off radius for computing Delaunay triangulations
+    non_pbc : int
+        The non-periodic direction. 0 , 1 or 2 which corresponds to
+        x, y and z direction, respectively.
 
     Returns
     ---------
-    pts1 :
+    pts1 : numpy array
         Indices of the atoms which Z value is in range [GBRegion[0] - rCut, GBRegion[1] + rCut].
-    gb1_inds :
+    gb1_inds : numpy array
         Indices of the GB atoms
     """
     arr0 = p_arr(non_p)
@@ -236,15 +239,15 @@ def create_imgs(pts1, n1, n2, sim_1vec, sim_2vec, non_p):
 
     Parameters
     -------------
-    pts1 :
+    pts1 : numpy array
         Indices of the atoms which Y value is in range [GBRegion[0] - rCut, GBRegion[1] + rCut].
-    n1 :
+    n1 : int
         Number of replications in 1st periodic direction
-    n2 :
+    n2 : int
         Number of replications in 2nd periodic direction
-    sim_1vec :
+    sim_1vec : numpy array
         The simulation cell basis vector in 1st periodic direction
-    sim_2vec :
+    sim_2vec : numpy array
         The simulation cell basis vector in 2nd periodic direction
     non_pbc : int
         The non-periodic direction. 0 , 1 or 2 which corresponds to
@@ -252,9 +255,9 @@ def create_imgs(pts1, n1, n2, sim_1vec, sim_2vec, non_p):
 
     Returns
     ----------
-    pts_w_imgs :
+    pts_w_imgs : numpy array
         The position of atoms after replicating the box n_x and n_z times in X and Z direction.
-    inds_array :
+    inds_array : numpy array
         The atom indices of the initial unit cell with no replicates.
     """
     num1 = np.shape(pts1)[0]
@@ -305,33 +308,33 @@ def slice_along_planes(orig, sim_1vec, sim_2vec, sim_nonp_vec, rCut, pts_w_imgs,
 
     Parameters
     ------------
-    orig
+    orig : numpy array
         The origin of the main cell.
-    sim_1vec
+    sim_1vec : numpy array
         The simulation cell basis vector in a direction
-    sim_2vec
+    sim_2vec : numpy array
         The simulation cell basis vector in b direction
-    sim_nonp_vec
+    sim_nonp_vec : numpy array
         The simulation cell basis vector in c direction
-    rCut
+    rCut : float
         Cut-off radius for computing Delaunay triangulations
-    pts_w_imgs
+    pts_w_imgs : numpy array
         The position of atoms after replicating the box n_x and n_z times in X and Z direction.
-    gb1_inds
+    gb1_inds : numpy array
         Indices of the GB atoms
     non_pbc : int
         The non-periodic direction. 0 , 1 or 2 which corresponds to
         x, y and z direction, respectively.
-    inds_arr :
+    inds_arr : numpy array
         The atom indices of the initial unit cell with no replicates.
 
     Returns
     ------------
-    pts_w_imgs
+    pts_w_imgs : numpy array
             The position of atoms after replicating the box, n_x and n_z times in x and z direction.
-    gb1_inds
+    gb1_inds : numpy array
             Indices of the GB atoms
-    inds_arr :
+    inds_arr : numpy array
         The atom indices of the initial unit cell with no replicates.
     """
     p1u_vec = sim_1vec/np.linalg.norm(sim_1vec)
@@ -363,22 +366,22 @@ def del_inds(ind1, pts1, gb1_inds, inds_arr):
 
     Parameters
     ------------
-    ind1 :
+    ind1 : numpy array
         The indices of atoms we want to keep
-    pts1 :
+    pts1 : numpy array
         The position of atoms after replicating the box n_x and n_z times in x and z direction.
-    gb1_ind
+    gb1_ind : numpy array
         Indices of the GB atoms
-    inds_arr :
+    inds_arr : numpy array
         The atom indices of the initial unit cell with no replicates.
 
     Returns
     ---------
-    pts1 :
+    pts1 : numpy array
         The position of atoms we want to keep
-    gb1_inds :
+    gb1_inds : numpy array
         Indices of the GB atoms
-    inds_arr :
+    inds_arr : numpy array
         The atom indices of the initial unit cell with no replicates.
     """
 
@@ -395,18 +398,18 @@ def inds_to_keep(norm_vec, pl_pt, orig, pts):
 
     Parameters
     -------------
-    norm_vec :
+    norm_vec : numpy array
         Plane normal within rCut distance from the considered  box face
-    pl_pt :
+    pl_pt : numpy array
         A point on a plane within rCut distance from the considered box face
-    orig :
+    orig : numpy array
         The origin of the main cell.
-    pts :
+    pts : numpy array
         The position of atoms after replicating the box, n_x and n_z times in x and z direction.
 
     Returns
     ----------
-    inds_keep :
+    inds_keep : numpy array
         The indices of atoms within the replicates which are within rCut distance of the main cell
     """
     # Sign-values for pts_w_imgs

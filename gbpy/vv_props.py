@@ -14,16 +14,16 @@ def Circum_O_R(vertex_pos, tol):
 
     Parameters
     -----------------
-    vertex_pos :
+    vertex_pos : numpy array
         The position of vertices of a tetrahedron
-    tol :
+    tol : float
         Tolerance defined  to identify co-planar tetrahedrons
 
     Returns
     ----------
-    circum_center :
+    circum_center : numpy array
         The center of the circum-sphere
-    circum_rad :
+    circum_rad : float
         The radius of the circum-sphere
     """
     dis_ij = pdist(vertex_pos, 'euclidean')
@@ -51,18 +51,18 @@ def triang_inds(pts_w_imgs, gb1_inds, inds_arr):
 
     Parameters
     -------------
-    pts_w_imgs :
+    pts_w_imgs : numpy array
         The position of atoms which are inside the main box and within rCut to the main box.
-    gb1_inds :
+    gb1_inds : numpy array
         Indices of the GB atoms
     inds_arr : numpy array
         The atom indices of the initial unit cell with no replicates.
 
     Returns
     ------------
-    tri_vertices :
+    tri_vertices : numpy array
         Tetrahedrons with at least one corner in the GB region.
-    gb_tri_inds1 :
+    gb_tri_inds1 : numpy array
         The indices of atoms which make tri_vertices tetrahedrons.
     """
     tri_simplices = qdelaunay("i Qt", pts_w_imgs)
@@ -77,7 +77,7 @@ def triang_inds(pts_w_imgs, gb1_inds, inds_arr):
     tarr1 = np.zeros((np.shape(pts_w_imgs)[0], ))
     tarr1[gb1_inds] = 1
     gb_tri_inds = np.where(np.sum(tarr1[tri_vertices], axis=1))[0]
-    i1, ia = np.unique(inds2[gb_tri_inds,:], return_index=True, axis=0)
+    i1, ia = np.unique(inds2[gb_tri_inds, :], return_index=True, axis=0)
     gb_tri_inds1 = gb_tri_inds[ia]
 
     return tri_vertices, gb_tri_inds1
@@ -90,20 +90,20 @@ def vv_props(pts_w_imgs, tri_vertices, gb_tri, lat_par):
 
     Parameters
     -------------
-    pts_w_imgs :
+    pts_w_imgs : numpy array
         The position of atoms which are inside the main box and within rCut to the main box.
-    tri_vertices :
+    tri_vertices : numpy array
         Tetrahedrons with at least one corner in the GB region.
-    gb_tri :
+    gb_tri : numpy array
         The indices of atoms which make tri_vertices tetrahedrons.
-    lat_par :
+    lat_par : float
         Lattice parameter for the crystal being simulated.
 
     Returns
     ------------
-    cc_coors1 :
+    cc_coors1 : numpy array
         The coordinates of the circum-center of the tetrahedrons
-    cc_rad1 :
+    cc_rad1 : numpy array
         The circum-radius of the tetrahedrons.
     """
     num_tri = np.shape(gb_tri)[0]
@@ -131,15 +131,15 @@ def wrap_cc(cell1, pts):
 
     Parameters
     -------------
-    cell1 :
+    cell1 : numpy array
         The simulation cell ( a 3*4 numpy array where the first 3 columns are the
         cell vectors and the last column is the box origin)
-    pts :
+    pts : numpy array
         Position of atoms in initial cell, the atoms within an rCut of the initial cell.
 
     Returns
     ------------
-    pts1 :
+    pts1 : numpy array
         Position of atoms in initial cell, the atoms within an rCut of the initial cell,
         and the Voronoi coordinates as the new set of atoms.
 
