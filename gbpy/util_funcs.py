@@ -1,10 +1,10 @@
-import numpy as np
 import ovito.io as oio
 import ovito.modifiers as ovm
 from itertools import islice
 import pad_dump_file as pdf
 import bisect
 import pickle as pkl
+import numpy as np
 
 
 def compute_ovito_data(filename0):
@@ -89,7 +89,6 @@ def define_bounds(box_bound):
         For box type "prism" this value is [xy, yz, xz].
     box_type : string
         type of box which is eaither "block" or "prism".
-
     """
     # boundaries of fix rigid
     siz_box = np.shape(box_bound)[1]
@@ -126,6 +125,8 @@ def RemProb(data, CohEng, GbIndex):
         The lammps dump file
     CohEng	: float
         The cohesive energy
+    GbIndex : numpy.ndarray
+        The index of atoms in GB
 
     Return
     ----------------
@@ -147,10 +148,8 @@ def RemIns_decision(p_rm):
 
     Parameters
     --------------
-    filename0 : string
-        The lammps dump file
-    CohEng	: float
-        The cohesive energy
+    p_rm : numpy.ndarray
+        The probability of removing an atom
 
     Return
     ----------------
@@ -212,17 +211,15 @@ def atom_insertion(filename0, path2dump, cc_coors1, atom_id):
     --------------
     filename0 : string
         The initial lammps dump file
-    path2dump :
+    path2dump : string
         The path to dump the lammps dump file
-     cc_coors1 :
+    cc_coors1 : numpy.ndarray
         The coordinates of the circum-center of the tetrahedrons.
-
-    atom_id :
+    atom_id : numpy.ndarray
         The atom ID of the inserted atom which is the ID of last atom + 1
 
     Return
     ----------------
-
     """
     lines = open(filename0, 'r').readlines()
     lines[1] = '0\n'
@@ -245,17 +242,16 @@ def atom_removal(filename0, path2dump, ID2change, var):
     --------------
     filename0 : string
         The lammps dump file
-    path2dump :
+    path2dump : string
         The path to dump the lammps dump file
-    ID2change :
+    ID2change : int
         The ID of the atom which will be removed
-    var :
+    var : numpy.ndarray
         The indices of the atom which will be removed.
         This is just to check.
 
     Return
     ----------------
-
     """
     lines = open(filename0, 'r').readlines()
     lines[1] = '0\n'  # step should be 0
@@ -276,14 +272,12 @@ def cal_area(data, non_p):
     --------------
     data : class
         all the attributes of data
-    non_p :
+    non_p : integer
         The non-periodic direction. 0 , 1 or 2 which corresponds to
         x, y and z direction, respectively.
 
-
     Return
     ----------------
-
     area : float
         The surface area of the GB plane.
     """
@@ -304,12 +298,17 @@ def cal_GB_E(data, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol):
     non_p :
         The non-periodic direction. 0 , 1 or 2 which corresponds to
         x, y and z direction, respectively.
-
     lat_par :
         Lattice parameter for the crystal being simulated.
     CohEng : float
         The cohesive energy
-
+    str_alg : string
+        The algorithm used to find the atoms in the GB and the surfaces.
+        str_alg="csc" which uses centrosymmetry parameter
+        str_alg="ptm" which uses polyhedral template matching
+    csc_tol : float
+        The tolerance for identifing the atoms in the GB and surfaces using
+        the str_alg="csc"
     Return
     ----------------
     E_GB : float
@@ -347,7 +346,6 @@ def p_boltz_func(dE, area, Tm):
         The surface area of the GB plane.
     Tm : float
         The melting temperature of the material
-
 
     Return
     ----------------
@@ -402,6 +400,13 @@ def check_SC_reg(data, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_t
         The user defined tolerance for the size of rigid translation region in lammps simulation.
     SC_tol : float
         The user defined tolerance for the minimum size of single crystal region.
+    str_alg : string
+        The algorithm used to find the atoms in the GB and the surfaces.
+        str_alg="csc" which uses centrosymmetry parameter
+        str_alg="ptm" which uses polyhedral template matching
+    csc_tol : float
+        The tolerance for identifing the atoms in the GB and surfaces using
+        the str_alg="csc"
 
     Returns
     ----------
@@ -421,6 +426,41 @@ def check_SC_reg(data, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_t
 
 
 def add_sc(pkl_file, data_0, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol, box_bound):
+    """
+    Function adds single crystal region to the simulation case the GB get close to the edges
+
+    Parameters
+    ------------
+    pkl_file :
+    data_0 :
+    lat_par :
+        Lattice parameter for the crystal being simulated.
+    rCut :
+        Cut-off radius for computing Delaunay triangulations
+    non_pbc : int
+        The non-periodic direction. 0 , 1 or 2 which corresponds to
+        x, y and z direction, respectively.
+    tol_fix_reg : float
+        The user defined tolerance for the size of rigid translation region in lammps simulation.
+    SC_tol : float
+        The user defined tolerance for the minimum size of single crystal region.
+    str_alg : string
+        The algorithm used to find the atoms in the GB and the surfaces.
+        str_alg="csc" which uses centrosymmetry parameter
+        str_alg="ptm" which uses polyhedral template matching
+    csc_tol : float
+        The tolerance for identifing the atoms in the GB and surfaces using
+        the str_alg="csc"
+    box_bound : np.array
+        The box bound read from lammps dump file which is 9 parameters: xlo, xhi, ylo,
+        yhi, zlo, zhi, xy, xz, yz
+
+    Returns
+    ----------
+    uniq_atoms : numpy.ndarray
+        The ID, atom type and position of the atoms in the single crystal region which will be added
+        to the lammps dump file.
+    """
     GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data_0, lat_par, non_p, str_alg, csc_tol)
     position = data_0.particles['Position'][...]
     jar = open(pkl_file, 'rb')
@@ -430,7 +470,7 @@ def add_sc(pkl_file, data_0, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg,
     point1 = gb_attr['lpts']
     point2 = gb_attr['upts']
     sum_p1 = np.sum(point1, axis=0)
-    sum_p2 = np.sum(point2, axis=0)
+    # sum_p2 = np.sum(point2, axis=0)
     if sum_p1[non_p] < 0:
         l_pts = point1
         u_pts = point2
@@ -478,8 +518,8 @@ def add_sc(pkl_file, data_0, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg,
         new_l_con = np.concatenate((u_pts, new_atoms), axis=0)
 
     new_l_con[:, non_p] = new_l_con[:, non_p] - np.mean(GbRegion)
-    new_l_con = new_l_con[np.where((new_l_con[:, non_p] < box_bound[non_p,1]) &
-                                    new_l_con[:, non_p] > box_bound[non_p, 0]))[0]]
+    new_l_con = new_l_con[np.where((new_l_con[:, non_p] < box_bound[non_p, 1]) &
+                                   (new_l_con[:, non_p] > box_bound[non_p, 0]))[0]]
     uniq_atoms = np.unique(new_l_con, axis=0)
     len_all = len(uniq_atoms)
     ID = np.arange(len_all).reshape(-1, 1)
