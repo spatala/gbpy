@@ -38,33 +38,6 @@ def lammps_box(lat_par, pkl_name):
     l_type = np.zeros((len_l, 1)) + 2
 
     sim_cell = gb_attr['cell']
-    # origin_o = sim_cell[:, 3]
-
-    # # “origin” at (xlo,ylo,zlo)
-    # xlo = origin_o[0]
-    # ylo = origin_o[1]
-    # zlo = origin_o[2]
-    # # a = (xhi-xlo,0,0);
-    # xhi = sim_cell[0, 0] + xlo
-    # # b = (xy,yhi-ylo,0);
-    # xy = sim_cell[0, 1]
-    # yhi = sim_cell[1, 1] + ylo
-    # # c = (xz,yz,zhi-zlo)
-    # xz = sim_cell[0, 2]
-    # yz = sim_cell[1, 2]
-    # zhi = sim_cell[2, 2] + zlo
-
-    # if xy or xz or yz != 0:
-    #     box_type = "prism"
-    # else:
-    #     box_type = "block"
-
-    # xlo_bound = xlo + np.min(np.array([0, xy, xz, xy + xz]))
-    # xhi_bound = xhi + np.max(np.array([0, xy, xz, xy + xz]))
-    # ylo_bound = ylo + np.min(np.array([0, yz]))
-    # yhi_bound = yhi + np.max(np.array([0, yz]))
-    # zlo_bound = zlo
-    # zhi_bound = zhi
 
     upper = np.concatenate((u_type, u_pts), axis=1)
     lower = np.concatenate((l_type, l_pts), axis=1)
@@ -79,6 +52,25 @@ def lammps_box(lat_par, pkl_name):
 
 
 def box_bound_func(sim_cell):
+    """
+    This function finds the simulation cell type and the bounds of the
+    simulation cell.
+
+    Parameters
+    ------------
+    sim_cell: numpy.ndarray
+    A 3x4 matrix (with column-major ordering). The first
+    three columns of the matrix represent the three cell
+    vectors and the last column is the position of the cell’s origin.
+
+    Returns
+    ----------
+    box_bound :
+        The box bound needed to write lammps dump file which is 9 parameters: xlo, xhi, ylo,
+        yhi, zlo, zhi, xy, xz, yz
+    box_type :
+        The type of simulation box which is eaither "prism" or "block"
+    """
     origin_o = sim_cell[:, 3]
     xlo = origin_o[0]
     ylo = origin_o[1]
