@@ -62,7 +62,8 @@ def find_int_solns(a_vec, b_vec):
             y2 = 0
             y3 = 1
 
-            l_p2_p1 = (np.hstack((a_vec, b_vec, np.array([[y1],[y2],[y3]]))))
+            # l_p2_p1 = (np.hstack((a_vec, b_vec, np.array([[y1],[y2],[y3]]))))
+            l_p2_p1 = np.dstack((a_vec, b_vec, np.array([y1, y2, y3]))).squeeze()
             det1 = nla.det(l_p2_p1)
             if ((np.abs(det1)-1) > 1e-10):
                 raise Exception('Error with Diophantine solution')
@@ -353,6 +354,7 @@ def create_twoD_slab(l_bp_po, l_p_po):
     l2D_bpbSig_po1 = l_po1_go.dot(l_bp_po)
 
     hkl_p1 = compute_hkl_p(l_bp_po, l_p_po)
+    hkl_p1 = hkl_p1.astype(int)
     l_bpb_p1 = bpb.bp_basis(hkl_p1)
     l_bpb_p1 = l_bpb_p1.astype(int)
     l_bpb_po1 = l_p_po.dot(l_bpb_p1)
@@ -365,7 +367,7 @@ def create_twoD_slab(l_bp_po, l_p_po):
 
     return l_bpb_p1, l2D_bpbSig_po1, twoD_pts
 
-def create_threeD_slab(zCut, tz_vec, l_bp_po, twoD_pts):
+def create_threeD_slab(l1, zCut, tz_vec, l_bp_po, twoD_pts):
     """
     Given the two vectors of the 2D simulation box in the plane, **l_bp_po**,
     and the basis vectors of the lattice, **l_p_po**, create the 2D slab of
@@ -404,10 +406,23 @@ def create_threeD_slab(zCut, tz_vec, l_bp_po, twoD_pts):
     sim_cell[:,3] = sim_orig
 
     box_vecs = sim_cell[:,0:3]
-    tpts1 = np.dot(nla.inv(box_vecs), threeD_pts.transpose()).transpose()
 
     threeD_pts1 = wrap_cc(sim_cell, threeD_pts)
+    threeD_pts1 = wrap_cc(sim_cell, threeD_pts)
+    l_po_go = compute_orientation(l_bp_po)
+    if len(l1.basis_atoms)==2:
+        second_atom = (np.array([l1.lat_params['a']*l1.basis_atoms[1][0],
+                                 l1.lat_params['b']*l1.basis_atoms[1][1],
+                                 l1.lat_params['c']*l1.basis_atoms[1][2]])).reshape(3,1)
+        shift = np.dot(l_po_go, second_atom)
+        th_z = sim_cell[2,2] + sim_cell[2,3]
+        threeD_pts_1 = threeD_pts1 + shift.transpose()
+        threeD_pts_f = np.append(threeD_pts1, threeD_pts_1,axis=0)
+        threeD_pts_f = threeD_pts_f[threeD_pts_f[:,2] <= th_z]
+        threeD_pts_f = threeD_pts_f[threeD_pts_f[:,2] >= -th_z]
+        threeD_pts_final = wrap_cc(sim_cell, threeD_pts_f)
 
+    tpts1 = np.dot(nla.inv(box_vecs), threeD_pts_final.transpose()).transpose()
     for ct1 in range(2):
         tpts_x = tpts1[:,ct1]
         y1, y2 = np.modf(tpts_x)
@@ -421,7 +436,7 @@ def create_threeD_slab(zCut, tz_vec, l_bp_po, twoD_pts):
     return threeD_pts, sim_cell
 
 
-def create_half_cryst(l_csl_p1, l_bp_CSLp, l_p_po, cryst_typ, zCut):
+def create_half_cryst(l1, l_csl_p1, l_bp_CSLp, l_p_po, cryst_typ, zCut):
     """
 
     """
@@ -439,7 +454,7 @@ def create_half_cryst(l_csl_p1, l_bp_CSLp, l_p_po, cryst_typ, zCut):
     l_p2_go = (l_po1_go.dot(l_p2_po1))
 
     tz_vec = l_p2_go[:,2]
-    threeD_pts, sim_cell = create_threeD_slab(zCut, tz_vec, l2D_bp_po1, twoD_pts)
+    threeD_pts, sim_cell = create_threeD_slab(l1, zCut, tz_vec, l2D_bp_po1, twoD_pts)
 
     if cryst_typ == 'upper':
         tol1 = 1e-8; ind1 = np.where(threeD_pts[:,2] >= -tol1)[0]
