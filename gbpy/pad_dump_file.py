@@ -1,5 +1,5 @@
 import numpy as np
-
+import byxtal.lattice as gbl
 
 def p_arr(non_p):
     """
@@ -22,7 +22,7 @@ def p_arr(non_p):
     return arr0
 
 
-def pad_dump_file(data, lat_par, rCut, non_p, str_alg, csc_tol):
+def pad_dump_file(data, l1, rCut, non_p, str_alg, csc_tol):
     """
     Function to take as input the dump data (from OVITO),find the GB atoms and
     add padding to the GB atoms (including images) within rCut.
@@ -32,8 +32,6 @@ def pad_dump_file(data, lat_par, rCut, non_p, str_alg, csc_tol):
     ------------
     data : class
         Data object computed using OVITO I/O
-    lat_par : float
-        Lattice parameter for the crystal being simulated
     rCut : float
         Cut-off radius for computing Delaunay triangulations
     non_pbc : int
@@ -50,7 +48,7 @@ def pad_dump_file(data, lat_par, rCut, non_p, str_alg, csc_tol):
         The atom indices of the initial unit cell with no replicates.
     """
 
-    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = GB_finder(data, lat_par, non_p, str_alg, csc_tol)
+    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = GB_finder(data, l1, non_p, str_alg, csc_tol)
     arr = p_arr(non_p)
 
     sim_cell = data.cell[...]
@@ -71,7 +69,7 @@ def pad_dump_file(data, lat_par, rCut, non_p, str_alg, csc_tol):
     return pts_w_imgs, gb1_inds, inds_arr.astype(int)
 
 
-def GB_finder(data, lat_par, non_pbc, str_alg, csc_tol):
+def GB_finder(data, l1, non_pbc, str_alg, csc_tol):
     """
     The function finds the GB region usning Polyhedral Template Matching.
 
@@ -104,19 +102,27 @@ def GB_finder(data, lat_par, non_pbc, str_alg, csc_tol):
     position_np = data.particles['Position'][...][:, non_pbc]
     if str_alg == "csc":
         csc = data.particles['c_csym'][...]
-
+    elem_type = l1.pearson
+    if elem_type == 'cP':
+        st_id = 5
+    if elem_type == 'cI':
+        st_id = 3  
+    if elem_type == 'cF':
+        st_id = 1
+    if elem_type == 'hP':
+        st_id = 2
     NoSurfArea = []
     # Find the smallest single crystal range
     a = 1
     pos_min = np.min(position_np)
 
     while a != 0:
-        pos_max = pos_min + lat_par
+        pos_max = pos_min + l1.lat_params['c']
         if str_alg == "ptm":
-            a = len(np.where((ptm_struct != 1) & (position_np < pos_max) & (position_np > pos_min))[0])
+            a = len(np.where((ptm_struct != st_id) & (position_np < pos_max) & (position_np > pos_min))[0])
         else:
             a = len(np.where((csc > csc_tol) & (position_np < pos_max) & (position_np > pos_min))[0])
-        pos_min += lat_par
+        pos_min += l1.lat_params['c']
 
     NoSurfArea = NoSurfArea + [pos_min]
 
@@ -124,17 +130,17 @@ def GB_finder(data, lat_par, non_pbc, str_alg, csc_tol):
     a = 1
     pos_max = np.max(position_np)
     while a != 0:
-        pos_min = pos_max - lat_par
+        pos_min = pos_max - l1.lat_params['c']
         if str_alg == "ptm":
-            a = len(np.where((ptm_struct != 1) & (position_np < pos_max) & (position_np > pos_min))[0])
+            a = len(np.where((ptm_struct != st_id) & (position_np < pos_max) & (position_np > pos_min))[0])
         else:
             a = len(np.where((csc > csc_tol) & (position_np < pos_max) & (position_np > pos_min))[0])
-        pos_max -= lat_par
+        pos_max -= l1.lat_params['c']
 
-    NoSurfArea = NoSurfArea + [pos_min + lat_par]
+    NoSurfArea = NoSurfArea + [pos_min + l1.lat_params['c']]
 
     if str_alg == "ptm":
-        gb_index = np.where((ptm_struct != 1) & (position_np < NoSurfArea[1]) & (position_np > NoSurfArea[0]))[0]
+        gb_index = np.where((ptm_struct != st_id) & (position_np < NoSurfArea[1]) & (position_np > NoSurfArea[0]))[0]
     else:
         gb_index = np.where((csc > csc_tol) & (position_np < NoSurfArea[1]) & (position_np > NoSurfArea[0]))[0]
 
