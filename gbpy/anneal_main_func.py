@@ -6,18 +6,20 @@ import lammps_script_writer as lsw
 from shutil import copyfile
 import numpy as np
 import sys
+import byxtal.lattice as gbl
 #  --------------------------------------------------------------------------
 #  Define the input
 #  --------------------------------------------------------------------------
-lat_par = 4.05
-rCut = 2*lat_par
-CohEng = -3.35999998818377  # calculated from in.cohesive
-Tm = 933.5
+l1 = gbl.Lattice('Mg_sun')
+# lat_par = 4.05
+rCut = 2*l1.lat_params['a']
+CohEng = -1.5287  # calculated from in.cohesive
+Tm = 923.1
 weight_1 = .5
-tol_fix_reg = 5 * lat_par  # the width of rigid traslation region
-SC_tol = 5 * lat_par
-# str_alg = "ptm"
-str_alg = "csc"
+tol_fix_reg = 5 * l1.lat_params['a']  # the width of rigid traslation region
+SC_tol = 5 * l1.lat_params['a']
+str_alg = "ptm"
+# str_alg = "csc"
 csc_tol = .1
 method = "anneal"
 # method = "min"
@@ -66,7 +68,7 @@ output = dump_path + 'dump_min'
 #  --------------------------------------------------------------------------
 #  Create lammps dump file for pkl file
 #  --------------------------------------------------------------------------
-box_bound, dump_lamp, box_type = ldw.lammps_box(lat_par, pkl_file)  # lammps creates from the pkl file
+box_bound, dump_lamp, box_type = ldw.lammps_box(pkl_file)  # lammps creates from the pkl file
 ldw.write_lammps_dump(initial_dump, box_bound, dump_lamp, box_type)  # writing the dump file
 
 #  --------------------------------------------------------------------------
@@ -76,7 +78,7 @@ filename_0 = dump_path + 'dump.0'  # the output of previous step
 # the initila minimization lammps script write the in.min script and run it and create dump_minimized
 fil_name = 'in.min_1'
 
-lsw.run_lammps_anneal(initial_dump, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_0, Tm,
+lsw.run_lammps_anneal(initial_dump, fil_name, pot_path, l1, tol_fix_reg, lammps_exe_path, filename_0, Tm,
                       "aneal", step=1, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val,
                       Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
 #  --------------------------------------------------------------------------
@@ -90,7 +92,7 @@ for i in range(0, iter, 1):
     data_0 = uf.compute_ovito_data(filename_0)
     non_p = uf.identify_pbc(data_0)
     #  find the gb atoms
-    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data_0, lat_par, non_p, str_alg, csc_tol)
+    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data_0, l1, non_p, str_alg, csc_tol)
 
     #  decide between remove and insertion
     choice = uf.choos_rem_ins()
@@ -114,7 +116,7 @@ for i in range(0, iter, 1):
         # copyfile(filename_rem, dump_path + 'rem/rem_dump_' + str(i))
         filename_1 = dump_path + 'dump.' + str(i)
         #  ---------------------------------------
-        lsw.run_lammps_anneal(filename_rem, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_1,
+        lsw.run_lammps_anneal(filename_rem, fil_name, pot_path, l1, tol_fix_reg, lammps_exe_path, filename_1,
                               Tm, "aneal", step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val,
                               MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val,
                               Iter_cool=Iter_cool_val)
@@ -127,7 +129,7 @@ for i in range(0, iter, 1):
         #  -----------------------------------------------------------------------------
 
         data_1 = uf.compute_ovito_data(filename_1)
-        SC_boolean = uf.check_SC_reg(data_1, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol)
+        SC_boolean = uf.check_SC_reg(data_1, l1, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol)
 
         if str_alg == "ptm":
             assert data_0.particles['Structure Type'][GbIndex[ID2change]] != 1
@@ -135,16 +137,16 @@ for i in range(0, iter, 1):
             assert data_0.particles['c_csym'][GbIndex[ID2change]] > .1
         if SC_boolean is False:
             sim_cell = data_1.cell[...]
-            uniq_atoms = uf.add_sc(pkl_file, data_1, lat_par, rCut, non_p, tol_fix_reg,
+            uniq_atoms = uf.add_sc(pkl_file, data_1, l1, rCut, non_p, tol_fix_reg,
                                    SC_tol, str_alg, csc_tol, box_bound)
             ldw.write_lammps_dump(filename_rem, box_bound, uniq_atoms, box_type)
-            lsw.run_lammps_anneal(filename_rem, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path,
+            lsw.run_lammps_anneal(filename_rem, fil_name, pot_path, l1, tol_fix_reg, lammps_exe_path,
                                   filename_1, Tm, "sc",  step=1, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val,
                                   MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val,
                                   Iter_cool=Iter_cool_val)
 
-        E_1 = uf.cal_GB_E(data_1, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol)  # after removal
-        E_0 = uf.cal_GB_E(data_0, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol)
+        E_1 = uf.cal_GB_E(data_1, weight_1, non_p, l1, CohEng, str_alg, csc_tol)  # after removal
+        E_0 = uf.cal_GB_E(data_0, weight_1, non_p, l1, CohEng, str_alg, csc_tol)
         dE = E_1 - E_0
         if dE < 0:
             decision = "accept"
@@ -166,9 +168,9 @@ for i in range(0, iter, 1):
     #  --------------------------------------------------------------------------
     else:
         ff.write(filename_0 + '\n')
-        pts_w_imgs, gb1_inds, inds_arr = pdf.pad_dump_file(data_0, lat_par, rCut, non_p, str_alg, csc_tol)
+        pts_w_imgs, gb1_inds, inds_arr = pdf.pad_dump_file(data_0, l1, rCut, non_p, str_alg, csc_tol)
         tri_vertices, gb_tri_inds = vvp.triang_inds(pts_w_imgs, gb1_inds, inds_arr)
-        cc_coors, cc_rad = vvp.vv_props(pts_w_imgs, tri_vertices, gb_tri_inds, lat_par)
+        cc_coors, cc_rad = vvp.vv_props(pts_w_imgs, tri_vertices, gb_tri_inds, l1)
         cc_coors1 = vvp.wrap_cc(data_0.cell, cc_coors)
         Prob = uf.radi_normaliz(cc_rad)
         ID2change = uf.RemIns_decision(Prob)
@@ -187,7 +189,7 @@ for i in range(0, iter, 1):
         #  --------------------------------------------------------------------------------------------------
 
         # copyfile(filename_1, dump_path + 'ins/min1_' + str(i))
-        lsw.run_lammps_anneal(filename_ins, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path, filename_1,
+        lsw.run_lammps_anneal(filename_ins, fil_name, pot_path, l1, tol_fix_reg, lammps_exe_path, filename_1,
                               Tm, "aneal", step=2, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val,
                               MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val,
                               Iter_cool=Iter_cool_val)
@@ -199,20 +201,20 @@ for i in range(0, iter, 1):
         out.close()
         # copyfile(out_heat, dump_path + 'ins/heat_' + str(i))
         data_1 = uf.compute_ovito_data(filename_1)
-        SC_boolean = uf.check_SC_reg(data_1, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol)
+        SC_boolean = uf.check_SC_reg(data_1, l1, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol)
         if SC_boolean is False:
             sim_cell = data_1.cell[...]
             # box_bound, box_type = ldw.box_bound_func(sim_cell)
-            uniq_atoms = uf.add_sc(pkl_file, data_1, lat_par, rCut, non_p, tol_fix_reg, SC_tol,
+            uniq_atoms = uf.add_sc(pkl_file, data_1, l1, rCut, non_p, tol_fix_reg, SC_tol,
                                    str_alg, csc_tol, box_bound)
             ldw.write_lammps_dump(filename_ins, box_bound, uniq_atoms, box_type)
-            lsw.run_lammps_anneal(filename_ins, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path,
+            lsw.run_lammps_anneal(filename_ins, fil_name, pot_path, l1, tol_fix_reg, lammps_exe_path,
                                   filename_1, Tm, "sc",  step=1, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val,
                                   MaxEval=MaxEval_val, Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val,
                                   Iter_cool=Iter_cool_val)
 
-        E_1 = uf.cal_GB_E(data_1, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol)
-        E_0 = uf.cal_GB_E(data_0, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol)
+        E_1 = uf.cal_GB_E(data_1, weight_1, non_p, l1, CohEng, str_alg, csc_tol)
+        E_0 = uf.cal_GB_E(data_0, weight_1, non_p, l1, CohEng, str_alg, csc_tol)
         dE = E_1 - E_0
         if dE < 0:
             decision = "accept"
