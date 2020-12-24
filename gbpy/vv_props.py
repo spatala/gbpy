@@ -4,7 +4,7 @@ from pyhull import qdelaunay
 import ovito.data as ovd
 from ovito.pipeline import StaticSource, Pipeline
 import ovito.modifiers as ovm
-
+import byxtal.lattice as gbl
 
 def Circum_O_R(vertex_pos, tol):
     """
@@ -83,7 +83,7 @@ def triang_inds(pts_w_imgs, gb1_inds, inds_arr):
     return tri_vertices, gb_tri_inds1
 
 
-def vv_props(pts_w_imgs, tri_vertices, gb_tri, lat_par):
+def vv_props(pts_w_imgs, tri_vertices, gb_tri, l1):
     """
     Function finds the circum-center/sphere of tetrahedrons containing
     at least one GB atom.
@@ -109,7 +109,7 @@ def vv_props(pts_w_imgs, tri_vertices, gb_tri, lat_par):
     num_tri = np.shape(gb_tri)[0]
     cc_coors = np.zeros((num_tri, 3))
     cc_rad = np.zeros((num_tri, 1))
-    tol = 1e-10*(lat_par**3)
+    tol = 1e-10*(l1.lat_params['a']**3)
     ct1 = 0
     for tri1 in gb_tri:
         simplex = tri_vertices[tri1, :]

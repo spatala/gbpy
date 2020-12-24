@@ -465,7 +465,7 @@ def create_half_cryst(l1, l_csl_p1, l_bp_CSLp, l_p_po, cryst_typ, zCut):
 
     return threeD_pts, sim_cell
 
-def get_gb_uID(l_bp_po1, l_p2_p1, l_p_po, bp_symm_grp, symm_grp_ax, sig_id):
+def get_gb_uID(l1, l_bp_po1, l_p2_p1, l_p_po, bp_symm_grp, symm_grp_ax, sig_id):
     """
     """
     bpn_go1 = np.cross(l_bp_po1[:,0], l_bp_po1[:,1])
@@ -484,7 +484,7 @@ def get_gb_uID(l_bp_po1, l_p2_p1, l_p_po, bp_symm_grp, symm_grp_ax, sig_id):
     bp_go2 = -l_po1_po2.dot(bp_fz_go1)
     bp_go2, tm1 = iman.int_approx(bp_go2)
 
-    gb_id = 'Al_S'+sig_id+'_N1_'
+    gb_id = l1.elem_type + '_S'+sig_id+'_N1_'
     gb_id = gb_id + str(bp_fz_go1[0,0]) + '_'
     gb_id = gb_id + str(bp_fz_go1[1,0]) + '_'
     gb_id = gb_id + str(bp_fz_go1[2,0]) + '_'
