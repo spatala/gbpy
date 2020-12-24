@@ -2,7 +2,7 @@ import numpy as np
 import pickle as pkl
 
 
-def lammps_box(lat_par, pkl_name):
+def lammps_box(pkl_name):
     """
     Function calculates the box bound and the atom coordinates of the GB simulation.
     Ref: https://lammps.sandia.gov/doc/Howto_triclinic.html

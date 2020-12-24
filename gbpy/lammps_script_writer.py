@@ -2,7 +2,7 @@
 import numpy as np
 import util_funcs as uf
 import os
-
+import byxtal.lattice as gbl
 
 def file_gen(fil_name):
     """
@@ -23,7 +23,7 @@ def file_gen(fil_name):
     return fiw, fil_name
 
 
-def run_lammps_anneal(filename0, fil_name, pot_path, lat_par, tol_fix_reg, lammps_exe_path,
+def run_lammps_anneal(filename0, fil_name, pot_path, l1, tol_fix_reg, lammps_exe_path,
                       output, Tm, check,   step=2, Etol=1e-25, Ftol=1e-25, MaxIter=5000, MaxEval=10000,
                       Iter_heat=1000, Iter_equil=10000, Iter_cool=12000):
     """
@@ -68,11 +68,11 @@ def run_lammps_anneal(filename0, fil_name, pot_path, lat_par, tol_fix_reg, lammp
     data = uf.compute_ovito_data(filename0)
     non_p = uf.identify_pbc(data)
     run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval, Iter_heat, Iter_equil, Iter_cool,
-            lat_par, filename0, pot_path, output, check)
+            l1, filename0, pot_path, output, check)
     os.system('mpirun -np 2 ' + str(lammps_exe_path) + ' -in ' + fil_name)
 
 
-def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval, Iter_heat, Iter_equil, Iter_cool, lat_par,
+def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval, Iter_heat, Iter_equil, Iter_cool, l1,
             dump_name, pot_path, output, check):
     """
     Function writes the lammps script for heating/equil/cooling process
@@ -121,7 +121,8 @@ def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval, Iter_heat, Iter_equil
         bound = 'p p f'
     box_bound = uf.box_size_reader(dump_name)
     untilted, tilt, box_type = uf.define_bounds(box_bound)
-    overlap_cte = np.sqrt(2) * lat_par / 4
+    overlap_cte = l1.burgers_mag/2
+        
     line = []
     line.append('# Minimization Parameters -------------------------\n')
     line.append('\n')
@@ -135,7 +136,11 @@ def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval, Iter_heat, Iter_equil
     line.append('\n')
     line.append('# Structural variables------------------------------\n')
     line.append('\n')
-    line.append('variable LatParam equal ' + str(lat_par) + '\n')
+    if l1.pearson != 'hP':
+        line.append('variable LatParam equal ' + str(l1.lat_params['a']) + '\n')
+    else:
+        line.append('variable a0 equal ' + str(l1.lat_params['a']) + '\n')
+        line.append('variable c0 equal ' + str(l1.lat_params['c']) + '\n')
     line.append('# ------------------------------------------------\n')
     line.append('\n')
     line.append('variable cnt equal 1\n')
@@ -163,13 +168,29 @@ def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval, Iter_heat, Iter_equil
                      + ' units box'
 
     create_box = 'create_box 2 whole\n'
-    line.append('compute csym all centro/atom fcc\n')
+    line.append('compute csym all centro/atom 12\n')
     line.append('compute eng all pe/atom\n')
     line.append('compute eatoms all reduce sum c_eng\n')
     line.append('compute MinAtomEnergy all reduce min c_eng\n')
     line.append('# ---------Creating the Atomistic Structure--------\n')
     line.append('\n')
-    line.append('lattice fcc ${LatParam}\n')
+    if l1.pearson == 'cF':
+        line.append('lattice fcc ${LatParam}\n')
+    if l1.pearson == 'cI':
+        line.append('lattice bcc ${LatParam}\n')
+    if l1.pearson == 'cP':
+        line.append('lattice sc ${LatParam}\n')
+    if l1.pearson == 'hP':
+        val_dum_neg = -np.sin(np.pi/3)
+        val_dum_pos = np.sin(np.pi/3)
+        c_a_rat = l1.lat_params['c'] / l1.lat_params['a']
+        v_1 = 1/3
+        v_2 = 2/3
+        v_3 = .5
+        line.append('lattice custom ${a0} a1 0.5 ' + str(val_dum_neg) + ' 0 a2 0.5 ' + str(val_dum_pos) +\
+                     ' 0 a3 0 0 ' + str(c_a_rat) + ' basis 0 0 0 basis ' + str(v_1) + ' ' +\
+                      str(v_2) + ' ' + str(v_3) + ' \n')
+
     line.append(str(whole_box) + '\n')
     line.append(str(create_box) + '\n')
     line.append('read_dump ' + str(dump_name) + ' 0 x y z box yes add yes \n')
@@ -177,7 +198,7 @@ def run_lmp(non_p, fil_name, Etol, Ftol, MaxIter, MaxEval, Iter_heat, Iter_equil
     line.append('# -------Defining the potential functions----------\n')
     line.append('\n')
     line.append('pair_style eam/alloy\n')
-    line.append('pair_coeff * * ' + str(pot_path) + 'Al99.eam.alloy Al Al\n')
+    line.append('pair_coeff * * ' + str(pot_path) + l1.eam_file[1] + ' ' + l1.elem_type + ' ' + l1.elem_type + ' \n')
 
     line.append('neighbor 2 bin\n')
     line.append('neigh_modify delay 10 check yes\n')
