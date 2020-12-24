@@ -39,6 +39,16 @@ Iter_equil_val = 3000
 Iter_cool_val = 1000
 gb_name = sys.argv[1]
 
+elem_type = l1.pearson
+if elem_type == 'cP':
+    st_id = 5
+if elem_type == 'cI':
+    st_id = 3  
+if elem_type == 'cF':
+    st_id = 1
+if elem_type == 'hP':
+    st_id = 2
+
 print('=============================================================================')
 print(gb_name)
 print('=============================================================================')
@@ -132,7 +142,7 @@ for i in range(0, iter, 1):
         SC_boolean = uf.check_SC_reg(data_1, l1, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol)
 
         if str_alg == "ptm":
-            assert data_0.particles['Structure Type'][GbIndex[ID2change]] != 1
+            assert data_0.particles['Structure Type'][GbIndex[ID2change]] != st_id
         else:
             assert data_0.particles['c_csym'][GbIndex[ID2change]] > .1
         if SC_boolean is False:
