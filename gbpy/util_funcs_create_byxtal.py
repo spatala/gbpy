@@ -421,8 +421,9 @@ def create_threeD_slab(l1, zCut, tz_vec, l_bp_po, twoD_pts):
         threeD_pts_f = threeD_pts_f[threeD_pts_f[:,2] <= th_z]
         threeD_pts_f = threeD_pts_f[threeD_pts_f[:,2] >= -th_z]
         threeD_pts_final = wrap_cc(sim_cell, threeD_pts_f)
-
-    tpts1 = np.dot(nla.inv(box_vecs), threeD_pts_final.transpose()).transpose()
+        tpts1 = np.dot(nla.inv(box_vecs), threeD_pts_final.transpose()).transpose()
+    else:
+        tpts1 = np.dot(nla.inv(box_vecs), threeD_pts1.transpose()).transpose()
     for ct1 in range(2):
         tpts_x = tpts1[:,ct1]
         y1, y2 = np.modf(tpts_x)
@@ -467,6 +468,32 @@ def create_half_cryst(l1, l_csl_p1, l_bp_CSLp, l_p_po, cryst_typ, zCut):
 
 def get_gb_uID(l1, l_bp_po1, l_p2_p1, l_p_po, bp_symm_grp, symm_grp_ax, sig_id):
     """
+    Returns 
+
+    Parameters
+    -----------
+    l1: 
+
+    l_bp_po1: 
+
+    l_p2_p1:
+
+    l_p_po:
+
+    bp_symm_grp: The point group symmetry of the underlying bicrystal.
+    * python string with allowed values 'C_s', 'C_2h', 'D_3d', 'D_2h', 'D_4h', 'D_6h', 'D_8h' and 'O_h'
+
+    symm_grp_ax: The principal axes of bicrystal symmetry group in orthogonal reference frame of crystal 1 (po1).
+    * numpy array of size (3 x 3)
+    * x_axis == symm_grp_axes[:, 0]; y_axis == symm_grp_axes[:, 1]; z_axis == symm_grp_axes[:, 2]
+
+    sig_id:
+
+
+    Returns
+    --------
+    gb_id: string
+        The unique name of the grain boundary
     """
     bpn_go1 = np.cross(l_bp_po1[:,0], l_bp_po1[:,1])
     bpn_go1 = bpn_go1/nla.norm(bpn_go1)
@@ -484,7 +511,7 @@ def get_gb_uID(l1, l_bp_po1, l_p2_p1, l_p_po, bp_symm_grp, symm_grp_ax, sig_id):
     bp_go2 = -l_po1_po2.dot(bp_fz_go1)
     bp_go2, tm1 = iman.int_approx(bp_go2)
 
-    gb_id = l1.elem_type + '_S'+sig_id+'_N1_'
+    gb_id = l1.elem_type + '_S' + sig_id + '_N1_'
     gb_id = gb_id + str(bp_fz_go1[0,0]) + '_'
     gb_id = gb_id + str(bp_fz_go1[1,0]) + '_'
     gb_id = gb_id + str(bp_fz_go1[2,0]) + '_'
