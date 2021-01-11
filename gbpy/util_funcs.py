@@ -5,7 +5,7 @@ import pad_dump_file as pdf
 import bisect
 import pickle as pkl
 import numpy as np
-
+import byxtal.lattice as gbl
 
 def compute_ovito_data(filename0):
     """
@@ -224,8 +224,7 @@ def atom_insertion(filename0, path2dump, cc_coors1, atom_id):
     lines = open(filename0, 'r').readlines()
     lines[1] = '0\n'
     lines[3] = str(int(lines[3]) + 1)
-    new_line = str(atom_id) + ' 1 ' + str(cc_coors1[0]) + ' ' + str(cc_coors1[1]) + ' '
-    + str(cc_coors1[2]) + ' .1 .2\n'
+    new_line = str(atom_id) + ' 1 ' + str(cc_coors1[0]) + ' ' + str(cc_coors1[1]) + ' ' + str(cc_coors1[2]) + ' .1 .2\n'
     lines[3] = lines[3] + '\n'
 
     out = open(path2dump + 'ins_dump', 'w')
@@ -287,7 +286,7 @@ def cal_area(data, non_p):
     return area  # in A
 
 
-def cal_GB_E(data, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol):
+def cal_GB_E(data, weight_1, non_p, l1, CohEng, str_alg, csc_tol):
     """
     The function finds the energy of the GB.
 
@@ -314,7 +313,7 @@ def cal_GB_E(data, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol):
     E_GB : float
         The enrgy of GB plane
     """
-    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data, lat_par, non_p, str_alg, csc_tol)
+    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data, l1, non_p, str_alg, csc_tol)
 
     top_min = GbRegion[1]
     top_max = GbRegion[1] + w_top_SC
@@ -380,7 +379,7 @@ def decide(p_boltz):
         return "accept"
 
 
-def check_SC_reg(data, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol):
+def check_SC_reg(data, l1, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol):
     """
     Function to identify whether single crystal region on eaither side of the GB is
     bigger than a tolerance (SC_tol)
@@ -413,7 +412,7 @@ def check_SC_reg(data, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_t
     SC_boolean :
         A boolean list for low/top or left/right single crytal region. True means the width > SC_tol.
     """
-    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data, lat_par, non_p, str_alg, csc_tol)
+    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data, l1, non_p, str_alg, csc_tol)
 
     SC_boolean = True
     # w_bottom_SC = w_bottom_SC - tol_fix_reg
@@ -425,7 +424,7 @@ def check_SC_reg(data, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_t
     return SC_boolean
 
 
-def add_sc(pkl_file, data_0, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol, box_bound):
+def add_sc(pkl_file, data_0, l1, rCut, non_p, tol_fix_reg, SC_tol, str_alg, csc_tol, box_bound):
     """
     Function adds single crystal region to the simulation case the GB get close to the edges
 
@@ -461,7 +460,7 @@ def add_sc(pkl_file, data_0, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg,
         The ID, atom type and position of the atoms in the single crystal region which will be added
         to the lammps dump file.
     """
-    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data_0, lat_par, non_p, str_alg, csc_tol)
+    GbRegion, GbIndex, GbWidth, w_bottom_SC, w_top_SC = pdf.GB_finder(data_0, l1, non_p, str_alg, csc_tol)
     position = data_0.particles['Position'][...]
     jar = open(pkl_file, 'rb')
     gb_attr = pkl.load(jar)
@@ -501,7 +500,7 @@ def add_sc(pkl_file, data_0, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg,
             u_pts = np.concatenate((u_pts, new), axis=0)
 
     if GbRegion[0] < 0:
-        min_gb = GbRegion[0] - lat_par
+        min_gb = GbRegion[0] - l1.lat_params['c']
         id2del = np.where(position[:, non_p] < min_gb)[0]
         new_atoms = np.delete(position, id2del, axis=0)
         atom_id = np.argmin(new_atoms[:, non_p])
@@ -509,7 +508,7 @@ def add_sc(pkl_file, data_0, lat_par, rCut, non_p, tol_fix_reg, SC_tol, str_alg,
         l_pts = l_pts + ref_atom
         new_l_con = np.concatenate((l_pts, new_atoms), axis=0)
     elif GbRegion[1] > 0:
-        max_gb = GbRegion[1] + lat_par
+        max_gb = GbRegion[1] + l1.lat_params['c']
         id2del = np.where(position[:, non_p] > max_gb)[0]
         new_atoms = np.delete(position, id2del, axis=0)
         atom_id = np.argmax(new_atoms[:, non_p])
