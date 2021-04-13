@@ -138,6 +138,7 @@ def compute_rCut(l2d_bp_po):
     ------------
     rCut: float
         The cut-off radius for replicating the lattice basis.
+
     """
     bv1 = l2d_bp_po[:,0]
     bv2 = l2d_bp_po[:,1]
@@ -152,6 +153,18 @@ def compute_orientation(l2d_bp_po):
     Find the orientation of the lattice **l_po1_go**, such that the
     vectors in the **p1** lattice given by **l2d_bp_po** to line up
     with x-axis in the xy-plane.
+
+    Parameters
+    -----------------
+    l2d_bpb_po: numpy.array
+        The two vectors, expressed in the **po** reference frame,
+        that define the two-dimensional box vectors of the interface.
+
+    Returns
+    ------------
+    nla.inv(l_po1_go): numpy.array
+        Orientation of the lattice in p1 which line up with x-axis in the xy-plane.
+
     """
     bv1 = l2d_bp_po[:,0]
     bv2 = l2d_bp_po[:,1]
@@ -178,6 +191,20 @@ def compute_hkl_p(l2d_bp_po, l_p_po):
     Find the **(hkl)** indices of the plane defined the vectors
     in the matrix **l2d_bp_po**.
 
+    Parameters
+    -----------------
+    l2d_bpb_po: numpy.array
+        The two vectors, expressed in the **po** reference frame,
+        that define the two-dimensional box vectors of the interface.
+    l_p_po: numpy array
+        The primitive basis vectors of the underlying lattice in the orthogonal
+        reference frame.
+    Returns
+    ------------
+    nuI_vec_rp: numpy.array
+        The (hkl) indices  of the plane defined the vectors
+        in the matrix **l2d_bp_po**.
+
     """
     avec_po = l2d_bp_po[:,0]
     bvec_po = l2d_bp_po[:,1]
@@ -198,6 +225,22 @@ def num_rep_2d(xvec, yvec, rCut):
     Find the number of replications necessary such that the
     2D-circle of radius r_cut at the center of the primitive-cell
     lies completely inside the super-cell.
+
+    Parameters
+    -----------------
+    xvec : numpy array
+        The basis vector in x direction in x-z plane
+    yvec : numpy array
+        The basis vector in z direction in x-z plane
+    rCut : float
+        Cut-off radius for computing Delaunay triangulations
+
+    Returns
+    ------------
+    [int(m_x), int(m_y)] : list
+        int(m_x) is the number of replications in x direction, int(m_y)
+        is the number of replication in z direction.
+
     """
     b1 = np.array([0])
     # xvec1 = xvec.col_join(Matrix([0]))
@@ -223,6 +266,20 @@ def replicate_pts(l_bpb_po, rCut):
     """
     Replicate the basis, enough times, such that the 2D-circle
     of radius r_cut is completely inside the replicated set.
+
+    Parameters
+    -----------------
+    l_bpb_po: numpy.array
+        2D basis vector in po
+
+    rCut : float
+        Cut-off radius for computing Delaunay triangulations
+
+    Returns
+    ------------
+    twoD_pts: numpy.ndarray
+        The coordinates of the replicated points
+
     """
     bx = l_bpb_po[:,0]; by = l_bpb_po[:,1]
     mx, my = num_rep_2d(bx, by, rCut)
@@ -244,6 +301,19 @@ def change_basis(twoD_pts, l_bpb_po):
     """
     Express the points in **twoD_pts** array in the reference frame
     of **l_bpb_po**.
+
+    Parameters
+    -----------------
+    twoD_pts: numpy.ndarray
+        The coordinates of the replicated points
+
+    l_bpb_po: numpy.array
+        2D basis vector in po 
+
+    Returns
+    ------------
+    (mat1.dot(twoD_pts.transpose())).transpose(): numpy.ndarray
+        The coordinates of replicated points in the referance frame of l_bpb_po
     """
     # mat1 = (l_bpb_po).inv()
     mat1 = nla.inv(l_bpb_po)
@@ -253,6 +323,19 @@ def change_basis(twoD_pts, l_bpb_po):
 def cut_box_pts(twoD_pts, tol=1e-8):
     """
     Remove all the points, in 2D, that lie outside the 2D box.
+
+    Parameters
+    -----------------
+    twoD_pts: numpy.ndarray
+        The coordinates of the replicated points
+
+    tol: float
+        User defined tolerance
+
+    Returns
+    ------------
+    twoD_pts[tind1,:]: numpy.ndarray
+        The coordinates of replicated points which lies inside the 2D box
     """
     tx1 = twoD_pts[:,0]
     ty1 = twoD_pts[:,1]
@@ -270,6 +353,19 @@ def knnsearch_v1(X, Y):
     the nearest neighbors in Idx, a column vector. Idx has the same
     number of rows as Y. Additionally returns the column vector **D** that
     contains the nearest-neighbor distances.
+
+    Parameters
+    -----------------
+    X: numpy.ndarray
+        The coordinates of the replicated points
+
+    Y: float
+        User defined tolerance
+
+    Returns
+    ------------
+    Idx:
+    dval:
     """
     num_x = np.shape(X)[0]
     num_y = np.shape(Y)[0]
