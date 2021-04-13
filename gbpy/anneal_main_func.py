@@ -11,7 +11,6 @@ import byxtal.lattice as gbl
 #  Define the input
 #  --------------------------------------------------------------------------
 l1 = gbl.Lattice('Mg_sun')
-# lat_par = 4.05
 rCut = 2*l1.lat_params['a']
 CohEng = -1.5287  # calculated from in.cohesive
 Tm = 923.1
@@ -55,7 +54,7 @@ print('=========================================================================
 #  --------------------------------------------------------------------------
 #  Define the path to dump files
 #  --------------------------------------------------------------------------
-# For my local pc#########################################
+# For my local pc##############################################################
 
 lammps_exe_path = '/home/leila/Downloads/mylammps/src/lmp_mpi'
 main_path = './lammps_dump/'
@@ -66,7 +65,7 @@ initial_dump = main_path + 'output/' + str(gb_name) + '/dump_1'  # the name of t
 # initial_dump = main_path + 'output/' + str(gb_name) + '/dump.29'
 output = dump_path + 'dump_min'
 
-# For HPC############################################################
+# For running on HPC############################################################
 # lammps_exe_path = '/usr/local/usrapps/spatala/lammps-12Dec18/src/lmp_mpi'
 # main_path = '/gpfs_common/share02/spatala/Leila_lammps/GBMC/'
 # pot_path = main_path   # the path for the potential
@@ -74,7 +73,7 @@ output = dump_path + 'dump_min'
 # pkl_file = main_path + 'data/' + str(gb_name) + '.pkl'
 # initial_dump = main_path + 'output/' + str(gb_name) + '/dump_1'  # the name of the dump file that
 # output =  dump_path + 'dump_min'
-####################################################################################
+#################################################################################
 #  --------------------------------------------------------------------------
 #  Create lammps dump file for pkl file
 #  --------------------------------------------------------------------------
@@ -92,9 +91,9 @@ lsw.run_lammps_anneal(initial_dump, fil_name, pot_path, l1, tol_fix_reg, lammps_
                       "aneal", step=1, Etol=Etol_val, Ftol=Ftol_val, MaxIter=MaxIter_val, MaxEval=MaxEval_val,
                       Iter_heat=Iter_heat_val, Iter_equil=Iter_equil_val, Iter_cool=Iter_cool_val)
 #  --------------------------------------------------------------------------
-#  Start MC
+#  Start Monte Carlo iterations
 #  --------------------------------------------------------------------------
-iter = 5000
+iter = 5000  # numbber of iterations
 ff = open('output', 'w')
 for i in range(0, iter, 1):
     print(i)
