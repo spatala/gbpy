@@ -1,5 +1,5 @@
 import numpy as np
-import byxtal.lattice as gbl
+
 
 def p_arr(non_p):
     """

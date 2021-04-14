@@ -2,7 +2,6 @@
 import numpy as np
 import util_funcs as uf
 import os
-import byxtal.lattice as gbl
 
 def file_gen(fil_name):
     """

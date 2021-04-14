@@ -10,23 +10,23 @@ from shutil import copyfile
 import numpy as np
 import os
 import re
-
+import byxtal.lattice as gbl
 
 path_name = './output/'
 output_path = './results/data/'
-lat_par = 4.05
+l1 = gbl.Lattice('Mg_sun')
 non_p = 2
 weight_1= 0.5
-CohEng= -3.35999998818377  #  calculated from in.cohesive
-str_alg = "csc"
+CohEng= -1.5287  #  calculated from in.cohesive
+str_alg = "ptm"
 csc_tol = .1
 
-rCut = 2*lat_par
-Tm = 1000
+rCut = 2*5 * l1.lat_params['a']
+Tm = 923.1
 weight_1 = .5
-tol_fix_reg = 5 * lat_par  # the width of rigid traslation region
-SC_tol = 5 * lat_par
-directory_m = './lammps_dump/output/gb_attr_Al_S7_1_N1_4_2_1_N2_-4_-1_-2/accepted/'
+tol_fix_reg = 5 * 5 * l1.lat_params['a']  # the width of rigid traslation region
+SC_tol = 5 * 5 * l1.lat_params['a']
+directory_m = './lammps_dump/output/gb_attr_Mg_sun_S13_1_N1_0_0_1_N2_0_0_-1/accepted/'
 directory = [directory_m]
 energy = []
 iteration = []
@@ -36,9 +36,9 @@ for var in j:
     print(var)
     filename_0 = directory_m + var 
     data = uf.compute_ovito_data(filename_0)
-    eng = uf.cal_GB_E(data, weight_1, non_p, lat_par, CohEng, str_alg, csc_tol)
+    eng = uf.cal_GB_E(data, weight_1, non_p, l1, CohEng, str_alg, csc_tol)
     energy = energy + [eng]
-    # print(eng)
+    print(eng)
     iteration = iteration + [int(num[0])]
 
 name = './results/heat.txt'

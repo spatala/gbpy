@@ -1,0 +1,75 @@
+# Minimization Parameters -------------------------
+
+variable Etol equal 1e-25
+variable Ftol equal 1e-25
+variable MaxIter equal 10000
+variable MaxEval equal 10000
+variable Iter_heat equal 1000
+variable Iter_equil equal 3000
+variable Iter_cool equal 1000
+
+# Structural variables------------------------------
+
+variable LatParam equal 4.05
+# ------------------------------------------------
+
+variable cnt equal 1
+# ------------------------------------------------
+
+# -----------Initializing the Simulation-----------
+
+clear
+units metal
+dimension 3
+boundary p p f
+atom_style atomic
+atom_modify map array
+
+# ---------Creating the Atomistic Structure--------
+
+lattice fcc ${LatParam}
+region whole prism 0.033134277860597555 15.911731667014667 0.03906977557908387 16.460281384686887 -101.25 101.25 2.558439953091697 0.0 0.0 units box
+create_box 2 whole
+
+read_dump ./lammps_dump/output/gb_attr_Al_S7_1_N1_4_2_1_N2_-4_-1_-2/dump.1153 0 x y z box yes add yes 
+# -------Defining the potential functions----------
+
+pair_style eam/alloy
+pair_coeff * * ./lammps_dump/Al99.eam.alloy Al Al
+neighbor 2 bin
+neigh_modify delay 5 check yes
+
+# ---------Computing Simulation Parameters---------
+
+compute csym all centro/atom fcc
+compute eng all pe/atom
+compute eatoms all reduce sum c_eng
+compute MinAtomEnergy all reduce min c_eng
+
+velocity all create 466.75 235911
+fix 1 all nve 
+thermo 100
+thermo_modify flush yes
+thermo_modify lost ignore
+run 1000
+unfix 1
+# -----------------equilibrium step-----------------
+
+fix 1 all nvt temp 466.75 466.75 $(100.0*dt)
+dump 1 all custom 100 equi id type x y z c_csym c_eng
+thermo 100
+thermo_modify lost ignore
+run ${Iter_equil}
+unfix 1
+undump 1
+# -----------------cooling step-----------------
+
+fix 1 all nvt temp  466.75 .01 .01
+thermo 100
+thermo_modify lost ignore
+run ${Iter_cool}
+dump 1 all custom ${Iter_cool} ./lammps_dump/output/gb_attr_Al_S7_1_N1_4_2_1_N2_-4_-1_-2/heat.0 id type x y z c_csym c_eng
+dump_modify 1 every ${Iter_cool} sort id first yes
+run 0
+undump 1
+

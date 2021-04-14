@@ -4,7 +4,7 @@ from pyhull import qdelaunay
 import ovito.data as ovd
 from ovito.pipeline import StaticSource, Pipeline
 import ovito.modifiers as ovm
-import byxtal.lattice as gbl
+
 
 def Circum_O_R(vertex_pos, tol):
     """

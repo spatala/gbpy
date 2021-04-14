@@ -5,7 +5,6 @@ import pad_dump_file as pdf
 import bisect
 import pickle as pkl
 import numpy as np
-import byxtal.lattice as gbl
 
 def compute_ovito_data(filename0):
     """

@@ -1,0 +1,94 @@
+# Minimization Parameters -------------------------
+
+variable Etol equal 1e-25
+variable Ftol equal 1e-25
+variable MaxIter equal 10000
+variable MaxEval equal 10000
+variable Iter_heat equal 1000
+variable Iter_equil equal 3000
+variable Iter_cool equal 1000
+
+# Structural variables------------------------------
+
+variable a0 equal 3.184214101623855
+variable c0 equal 5.184423575863861
+# ------------------------------------------------
+
+variable cnt equal 1
+# ------------------------------------------------
+
+variable OverLap equal 1.5921070508119275
+
+# -----------Initializing the Simulation-----------
+
+clear
+units metal
+dimension 3
+boundary p p f
+atom_style atomic
+atom_modify map array
+box tilt large
+compute csym all centro/atom 12
+compute eng all pe/atom
+compute eatoms all reduce sum c_eng
+compute MinAtomEnergy all reduce min c_eng
+# ---------Creating the Atomistic Structure--------
+
+lattice custom ${a0} a1 0.5 -0.8660254037844386 0 a2 0.5 0.8660254037844386 0 a3 0 0 1.6281642535343206 basis 0 0 0 basis 0.3333333333333333 0.6666666666666666 0.5 
+region whole prism 0.0 11.480847215460312 0.0 19.885410691112934 -79.60535254059637 79.60535254059637 -2.6645352591003757e-15 0.0 0.0 units box
+create_box 2 whole
+
+read_dump ./lammps_dump/output/gb_attr_Mg_sun_S13_1_N1_0_0_1_N2_0_0_-1/rem_dump 0 x y z box yes add yes 
+# -------Defining the potential functions----------
+
+pair_style eam/alloy
+pair_coeff * * ./lammps_dump/Mg.eam.fs Mg Mg 
+neighbor 2 bin
+neigh_modify delay 10 check yes
+group lower type 2 
+group upper type 1
+delete_atoms overlap ${OverLap}  upper lower
+# ---------- Run Minimization ---------------------
+reset_timestep 0
+thermo 10
+thermo_modify lost ignore
+min_style cg
+minimize ${Etol} ${Ftol} ${MaxIter} ${MaxEval} 
+# ---------- Run heat --------------------- 
+velocity all create 466.75 235911
+fix 1 all nve 
+thermo 100
+thermo_modify flush yes
+thermo_modify lost ignore
+run 1000
+unfix 1
+# ---------- Run anneal ---------------------
+fix 1 all nvt temp 466.75 466.75 $(100.0*dt)
+thermo 100
+thermo_modify flush yes
+thermo_modify lost ignore
+run ${Iter_equil}
+unfix 1
+# ---------- Run cool ---------------------
+fix 1 all nvt temp  466.75 .01 .01
+thermo 100
+thermo_modify flush yes
+thermo_modify lost ignore
+run ${Iter_cool}
+unfix 1
+#----------------------Run minimization 1--------------------
+reset_timestep 0
+thermo 100
+thermo_modify lost ignore
+min_style cg
+minimize 1e-25 1e-25 5000 10000
+#----------------------Run minimization 2--------------------
+reset_timestep 0 
+reset_ids
+thermo 100
+thermo_modify lost ignore
+fix 1 all box/relax x 0 y 0 xy 0 vmax .001
+dump 2 all custom 1000 ./lammps_dump/output/gb_attr_Mg_sun_S13_1_N1_0_0_1_N2_0_0_-1/dump.4999 id type x y z c_csym c_eng
+dump_modify 2 every 1000 sort id first yes
+run 0 
+undump 2
