@@ -1,8 +1,8 @@
-import util_funcs as uf
-import pad_dump_file as pdf
-import vv_props as vvp
-import lammps_dump_writer as ldw
-import lammps_script_writer as lsw
+import gbpy.util_funcs as uf
+import gbpy.pad_dump_file as pdf
+import gbpy.vv_props as vvp
+import gbpy.lammps_dump_writer as ldw
+import gbpy.lammps_script_writer as lsw
 from shutil import copyfile
 import numpy as np
 import sys
