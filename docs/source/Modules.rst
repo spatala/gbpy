@@ -36,16 +36,6 @@ vv props
 .. autofunction:: gbpy.vv_props.wrap_cc
 
 
-Lammps Script Writer
---------------------
-
-.. autofunction:: gbpy.lammps_script_writer.file_gen
-
-.. autofunction:: gbpy.lammps_script_writer.run_lammps_anneal
-
-.. autofunction:: gbpy.lammps_script_writer.run_lmp
-
-
 
 Utility Function
 --------------------
