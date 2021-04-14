@@ -83,3 +83,12 @@ Lammps Script Writer
 
 .. autofunction:: gbpy.lammps_script_writer.run_lmp
 
+
+Lammps Script Writer
+--------------------
+
+.. autofunction:: gbpy.lammps_dump_writer.lammps_box
+
+.. autofunction:: gbpy.lammps_dump_writer.box_bound_func
+
+.. autofunction:: gbpy.lammps_dump_writer.write_lammps_dump
