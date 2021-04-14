@@ -1,2 +1,0 @@
-# Description of Jupyter Notebooks
-
