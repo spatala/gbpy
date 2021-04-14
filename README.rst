@@ -12,7 +12,7 @@ gbpy
 Python package for doing science.
 
 * Free software: 3-clause BSD license
-* Documentation: (COMING SOON!) https://spatala.github.io/gbpy.
+* Documentation:  https://spatala.github.io/gbpy.
 
 Features
 --------
