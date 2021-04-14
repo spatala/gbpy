@@ -6,6 +6,7 @@ import bisect
 import pickle as pkl
 import numpy as np
 
+
 def compute_ovito_data(filename0):
     """
     Computes the attributes of ovito
