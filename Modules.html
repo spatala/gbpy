@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Modules &mdash; gbpy 0.post49+gf2a6678 documentation</title>
+  <title>Modules &mdash; gbpy 0.post52+g34c14fe documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.post49+gf2a6678
+                0.post52+g34c14fe
               </div>
             
           
@@ -97,6 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Minimum Version of Python and NumPy</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#pad-dump-file">Pad Dump File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vv-props">vv props</a></li>
 </ul>
 </li>
 </ul>
@@ -437,6 +438,114 @@ x, y and z direction, respectively.</p>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>inds_keep</strong><span class="classifier">numpy array</span></dt><dd><p>The indices of atoms within the replicates which are within rCut distance of the main cell</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="vv-props">
+<h2>vv props<a class="headerlink" href="#vv-props" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="gbpy.vv_props.Circum_O_R">
+<code class="sig-prename descclassname"><span class="pre">gbpy.vv_props.</span></code><code class="sig-name descname"><span class="pre">Circum_O_R</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertex_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/vv_props.html#Circum_O_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.vv_props.Circum_O_R" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function finds the center and the radius of the circumsphere of the every tetrahedron.
+Reference:
+Fiedler, Miroslav. Matrices and graphs in geometry. No. 139. Cambridge University Press, 2011.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>vertex_pos</strong><span class="classifier">numpy array</span></dt><dd><p>The position of vertices of a tetrahedron</p>
+</dd>
+<dt><strong>tol</strong><span class="classifier">float</span></dt><dd><p>Tolerance defined  to identify co-planar tetrahedrons</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>circum_center</strong><span class="classifier">numpy array</span></dt><dd><p>The center of the circum-sphere</p>
+</dd>
+<dt><strong>circum_rad</strong><span class="classifier">float</span></dt><dd><p>The radius of the circum-sphere</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.vv_props.triang_inds">
+<code class="sig-prename descclassname"><span class="pre">gbpy.vv_props.</span></code><code class="sig-name descname"><span class="pre">triang_inds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pts_w_imgs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gb1_inds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inds_arr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/vv_props.html#triang_inds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.vv_props.triang_inds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function finds the indices of atoms which make tetrahedrons with at least one GB atom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pts_w_imgs</strong><span class="classifier">numpy array</span></dt><dd><p>The position of atoms which are inside the main box and within rCut to the main box.</p>
+</dd>
+<dt><strong>gb1_inds</strong><span class="classifier">numpy array</span></dt><dd><p>Indices of the GB atoms</p>
+</dd>
+<dt><strong>inds_arr</strong><span class="classifier">numpy array</span></dt><dd><p>The atom indices of the initial unit cell with no replicates.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>tri_vertices</strong><span class="classifier">numpy array</span></dt><dd><p>Tetrahedrons with at least one corner in the GB region.</p>
+</dd>
+<dt><strong>gb_tri_inds1</strong><span class="classifier">numpy array</span></dt><dd><p>The indices of atoms which make tri_vertices tetrahedrons.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.vv_props.vv_props">
+<code class="sig-prename descclassname"><span class="pre">gbpy.vv_props.</span></code><code class="sig-name descname"><span class="pre">vv_props</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pts_w_imgs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tri_vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gb_tri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/vv_props.html#vv_props"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.vv_props.vv_props" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function finds the circum-center/sphere of tetrahedrons containing
+at least one GB atom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pts_w_imgs</strong><span class="classifier">numpy array</span></dt><dd><p>The position of atoms which are inside the main box and within rCut to the main box.</p>
+</dd>
+<dt><strong>tri_vertices</strong><span class="classifier">numpy array</span></dt><dd><p>Tetrahedrons with at least one corner in the GB region.</p>
+</dd>
+<dt><strong>gb_tri</strong><span class="classifier">numpy array</span></dt><dd><p>The indices of atoms which make tri_vertices tetrahedrons.</p>
+</dd>
+<dt><strong>lat_par</strong><span class="classifier">float</span></dt><dd><p>Lattice parameter for the crystal being simulated.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>cc_coors1</strong><span class="classifier">numpy array</span></dt><dd><p>The coordinates of the circum-center of the tetrahedrons</p>
+</dd>
+<dt><strong>cc_rad1</strong><span class="classifier">numpy array</span></dt><dd><p>The circum-radius of the tetrahedrons.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.vv_props.wrap_cc">
+<code class="sig-prename descclassname"><span class="pre">gbpy.vv_props.</span></code><code class="sig-name descname"><span class="pre">wrap_cc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/vv_props.html#wrap_cc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.vv_props.wrap_cc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function finds the indices of atoms making tetrahedrons</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cell1</strong><span class="classifier">numpy array</span></dt><dd><p>The simulation cell ( a 3*4 numpy array where the first 3 columns are the
+cell vectors and the last column is the box origin)</p>
+</dd>
+<dt><strong>pts</strong><span class="classifier">numpy array</span></dt><dd><p>Position of atoms in initial cell, the atoms within an rCut of the initial cell.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>pts1</strong><span class="classifier">numpy array</span></dt><dd><p>Position of atoms in initial cell, the atoms within an rCut of the initial cell,
+and the Voronoi coordinates as the new set of atoms.</p>
 </dd>
 </dl>
 </dd>
