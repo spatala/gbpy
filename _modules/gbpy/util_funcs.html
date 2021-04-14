@@ -1,0 +1,739 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gbpy.util_funcs &mdash; gbpy 0.post51+g9a06976 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> gbpy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.post51+g9a06976
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../min_versions.html">Minimum Version of Python and NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Modules.html">Modules</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">gbpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>gbpy.util_funcs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for gbpy.util_funcs</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">ovito.io</span> <span class="k">as</span> <span class="nn">oio</span>
+<span class="kn">import</span> <span class="nn">ovito.modifiers</span> <span class="k">as</span> <span class="nn">ovm</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
+<span class="kn">import</span> <span class="nn">gbpy.pad_dump_file</span> <span class="k">as</span> <span class="nn">pdf</span>
+<span class="kn">import</span> <span class="nn">bisect</span>
+<span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pkl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="compute_ovito_data"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.compute_ovito_data">[docs]</a><span class="k">def</span> <span class="nf">compute_ovito_data</span><span class="p">(</span><span class="n">filename0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the attributes of ovito</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    filename0 : string</span>
+<span class="sd">        The name of the input file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    data : class</span>
+<span class="sd">        all the attributes of data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pipeline</span> <span class="o">=</span> <span class="n">oio</span><span class="o">.</span><span class="n">import_file</span><span class="p">(</span><span class="n">filename0</span><span class="p">,</span> <span class="n">sort_particles</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">dmod</span> <span class="o">=</span> <span class="n">ovm</span><span class="o">.</span><span class="n">PolyhedralTemplateMatchingModifier</span><span class="p">(</span><span class="n">rmsd_cutoff</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">pipeline</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dmod</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="identify_pbc"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.identify_pbc">[docs]</a><span class="k">def</span> <span class="nf">identify_pbc</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function finds the non-periodic direction</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    data : class</span>
+<span class="sd">        all the attributes of data</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    non_pbc : int</span>
+<span class="sd">        The non-periodic direction. 0 , 1 or 2 which corresponds to</span>
+<span class="sd">        x, y and z direction, respectively.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pbc</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">pbc</span>
+    <span class="n">pbc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pbc</span><span class="p">)</span> <span class="o">+</span> <span class="mi">0</span>
+    <span class="n">non_pbc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pbc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">non_pbc</span></div>
+
+
+<div class="viewcode-block" id="box_size_reader"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.box_size_reader">[docs]</a><span class="k">def</span> <span class="nf">box_size_reader</span><span class="p">(</span><span class="n">dump_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function reads the box_bound from lammps dump file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    dump_name : string</span>
+<span class="sd">        The name of the lammps input file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    box_bound : np.array</span>
+<span class="sd">        The box bound read from lammps dump file which is 9 parameters: xlo, xhi, ylo,</span>
+<span class="sd">        yhi, zlo, zhi, xy, xz, yz</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dump_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">box_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">box_bound</span></div>
+
+
+<div class="viewcode-block" id="define_bounds"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.define_bounds">[docs]</a><span class="k">def</span> <span class="nf">define_bounds</span><span class="p">(</span><span class="n">box_bound</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to find the untilted, tilt, and box type.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    box_bound : np.array</span>
+<span class="sd">        The box bound read from lammps dump file which is 9 parameters: xlo, xhi, ylo,</span>
+<span class="sd">        yhi, zlo, zhi, xy, xz, yz</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    untilted : np.array</span>
+<span class="sd">        values of xlo, xhi, ylo, yhi, zlo, zhi.</span>
+<span class="sd">    tilt : np.array</span>
+<span class="sd">        For box type &quot;block&quot; this values id [].</span>
+<span class="sd">        For box type &quot;prism&quot; this value is [xy, yz, xz].</span>
+<span class="sd">    box_type : string</span>
+<span class="sd">        type of box which is eaither &quot;block&quot; or &quot;prism&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># boundaries of fix rigid</span>
+    <span class="n">siz_box</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">box_bound</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">siz_box</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">box_type</span> <span class="o">=</span> <span class="s2">&quot;block&quot;</span>
+        <span class="n">xy</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">xz</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">yz</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">tilt</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">box_type</span> <span class="o">=</span> <span class="s2">&quot;prism&quot;</span>
+        <span class="n">xy</span> <span class="o">=</span> <span class="n">box_bound</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">xz</span> <span class="o">=</span> <span class="n">box_bound</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">yz</span> <span class="o">=</span> <span class="n">box_bound</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">tilt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xy</span><span class="p">,</span> <span class="n">xz</span><span class="p">,</span> <span class="n">yz</span><span class="p">])</span>
+    <span class="n">xlo</span> <span class="o">=</span> <span class="n">box_bound</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">xy</span><span class="p">,</span> <span class="n">xz</span><span class="p">,</span> <span class="n">xy</span> <span class="o">+</span> <span class="n">xz</span><span class="p">]))</span>
+    <span class="n">xhi</span> <span class="o">=</span> <span class="n">box_bound</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">xy</span><span class="p">,</span> <span class="n">xz</span><span class="p">,</span> <span class="n">xy</span> <span class="o">+</span> <span class="n">xz</span><span class="p">]))</span>
+    <span class="n">ylo</span> <span class="o">=</span> <span class="n">box_bound</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">yz</span><span class="p">]))</span>
+    <span class="n">yhi</span> <span class="o">=</span> <span class="n">box_bound</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">yz</span><span class="p">]))</span>
+    <span class="n">zlo</span> <span class="o">=</span> <span class="n">box_bound</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">zhi</span> <span class="o">=</span> <span class="n">box_bound</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">untilted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">xlo</span><span class="p">,</span> <span class="n">xhi</span><span class="p">],</span> <span class="p">[</span><span class="n">ylo</span><span class="p">,</span> <span class="n">yhi</span><span class="p">],</span> <span class="p">[</span><span class="n">zlo</span><span class="p">,</span> <span class="n">zhi</span><span class="p">]])</span>
+
+    <span class="k">return</span> <span class="n">untilted</span><span class="p">,</span> <span class="n">tilt</span><span class="p">,</span> <span class="n">box_type</span></div>
+
+
+<div class="viewcode-block" id="RemProb"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.RemProb">[docs]</a><span class="k">def</span> <span class="nf">RemProb</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">CohEng</span><span class="p">,</span> <span class="n">GbIndex</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function finds The atomic removal probabilty.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    --------------</span>
+<span class="sd">    filename0 : string</span>
+<span class="sd">        The lammps dump file</span>
+<span class="sd">    CohEng	: float</span>
+<span class="sd">        The cohesive energy</span>
+<span class="sd">    GbIndex : numpy.ndarray</span>
+<span class="sd">        The index of atoms in GB</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    AtomicRemProb : float</span>
+<span class="sd">        The probabilty of removing an atom</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">GbAtomicEng</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">particle_properties</span><span class="p">[</span><span class="s1">&#39;c_eng&#39;</span><span class="p">][</span><span class="n">GbIndex</span><span class="p">]</span>
+    <span class="n">Excess_Eng</span> <span class="o">=</span> <span class="p">(</span><span class="n">GbAtomicEng</span> <span class="o">-</span> <span class="n">CohEng</span><span class="p">)</span>
+    <span class="n">Excess_Eng</span><span class="p">[</span><span class="n">Excess_Eng</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">Excess_Eng_Tot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Excess_Eng</span><span class="p">)</span>
+    <span class="n">p_rm</span> <span class="o">=</span> <span class="n">Excess_Eng</span><span class="o">/</span><span class="n">Excess_Eng_Tot</span>
+    <span class="k">return</span> <span class="n">p_rm</span></div>
+
+
+<div class="viewcode-block" id="RemIns_decision"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.RemIns_decision">[docs]</a><span class="k">def</span> <span class="nf">RemIns_decision</span><span class="p">(</span><span class="n">p_rm</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function finds The atomic removal probabilty.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    --------------</span>
+<span class="sd">    p_rm : numpy.ndarray</span>
+<span class="sd">        The probability of removing an atom</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    ID2change : integer</span>
+<span class="sd">        The ID of the atom which will be removed/inserted</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CS_prob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">p_rm</span><span class="p">)</span>
+    <span class="n">rand_num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="n">bisect</span><span class="o">.</span><span class="n">bisect_left</span><span class="p">(</span><span class="n">CS_prob</span><span class="p">,</span> <span class="n">rand_num</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">CS_prob</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">==</span> <span class="n">rand_num</span> <span class="ow">or</span> <span class="n">location</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ID2change</span> <span class="o">=</span> <span class="n">location</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ID2change</span> <span class="o">=</span> <span class="n">location</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">ID2change</span></div>
+
+
+<div class="viewcode-block" id="radi_normaliz"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.radi_normaliz">[docs]</a><span class="k">def</span> <span class="nf">radi_normaliz</span><span class="p">(</span><span class="n">cc_rad</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function finds the atomic insertion probabilty.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    --------------</span>
+<span class="sd">    cc_rad :</span>
+<span class="sd">        The circum-radius of the tetrahedrons.</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    rad_norm :</span>
+<span class="sd">        Probability of inserting an atom in every tetrahedron.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rad_norm</span> <span class="o">=</span> <span class="n">cc_rad</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cc_rad</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rad_norm</span></div>
+
+
+<div class="viewcode-block" id="choos_rem_ins"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.choos_rem_ins">[docs]</a><span class="k">def</span> <span class="nf">choos_rem_ins</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function makes the decision whether the trail operation is insertion or removal.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    --------------</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    decision : string</span>
+<span class="sd">        removal or insertion</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rand_num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rand_num</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;removal&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;insertion&quot;</span></div>
+
+
+<div class="viewcode-block" id="atom_insertion"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.atom_insertion">[docs]</a><span class="k">def</span> <span class="nf">atom_insertion</span><span class="p">(</span><span class="n">filename0</span><span class="p">,</span> <span class="n">path2dump</span><span class="p">,</span> <span class="n">cc_coors1</span><span class="p">,</span> <span class="n">atom_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function adds the inserted atom to the lammps dump file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    --------------</span>
+<span class="sd">    filename0 : string</span>
+<span class="sd">        The initial lammps dump file</span>
+<span class="sd">    path2dump : string</span>
+<span class="sd">        The path to dump the lammps dump file</span>
+<span class="sd">    cc_coors1 : numpy.ndarray</span>
+<span class="sd">        The coordinates of the circum-center of the tetrahedrons.</span>
+<span class="sd">    atom_id : numpy.ndarray</span>
+<span class="sd">        The atom ID of the inserted atom which is the ID of last atom + 1</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename0</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">new_line</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom_id</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; 1 &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cc_coors1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cc_coors1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cc_coors1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; .1 .2</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path2dump</span> <span class="o">+</span> <span class="s1">&#39;ins_dump&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="atom_removal"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.atom_removal">[docs]</a><span class="k">def</span> <span class="nf">atom_removal</span><span class="p">(</span><span class="n">filename0</span><span class="p">,</span> <span class="n">path2dump</span><span class="p">,</span> <span class="n">ID2change</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function removes the chosen atom from the lammps dump file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    --------------</span>
+<span class="sd">    filename0 : string</span>
+<span class="sd">        The lammps dump file</span>
+<span class="sd">    path2dump : string</span>
+<span class="sd">        The path to dump the lammps dump file</span>
+<span class="sd">    ID2change : int</span>
+<span class="sd">        The ID of the atom which will be removed</span>
+<span class="sd">    var : numpy.ndarray</span>
+<span class="sd">        The indices of the atom which will be removed.</span>
+<span class="sd">        This is just to check.</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename0</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0</span><span class="se">\n</span><span class="s1">&#39;</span>  <span class="c1"># step should be 0</span>
+    <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="k">assert</span> <span class="n">lines</span><span class="p">[</span><span class="n">ID2change</span> <span class="o">+</span> <span class="mi">9</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+    <span class="n">lines</span><span class="p">[</span><span class="n">ID2change</span> <span class="o">+</span> <span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>  <span class="c1"># 8 for the number of lines on the header</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path2dump</span> <span class="o">+</span> <span class="s1">&#39;rem_dump&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="cal_area"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.cal_area">[docs]</a><span class="k">def</span> <span class="nf">cal_area</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">non_p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function finds the area of the GB plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    --------------</span>
+<span class="sd">    data : class</span>
+<span class="sd">        all the attributes of data</span>
+<span class="sd">    non_p : integer</span>
+<span class="sd">        The non-periodic direction. 0 , 1 or 2 which corresponds to</span>
+<span class="sd">        x, y and z direction, respectively.</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    area : float</span>
+<span class="sd">        The surface area of the GB plane.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sim_cell</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cell</span>
+    <span class="n">arr0</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">p_arr</span><span class="p">(</span><span class="n">non_p</span><span class="p">)</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">sim_cell</span><span class="p">[:,</span> <span class="n">arr0</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">sim_cell</span><span class="p">[:,</span> <span class="n">arr0</span><span class="p">[</span><span class="mi">1</span><span class="p">]]))</span>
+    <span class="k">return</span> <span class="n">area</span>  <span class="c1"># in A</span></div>
+
+
+<div class="viewcode-block" id="cal_GB_E"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.cal_GB_E">[docs]</a><span class="k">def</span> <span class="nf">cal_GB_E</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">weight_1</span><span class="p">,</span> <span class="n">non_p</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">CohEng</span><span class="p">,</span> <span class="n">str_alg</span><span class="p">,</span> <span class="n">csc_tol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function finds the energy of the GB.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    --------------</span>
+<span class="sd">    data : class</span>
+<span class="sd">        all the attributes of data</span>
+<span class="sd">    non_p :</span>
+<span class="sd">        The non-periodic direction. 0 , 1 or 2 which corresponds to</span>
+<span class="sd">        x, y and z direction, respectively.</span>
+<span class="sd">    lat_par :</span>
+<span class="sd">        Lattice parameter for the crystal being simulated.</span>
+<span class="sd">    CohEng : float</span>
+<span class="sd">        The cohesive energy</span>
+<span class="sd">    str_alg : string</span>
+<span class="sd">        The algorithm used to find the atoms in the GB and the surfaces.</span>
+<span class="sd">        str_alg=&quot;csc&quot; which uses centrosymmetry parameter</span>
+<span class="sd">        str_alg=&quot;ptm&quot; which uses polyhedral template matching</span>
+<span class="sd">    csc_tol : float</span>
+<span class="sd">        The tolerance for identifing the atoms in the GB and surfaces using</span>
+<span class="sd">        the str_alg=&quot;csc&quot;</span>
+<span class="sd">    Return</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    E_GB : float</span>
+<span class="sd">        The enrgy of GB plane</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">GbRegion</span><span class="p">,</span> <span class="n">GbIndex</span><span class="p">,</span> <span class="n">GbWidth</span><span class="p">,</span> <span class="n">w_bottom_SC</span><span class="p">,</span> <span class="n">w_top_SC</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">GB_finder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">non_p</span><span class="p">,</span> <span class="n">str_alg</span><span class="p">,</span> <span class="n">csc_tol</span><span class="p">)</span>
+
+    <span class="n">top_min</span> <span class="o">=</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">top_max</span> <span class="o">=</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">w_top_SC</span>
+
+    <span class="n">max_pos_area</span> <span class="o">=</span> <span class="n">weight_1</span> <span class="o">*</span> <span class="p">(</span><span class="n">top_max</span> <span class="o">-</span> <span class="n">top_min</span><span class="p">)</span> <span class="o">+</span> <span class="n">top_min</span>
+
+    <span class="n">bot_min</span> <span class="o">=</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">w_bottom_SC</span>
+    <span class="n">bot_max</span> <span class="o">=</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">min_pos_area</span> <span class="o">=</span> <span class="n">weight_1</span> <span class="o">*</span> <span class="p">(</span><span class="n">bot_max</span> <span class="o">-</span> <span class="n">bot_min</span><span class="p">)</span> <span class="o">+</span> <span class="n">bot_min</span>
+
+    <span class="n">position_np</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">particles</span><span class="p">[</span><span class="s1">&#39;Position&#39;</span><span class="p">][</span><span class="o">...</span><span class="p">][:,</span> <span class="n">non_p</span><span class="p">]</span>
+    <span class="n">atom_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">position_np</span> <span class="o">&gt;</span> <span class="n">min_pos_area</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&lt;</span> <span class="n">max_pos_area</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">E_excess</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">particles</span><span class="p">[</span><span class="s1">&#39;c_eng&#39;</span><span class="p">][</span><span class="o">...</span><span class="p">][</span><span class="n">atom_id</span><span class="p">]</span> <span class="o">-</span> <span class="n">CohEng</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">cal_area</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">non_p</span><span class="p">)</span>
+    <span class="n">E_GB</span> <span class="o">=</span> <span class="mf">16021.7733</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">E_excess</span><span class="p">)</span> <span class="o">/</span> <span class="n">area</span>  <span class="c1"># convert to mj/m^2</span>
+    <span class="k">return</span> <span class="n">E_GB</span></div>
+
+
+<div class="viewcode-block" id="p_boltz_func"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.p_boltz_func">[docs]</a><span class="k">def</span> <span class="nf">p_boltz_func</span><span class="p">(</span><span class="n">dE</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">Tm</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function finds the botzman probability of acceptance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    --------------</span>
+<span class="sd">    dE : float</span>
+<span class="sd">        The energy difference the initial structure and the structure after the trial operation.</span>
+<span class="sd">    area : float</span>
+<span class="sd">        The surface area of the GB plane.</span>
+<span class="sd">    Tm : float</span>
+<span class="sd">        The melting temperature of the material</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    p_boltz : float</span>
+<span class="sd">        The boltzman probaility</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">Tm</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># in K</span>
+    <span class="n">kb</span> <span class="o">=</span> <span class="mf">1.3806485279</span> <span class="o">*</span> <span class="mf">10e-23</span> <span class="o">*</span> <span class="mf">1e3</span>  <span class="c1"># mj/K</span>
+    <span class="n">dE</span> <span class="o">=</span> <span class="n">dE</span> <span class="o">*</span> <span class="n">area</span> <span class="o">*</span> <span class="mf">1e-20</span>
+    <span class="n">p_boltz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dE</span> <span class="o">/</span> <span class="n">kb</span> <span class="o">/</span> <span class="n">T</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">p_boltz</span></div>
+
+
+<div class="viewcode-block" id="decide"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.decide">[docs]</a><span class="k">def</span> <span class="nf">decide</span><span class="p">(</span><span class="n">p_boltz</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function decides whether the new structure is accepted or not.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    --------------</span>
+<span class="sd">    p_boltz : float</span>
+<span class="sd">        The boltzman probaility</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    decision : string</span>
+<span class="sd">        The decision is either &quot;accept&quot; or &quot;reject&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rand_num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rand_num</span> <span class="o">&gt;</span> <span class="n">p_boltz</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;reject&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;accept&quot;</span></div>
+
+
+<div class="viewcode-block" id="check_SC_reg"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.check_SC_reg">[docs]</a><span class="k">def</span> <span class="nf">check_SC_reg</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">rCut</span><span class="p">,</span> <span class="n">non_p</span><span class="p">,</span> <span class="n">tol_fix_reg</span><span class="p">,</span> <span class="n">SC_tol</span><span class="p">,</span> <span class="n">str_alg</span><span class="p">,</span> <span class="n">csc_tol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to identify whether single crystal region on eaither side of the GB is</span>
+<span class="sd">    bigger than a tolerance (SC_tol)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    data :</span>
+<span class="sd">        Data object computed using OVITO I/O</span>
+<span class="sd">    lat_par :</span>
+<span class="sd">        Lattice parameter for the crystal being simulated</span>
+<span class="sd">    rCut :</span>
+<span class="sd">        Cut-off radius for computing Delaunay triangulations</span>
+<span class="sd">    non_pbc : int</span>
+<span class="sd">        The non-periodic direction. 0 , 1 or 2 which corresponds to</span>
+<span class="sd">        x, y and z direction, respectively.</span>
+<span class="sd">    tol_fix_reg : float</span>
+<span class="sd">        The user defined tolerance for the size of rigid translation region in lammps simulation.</span>
+<span class="sd">    SC_tol : float</span>
+<span class="sd">        The user defined tolerance for the minimum size of single crystal region.</span>
+<span class="sd">    str_alg : string</span>
+<span class="sd">        The algorithm used to find the atoms in the GB and the surfaces.</span>
+<span class="sd">        str_alg=&quot;csc&quot; which uses centrosymmetry parameter</span>
+<span class="sd">        str_alg=&quot;ptm&quot; which uses polyhedral template matching</span>
+<span class="sd">    csc_tol : float</span>
+<span class="sd">        The tolerance for identifing the atoms in the GB and surfaces using</span>
+<span class="sd">        the str_alg=&quot;csc&quot;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    SC_boolean :</span>
+<span class="sd">        A boolean list for low/top or left/right single crytal region. True means the width &gt; SC_tol.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">GbRegion</span><span class="p">,</span> <span class="n">GbIndex</span><span class="p">,</span> <span class="n">GbWidth</span><span class="p">,</span> <span class="n">w_bottom_SC</span><span class="p">,</span> <span class="n">w_top_SC</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">GB_finder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">non_p</span><span class="p">,</span> <span class="n">str_alg</span><span class="p">,</span> <span class="n">csc_tol</span><span class="p">)</span>
+
+    <span class="n">SC_boolean</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1"># w_bottom_SC = w_bottom_SC - tol_fix_reg</span>
+    <span class="c1"># w_top_SC = w_top_SC - tol_fix_reg</span>
+    <span class="k">if</span> <span class="n">w_bottom_SC</span> <span class="o">&lt;</span> <span class="n">SC_tol</span><span class="p">:</span>
+        <span class="n">SC_boolean</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">w_top_SC</span> <span class="o">&lt;</span> <span class="n">SC_tol</span><span class="p">:</span>
+        <span class="n">SC_boolean</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">SC_boolean</span></div>
+
+
+<div class="viewcode-block" id="add_sc"><a class="viewcode-back" href="../../Modules.html#gbpy.util_funcs.add_sc">[docs]</a><span class="k">def</span> <span class="nf">add_sc</span><span class="p">(</span><span class="n">pkl_file</span><span class="p">,</span> <span class="n">data_0</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">rCut</span><span class="p">,</span> <span class="n">non_p</span><span class="p">,</span> <span class="n">tol_fix_reg</span><span class="p">,</span> <span class="n">SC_tol</span><span class="p">,</span> <span class="n">str_alg</span><span class="p">,</span> <span class="n">csc_tol</span><span class="p">,</span> <span class="n">box_bound</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function adds single crystal region to the simulation case the GB get close to the edges</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    pkl_file :</span>
+<span class="sd">    data_0 :</span>
+<span class="sd">    lat_par :</span>
+<span class="sd">        Lattice parameter for the crystal being simulated.</span>
+<span class="sd">    rCut :</span>
+<span class="sd">        Cut-off radius for computing Delaunay triangulations</span>
+<span class="sd">    non_pbc : int</span>
+<span class="sd">        The non-periodic direction. 0 , 1 or 2 which corresponds to</span>
+<span class="sd">        x, y and z direction, respectively.</span>
+<span class="sd">    tol_fix_reg : float</span>
+<span class="sd">        The user defined tolerance for the size of rigid translation region in lammps simulation.</span>
+<span class="sd">    SC_tol : float</span>
+<span class="sd">        The user defined tolerance for the minimum size of single crystal region.</span>
+<span class="sd">    str_alg : string</span>
+<span class="sd">        The algorithm used to find the atoms in the GB and the surfaces.</span>
+<span class="sd">        str_alg=&quot;csc&quot; which uses centrosymmetry parameter</span>
+<span class="sd">        str_alg=&quot;ptm&quot; which uses polyhedral template matching</span>
+<span class="sd">    csc_tol : float</span>
+<span class="sd">        The tolerance for identifing the atoms in the GB and surfaces using</span>
+<span class="sd">        the str_alg=&quot;csc&quot;</span>
+<span class="sd">    box_bound : np.array</span>
+<span class="sd">        The box bound read from lammps dump file which is 9 parameters: xlo, xhi, ylo,</span>
+<span class="sd">        yhi, zlo, zhi, xy, xz, yz</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    uniq_atoms : numpy.ndarray</span>
+<span class="sd">        The ID, atom type and position of the atoms in the single crystal region which will be added</span>
+<span class="sd">        to the lammps dump file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">GbRegion</span><span class="p">,</span> <span class="n">GbIndex</span><span class="p">,</span> <span class="n">GbWidth</span><span class="p">,</span> <span class="n">w_bottom_SC</span><span class="p">,</span> <span class="n">w_top_SC</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">GB_finder</span><span class="p">(</span><span class="n">data_0</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">non_p</span><span class="p">,</span> <span class="n">str_alg</span><span class="p">,</span> <span class="n">csc_tol</span><span class="p">)</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">data_0</span><span class="o">.</span><span class="n">particles</span><span class="p">[</span><span class="s1">&#39;Position&#39;</span><span class="p">][</span><span class="o">...</span><span class="p">]</span>
+    <span class="n">jar</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pkl_file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+    <span class="n">gb_attr</span> <span class="o">=</span> <span class="n">pkl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">jar</span><span class="p">)</span>
+    <span class="n">jar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">sim_cell</span> <span class="o">=</span> <span class="n">gb_attr</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">]</span>
+    <span class="n">point1</span> <span class="o">=</span> <span class="n">gb_attr</span><span class="p">[</span><span class="s1">&#39;lpts&#39;</span><span class="p">]</span>
+    <span class="n">point2</span> <span class="o">=</span> <span class="n">gb_attr</span><span class="p">[</span><span class="s1">&#39;upts&#39;</span><span class="p">]</span>
+    <span class="n">sum_p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># sum_p2 = np.sum(point2, axis=0)</span>
+    <span class="k">if</span> <span class="n">sum_p1</span><span class="p">[</span><span class="n">non_p</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">l_pts</span> <span class="o">=</span> <span class="n">point1</span>
+        <span class="n">u_pts</span> <span class="o">=</span> <span class="n">point2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">l_pts</span> <span class="o">=</span> <span class="n">point2</span>
+        <span class="n">u_pts</span> <span class="o">=</span> <span class="n">point1</span>
+
+    <span class="k">if</span> <span class="n">non_p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">sim_cell</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">sim_cell</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">non_p</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">sim_cell</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">sim_cell</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">sim_cell</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">sim_cell</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">img_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="k">if</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">l_pts0</span> <span class="o">=</span> <span class="n">l_pts</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">l_pts0</span> <span class="o">+</span> <span class="n">img_vec</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">d1</span> <span class="o">+</span> <span class="n">img_vec</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">d2</span>
+            <span class="n">l_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">l_pts</span><span class="p">,</span> <span class="n">new</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">u_pts0</span> <span class="o">=</span> <span class="n">u_pts</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">u_pts0</span> <span class="o">+</span> <span class="n">img_vec</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">d1</span> <span class="o">+</span> <span class="n">img_vec</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">d2</span>
+            <span class="n">u_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">u_pts</span><span class="p">,</span> <span class="n">new</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">min_gb</span> <span class="o">=</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+        <span class="n">id2del</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">position</span><span class="p">[:,</span> <span class="n">non_p</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_gb</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">new_atoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">id2del</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">atom_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">new_atoms</span><span class="p">[:,</span> <span class="n">non_p</span><span class="p">])</span>
+        <span class="n">ref_atom</span> <span class="o">=</span> <span class="n">new_atoms</span><span class="p">[</span><span class="n">atom_id</span><span class="p">]</span>
+        <span class="n">l_pts</span> <span class="o">=</span> <span class="n">l_pts</span> <span class="o">+</span> <span class="n">ref_atom</span>
+        <span class="n">new_l_con</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">l_pts</span><span class="p">,</span> <span class="n">new_atoms</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">max_gb</span> <span class="o">=</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+        <span class="n">id2del</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">position</span><span class="p">[:,</span> <span class="n">non_p</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_gb</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">new_atoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">id2del</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">atom_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">new_atoms</span><span class="p">[:,</span> <span class="n">non_p</span><span class="p">])</span>
+        <span class="n">ref_atom</span> <span class="o">=</span> <span class="n">new_atoms</span><span class="p">[</span><span class="n">atom_id</span><span class="p">]</span>
+        <span class="n">u_pts</span> <span class="o">=</span> <span class="n">u_pts</span> <span class="o">+</span> <span class="n">ref_atom</span>
+        <span class="n">new_l_con</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">u_pts</span><span class="p">,</span> <span class="n">new_atoms</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">new_l_con</span><span class="p">[:,</span> <span class="n">non_p</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_l_con</span><span class="p">[:,</span> <span class="n">non_p</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">GbRegion</span><span class="p">)</span>
+    <span class="n">new_l_con</span> <span class="o">=</span> <span class="n">new_l_con</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">new_l_con</span><span class="p">[:,</span> <span class="n">non_p</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">box_bound</span><span class="p">[</span><span class="n">non_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">&amp;</span>
+                                   <span class="p">(</span><span class="n">new_l_con</span><span class="p">[:,</span> <span class="n">non_p</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">box_bound</span><span class="p">[</span><span class="n">non_p</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">uniq_atoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">new_l_con</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">len_all</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">uniq_atoms</span><span class="p">)</span>
+    <span class="n">ID</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">len_all</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">type_atom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">len_all</span><span class="p">)</span>
+    <span class="n">type_atom</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">new_atoms</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">type_atom</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">new_atoms</span><span class="p">):</span><span class="n">len_all</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">type_atom</span> <span class="o">=</span> <span class="n">type_atom</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">uniq_atoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">ID</span><span class="p">,</span> <span class="n">type_atom</span><span class="p">,</span>  <span class="n">uniq_atoms</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">uniq_atoms</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Leila Khalili.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Modules &mdash; gbpy 0.post51+g34c14fe documentation</title>
+  <title>Modules &mdash; gbpy 0.post51+g9a06976 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.post51+g34c14fe
+                0.post51+g9a06976
               </div>
             
           
@@ -98,6 +98,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#pad-dump-file">Pad Dump File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#vv-props">vv props</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utility-function">Utility Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lammps-script-writer">Lammps Script Writer</a></li>
 </ul>
 </li>
 </ul>
@@ -546,6 +548,428 @@ cell vectors and the last column is the box origin)</p>
 <dd class="field-even"><dl class="simple">
 <dt><strong>pts1</strong><span class="classifier">numpy array</span></dt><dd><p>Position of atoms in initial cell, the atoms within an rCut of the initial cell,
 and the Voronoi coordinates as the new set of atoms.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-function">
+<h2>Utility Function<a class="headerlink" href="#utility-function" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="gbpy.util_funcs.compute_ovito_data">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">compute_ovito_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#compute_ovito_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.compute_ovito_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the attributes of ovito</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename0</strong><span class="classifier">string</span></dt><dd><p>The name of the input file.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">class</span></dt><dd><p>all the attributes of data</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.identify_pbc">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">identify_pbc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#identify_pbc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.identify_pbc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function finds the non-periodic direction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">class</span></dt><dd><p>all the attributes of data</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>non_pbc</strong><span class="classifier">int</span></dt><dd><p>The non-periodic direction. 0 , 1 or 2 which corresponds to
+x, y and z direction, respectively.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.box_size_reader">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">box_size_reader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dump_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#box_size_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.box_size_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function reads the box_bound from lammps dump file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dump_name</strong><span class="classifier">string</span></dt><dd><p>The name of the lammps input file.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>box_bound</strong><span class="classifier">np.array</span></dt><dd><p>The box bound read from lammps dump file which is 9 parameters: xlo, xhi, ylo,
+yhi, zlo, zhi, xy, xz, yz</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.define_bounds">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">define_bounds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box_bound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#define_bounds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.define_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to find the untilted, tilt, and box type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>box_bound</strong><span class="classifier">np.array</span></dt><dd><p>The box bound read from lammps dump file which is 9 parameters: xlo, xhi, ylo,
+yhi, zlo, zhi, xy, xz, yz</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>untilted</strong><span class="classifier">np.array</span></dt><dd><p>values of xlo, xhi, ylo, yhi, zlo, zhi.</p>
+</dd>
+<dt><strong>tilt</strong><span class="classifier">np.array</span></dt><dd><p>For box type “block” this values id [].
+For box type “prism” this value is [xy, yz, xz].</p>
+</dd>
+<dt><strong>box_type</strong><span class="classifier">string</span></dt><dd><p>type of box which is eaither “block” or “prism”.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.RemProb">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">RemProb</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CohEng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GbIndex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#RemProb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.RemProb" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function finds The atomic removal probabilty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename0</strong><span class="classifier">string</span></dt><dd><p>The lammps dump file</p>
+</dd>
+<dt><strong>CohEng</strong><span class="classifier">float</span></dt><dd><p>The cohesive energy</p>
+</dd>
+<dt><strong>GbIndex</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>The index of atoms in GB</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.RemIns_decision">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">RemIns_decision</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_rm</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#RemIns_decision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.RemIns_decision" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function finds The atomic removal probabilty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p_rm</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>The probability of removing an atom</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.radi_normaliz">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">radi_normaliz</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cc_rad</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#radi_normaliz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.radi_normaliz" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function finds the atomic insertion probabilty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cc_rad :</strong></dt><dd><p>The circum-radius of the tetrahedrons.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.choos_rem_ins">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">choos_rem_ins</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#choos_rem_ins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.choos_rem_ins" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function makes the decision whether the trail operation is insertion or removal.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.atom_insertion">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">atom_insertion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path2dump</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cc_coors1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#atom_insertion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.atom_insertion" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function adds the inserted atom to the lammps dump file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename0</strong><span class="classifier">string</span></dt><dd><p>The initial lammps dump file</p>
+</dd>
+<dt><strong>path2dump</strong><span class="classifier">string</span></dt><dd><p>The path to dump the lammps dump file</p>
+</dd>
+<dt><strong>cc_coors1</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>The coordinates of the circum-center of the tetrahedrons.</p>
+</dd>
+<dt><strong>atom_id</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>The atom ID of the inserted atom which is the ID of last atom + 1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.atom_removal">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">atom_removal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path2dump</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ID2change</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#atom_removal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.atom_removal" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function removes the chosen atom from the lammps dump file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename0</strong><span class="classifier">string</span></dt><dd><p>The lammps dump file</p>
+</dd>
+<dt><strong>path2dump</strong><span class="classifier">string</span></dt><dd><p>The path to dump the lammps dump file</p>
+</dd>
+<dt><strong>ID2change</strong><span class="classifier">int</span></dt><dd><p>The ID of the atom which will be removed</p>
+</dd>
+<dt><strong>var</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>The indices of the atom which will be removed.
+This is just to check.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.cal_area">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">cal_area</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#cal_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.cal_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function finds the area of the GB plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">class</span></dt><dd><p>all the attributes of data</p>
+</dd>
+<dt><strong>non_p</strong><span class="classifier">integer</span></dt><dd><p>The non-periodic direction. 0 , 1 or 2 which corresponds to
+x, y and z direction, respectively.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.cal_GB_E">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">cal_GB_E</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CohEng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str_alg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csc_tol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#cal_GB_E"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.cal_GB_E" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function finds the energy of the GB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">class</span></dt><dd><p>all the attributes of data</p>
+</dd>
+<dt><strong>non_p :</strong></dt><dd><p>The non-periodic direction. 0 , 1 or 2 which corresponds to
+x, y and z direction, respectively.</p>
+</dd>
+<dt><strong>lat_par :</strong></dt><dd><p>Lattice parameter for the crystal being simulated.</p>
+</dd>
+<dt><strong>CohEng</strong><span class="classifier">float</span></dt><dd><p>The cohesive energy</p>
+</dd>
+<dt><strong>str_alg</strong><span class="classifier">string</span></dt><dd><p>The algorithm used to find the atoms in the GB and the surfaces.
+str_alg=”csc” which uses centrosymmetry parameter
+str_alg=”ptm” which uses polyhedral template matching</p>
+</dd>
+<dt><strong>csc_tol</strong><span class="classifier">float</span></dt><dd><p>The tolerance for identifing the atoms in the GB and surfaces using
+the str_alg=”csc”</p>
+</dd>
+<dt><strong>Return</strong></dt><dd></dd>
+<dt><strong>—————-</strong></dt><dd></dd>
+<dt><strong>E_GB</strong><span class="classifier">float</span></dt><dd><p>The enrgy of GB plane</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.p_boltz_func">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">p_boltz_func</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tm</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#p_boltz_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.p_boltz_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function finds the botzman probability of acceptance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dE</strong><span class="classifier">float</span></dt><dd><p>The energy difference the initial structure and the structure after the trial operation.</p>
+</dd>
+<dt><strong>area</strong><span class="classifier">float</span></dt><dd><p>The surface area of the GB plane.</p>
+</dd>
+<dt><strong>Tm</strong><span class="classifier">float</span></dt><dd><p>The melting temperature of the material</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.decide">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">decide</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_boltz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#decide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.decide" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function decides whether the new structure is accepted or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p_boltz</strong><span class="classifier">float</span></dt><dd><p>The boltzman probaility</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.check_SC_reg">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">check_SC_reg</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rCut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_fix_reg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SC_tol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str_alg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csc_tol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#check_SC_reg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.check_SC_reg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to identify whether single crystal region on eaither side of the GB is
+bigger than a tolerance (SC_tol)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data :</strong></dt><dd><p>Data object computed using OVITO I/O</p>
+</dd>
+<dt><strong>lat_par :</strong></dt><dd><p>Lattice parameter for the crystal being simulated</p>
+</dd>
+<dt><strong>rCut :</strong></dt><dd><p>Cut-off radius for computing Delaunay triangulations</p>
+</dd>
+<dt><strong>non_pbc</strong><span class="classifier">int</span></dt><dd><p>The non-periodic direction. 0 , 1 or 2 which corresponds to
+x, y and z direction, respectively.</p>
+</dd>
+<dt><strong>tol_fix_reg</strong><span class="classifier">float</span></dt><dd><p>The user defined tolerance for the size of rigid translation region in lammps simulation.</p>
+</dd>
+<dt><strong>SC_tol</strong><span class="classifier">float</span></dt><dd><p>The user defined tolerance for the minimum size of single crystal region.</p>
+</dd>
+<dt><strong>str_alg</strong><span class="classifier">string</span></dt><dd><p>The algorithm used to find the atoms in the GB and the surfaces.
+str_alg=”csc” which uses centrosymmetry parameter
+str_alg=”ptm” which uses polyhedral template matching</p>
+</dd>
+<dt><strong>csc_tol</strong><span class="classifier">float</span></dt><dd><p>The tolerance for identifing the atoms in the GB and surfaces using
+the str_alg=”csc”</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>SC_boolean :</dt><dd><p>A boolean list for low/top or left/right single crytal region. True means the width &gt; SC_tol.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.util_funcs.add_sc">
+<code class="sig-prename descclassname"><span class="pre">gbpy.util_funcs.</span></code><code class="sig-name descname"><span class="pre">add_sc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkl_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rCut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_fix_reg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SC_tol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str_alg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csc_tol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_bound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/util_funcs.html#add_sc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.util_funcs.add_sc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function adds single crystal region to the simulation case the GB get close to the edges</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pkl_file :</strong></dt><dd></dd>
+<dt><strong>data_0 :</strong></dt><dd></dd>
+<dt><strong>lat_par :</strong></dt><dd><p>Lattice parameter for the crystal being simulated.</p>
+</dd>
+<dt><strong>rCut :</strong></dt><dd><p>Cut-off radius for computing Delaunay triangulations</p>
+</dd>
+<dt><strong>non_pbc</strong><span class="classifier">int</span></dt><dd><p>The non-periodic direction. 0 , 1 or 2 which corresponds to
+x, y and z direction, respectively.</p>
+</dd>
+<dt><strong>tol_fix_reg</strong><span class="classifier">float</span></dt><dd><p>The user defined tolerance for the size of rigid translation region in lammps simulation.</p>
+</dd>
+<dt><strong>SC_tol</strong><span class="classifier">float</span></dt><dd><p>The user defined tolerance for the minimum size of single crystal region.</p>
+</dd>
+<dt><strong>str_alg</strong><span class="classifier">string</span></dt><dd><p>The algorithm used to find the atoms in the GB and the surfaces.
+str_alg=”csc” which uses centrosymmetry parameter
+str_alg=”ptm” which uses polyhedral template matching</p>
+</dd>
+<dt><strong>csc_tol</strong><span class="classifier">float</span></dt><dd><p>The tolerance for identifing the atoms in the GB and surfaces using
+the str_alg=”csc”</p>
+</dd>
+<dt><strong>box_bound</strong><span class="classifier">np.array</span></dt><dd><p>The box bound read from lammps dump file which is 9 parameters: xlo, xhi, ylo,
+yhi, zlo, zhi, xy, xz, yz</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>uniq_atoms</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>The ID, atom type and position of the atoms in the single crystal region which will be added
+to the lammps dump file.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="lammps-script-writer">
+<h2>Lammps Script Writer<a class="headerlink" href="#lammps-script-writer" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="gbpy.lammps_dump_writer.lammps_box">
+<code class="sig-prename descclassname"><span class="pre">gbpy.lammps_dump_writer.</span></code><code class="sig-name descname"><span class="pre">lammps_box</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkl_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/lammps_dump_writer.html#lammps_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.lammps_dump_writer.lammps_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function calculates the box bound and the atom coordinates of the GB simulation.
+Ref: <a class="reference external" href="https://lammps.sandia.gov/doc/Howto_triclinic.html">https://lammps.sandia.gov/doc/Howto_triclinic.html</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pkl_name :</strong></dt><dd><p>The name of the pkl file which contains the simulation cell ( a 3*4 numpy array
+where the first 3 columns are the cell vectors and the last column is the box origin),
+the cordinates of the upper and lower grain.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>box_bound :</dt><dd><p>The box bound needed to write lammps dump file which is 9 parameters: xlo, xhi, ylo,
+yhi, zlo, zhi, xy, xz, yz</p>
+</dd>
+<dt>dump_lamp :</dt><dd><p>A numpy nd.array having atom ID, atom type( 1 for upper grain and 2 for lower grain), x, y, z</p>
+</dd>
+<dt>box_type :</dt><dd><p>The type of simulation box which is eaither “prism” or “block”</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.lammps_dump_writer.box_bound_func">
+<code class="sig-prename descclassname"><span class="pre">gbpy.lammps_dump_writer.</span></code><code class="sig-name descname"><span class="pre">box_bound_func</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_cell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/lammps_dump_writer.html#box_bound_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.lammps_dump_writer.box_bound_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function finds the simulation cell type and the bounds of the
+simulation cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sim_cell: numpy.ndarray</strong></dt><dd></dd>
+<dt><strong>A 3x4 matrix (with column-major ordering). The first</strong></dt><dd></dd>
+<dt><strong>three columns of the matrix represent the three cell</strong></dt><dd></dd>
+<dt><strong>vectors and the last column is the position of the cell’s origin.</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>box_bound :</dt><dd><p>The box bound needed to write lammps dump file which is 9 parameters: xlo, xhi, ylo,
+yhi, zlo, zhi, xy, xz, yz</p>
+</dd>
+<dt>box_type :</dt><dd><p>The type of simulation box which is eaither “prism” or “block”</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.lammps_dump_writer.write_lammps_dump">
+<code class="sig-prename descclassname"><span class="pre">gbpy.lammps_dump_writer.</span></code><code class="sig-name descname"><span class="pre">write_lammps_dump</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dump_lamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/lammps_dump_writer.html#write_lammps_dump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.lammps_dump_writer.write_lammps_dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function writes the lammps dump file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename0 :</strong></dt><dd><p>Name of the lammps dump file</p>
+</dd>
+<dt><strong>box_bound :</strong></dt><dd><p>The box bound needed to write lammps dump file which is 9 parameters: xlo, xhi, ylo, yhi,
+zlo, zhi, xy, xz, yz</p>
+</dd>
+<dt><strong>dump_lamp :</strong></dt><dd><p>A numpy nd.array having atom ID, atom type( 1 for upper grain and 2 for lower grain), x, y, z</p>
 </dd>
 </dl>
 </dd>
