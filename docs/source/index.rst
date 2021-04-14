@@ -9,6 +9,7 @@ gbpy Documentation
 .. toctree::
    :maxdepth: 2
 
+   get_started
    installation
    usage
    release-history
