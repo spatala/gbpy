@@ -23,3 +23,14 @@ Pad Dump File
 .. autofunction:: gbpy.pad_dump_file.del_inds
 
 .. autofunction:: gbpy.pad_dump_file.inds_to_keep
+
+vv props
+--------------------
+
+.. autofunction:: gbpy.vv_props.Circum_O_R
+
+.. autofunction:: gbpy.vv_props.triang_inds
+
+.. autofunction:: gbpy.vv_props.vv_props
+
+.. autofunction:: gbpy.vv_props.wrap_cc
