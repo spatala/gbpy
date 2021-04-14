@@ -8,5 +8,4 @@ Tutorials
 .. toctree::
 
     
-    enumerate_byxtal
-    Basis_2D_Plane
+    create_cubic_surface_slabs_fcc
