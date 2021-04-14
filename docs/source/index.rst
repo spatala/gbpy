@@ -13,4 +13,3 @@ gbpy Documentation
    usage
    release-history
    min_versions
-   Tutorials/index
