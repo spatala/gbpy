@@ -1,0 +1,642 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gbpy.pad_dump_file &mdash; gbpy 0.post50+gd60611f documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> gbpy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.post50+gd60611f
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../min_versions.html">Minimum Version of Python and NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Modules.html">Modules</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">gbpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>gbpy.pad_dump_file</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for gbpy.pad_dump_file</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="p_arr"><a class="viewcode-back" href="../../Modules.html#gbpy.pad_dump_file.p_arr">[docs]</a><span class="k">def</span> <span class="nf">p_arr</span><span class="p">(</span><span class="n">non_p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function creates an array for the periodic direction.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    non_pbc : int</span>
+<span class="sd">        The non-periodic direction. 0 , 1 or 2 which corresponds to</span>
+<span class="sd">        x, y and z direction, respectively.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arr0 : numpy array</span>
+<span class="sd">        A 1*2 array having the periodic directions.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="n">arr0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">non_p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">arr0</span></div>
+
+
+<div class="viewcode-block" id="pad_dump_file"><a class="viewcode-back" href="../../Modules.html#gbpy.pad_dump_file.pad_dump_file">[docs]</a><span class="k">def</span> <span class="nf">pad_dump_file</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">rCut</span><span class="p">,</span> <span class="n">non_p</span><span class="p">,</span> <span class="n">str_alg</span><span class="p">,</span> <span class="n">csc_tol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to take as input the dump data (from OVITO),find the GB atoms and</span>
+<span class="sd">    add padding to the GB atoms (including images) within rCut.</span>
+<span class="sd">    These atoms (with padding) will be triangulated to compute Voronoi vertices and their radii.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    data : class</span>
+<span class="sd">        Data object computed using OVITO I/O</span>
+<span class="sd">    rCut : float</span>
+<span class="sd">        Cut-off radius for computing Delaunay triangulations</span>
+<span class="sd">    non_pbc : int</span>
+<span class="sd">        The non-periodic direction. 0 , 1 or 2 which corresponds to</span>
+<span class="sd">        x, y and z direction, respectively.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pts_w_imgs : numpy.ndarray</span>
+<span class="sd">        Points of interest (GB atoms and neighbors) on which Delaunay triangulation is called.</span>
+<span class="sd">    gb1_inds : numpy.ndarray</span>
+<span class="sd">        Indices of the GB atoms</span>
+<span class="sd">    inds_arr : numpy.ndarray</span>
+<span class="sd">        The atom indices of the initial unit cell with no replicates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">GbRegion</span><span class="p">,</span> <span class="n">GbIndex</span><span class="p">,</span> <span class="n">GbWidth</span><span class="p">,</span> <span class="n">w_bottom_SC</span><span class="p">,</span> <span class="n">w_top_SC</span> <span class="o">=</span> <span class="n">GB_finder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">non_p</span><span class="p">,</span> <span class="n">str_alg</span><span class="p">,</span> <span class="n">csc_tol</span><span class="p">)</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">p_arr</span><span class="p">(</span><span class="n">non_p</span><span class="p">)</span>
+
+    <span class="n">sim_cell</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
+    <span class="n">sim_nonp_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sim_cell</span><span class="p">[:,</span> <span class="n">non_p</span><span class="p">])</span>
+    <span class="n">sim_1vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sim_cell</span><span class="p">[:,</span> <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+    <span class="n">sim_2vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sim_cell</span><span class="p">[:,</span> <span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">sim_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sim_cell</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">])</span>
+
+    <span class="n">p1_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sim_1vec</span><span class="p">[</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">sim_1vec</span><span class="p">[</span><span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">]]])</span>
+    <span class="n">p2_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sim_2vec</span><span class="p">[</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">sim_2vec</span><span class="p">[</span><span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">]]])</span>
+    <span class="p">[</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_rep_2d</span><span class="p">(</span><span class="n">p1_vec</span><span class="p">,</span> <span class="n">p2_vec</span><span class="p">,</span> <span class="n">rCut</span><span class="p">)</span>
+
+    <span class="n">pts1</span><span class="p">,</span> <span class="n">gb1_inds</span> <span class="o">=</span> <span class="n">pad_gb_perp</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">GbRegion</span><span class="p">,</span> <span class="n">GbIndex</span><span class="p">,</span> <span class="n">rCut</span><span class="p">,</span> <span class="n">non_p</span><span class="p">)</span>
+    <span class="n">pts_w_imgs</span><span class="p">,</span> <span class="n">inds_array</span> <span class="o">=</span> <span class="n">create_imgs</span><span class="p">(</span><span class="n">pts1</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">sim_1vec</span><span class="p">,</span> <span class="n">sim_2vec</span><span class="p">,</span> <span class="n">non_p</span><span class="p">)</span>
+    <span class="n">pts_w_imgs</span><span class="p">,</span> <span class="n">gb1_inds</span><span class="p">,</span> <span class="n">inds_arr</span> <span class="o">=</span> <span class="p">(</span><span class="n">slice_along_planes</span><span class="p">(</span><span class="n">sim_orig</span><span class="p">,</span>
+                                      <span class="n">sim_1vec</span><span class="p">,</span> <span class="n">sim_2vec</span><span class="p">,</span> <span class="n">sim_nonp_vec</span><span class="p">,</span> <span class="n">rCut</span><span class="p">,</span>
+                                      <span class="n">pts_w_imgs</span><span class="p">,</span> <span class="n">gb1_inds</span><span class="p">,</span> <span class="n">non_p</span><span class="p">,</span> <span class="n">inds_array</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">pts_w_imgs</span><span class="p">,</span> <span class="n">gb1_inds</span><span class="p">,</span> <span class="n">inds_arr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GB_finder"><a class="viewcode-back" href="../../Modules.html#gbpy.pad_dump_file.GB_finder">[docs]</a><span class="k">def</span> <span class="nf">GB_finder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">non_pbc</span><span class="p">,</span> <span class="n">str_alg</span><span class="p">,</span> <span class="n">csc_tol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function finds the GB region usning Polyhedral Template Matching.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    --------------</span>
+<span class="sd">    filename0 : string</span>
+<span class="sd">        The lammps dump file</span>
+<span class="sd">    lat_par: float</span>
+<span class="sd">        The lattice parameter</span>
+<span class="sd">    non_pbc : int</span>
+<span class="sd">        The non-periodic direction. 0 , 1 or 2 which corresponds to</span>
+<span class="sd">        x, y and z direction, respectively.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -----------</span>
+<span class="sd">    GbRegion: list</span>
+<span class="sd">        The maximum and Minimum value of postion of atoms in Z direction  in the GB region.</span>
+<span class="sd">    GbWidth : list</span>
+<span class="sd">        GbRegion[1] - GbRegion[0]</span>
+<span class="sd">    GbIndex : numpy.ndarray</span>
+<span class="sd">        The index of atoms in GB</span>
+<span class="sd">    w_bottom_SC : list</span>
+<span class="sd">        The width of the region on the bottom side of GB which have single crystal structure</span>
+<span class="sd">    w_top_SC : list</span>
+<span class="sd">        The width of the region on the top side of GB which have single crystal structure</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># num_particles = data.particles.count</span>
+    <span class="n">ptm_struct</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">particles</span><span class="p">[</span><span class="s1">&#39;Structure Type&#39;</span><span class="p">][</span><span class="o">...</span><span class="p">]</span>
+    <span class="n">position_np</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">particles</span><span class="p">[</span><span class="s1">&#39;Position&#39;</span><span class="p">][</span><span class="o">...</span><span class="p">][:,</span> <span class="n">non_pbc</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">str_alg</span> <span class="o">==</span> <span class="s2">&quot;csc&quot;</span><span class="p">:</span>
+        <span class="n">csc</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">particles</span><span class="p">[</span><span class="s1">&#39;c_csym&#39;</span><span class="p">][</span><span class="o">...</span><span class="p">]</span>
+    <span class="n">elem_type</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="n">pearson</span>
+    <span class="k">if</span> <span class="n">elem_type</span> <span class="o">==</span> <span class="s1">&#39;cP&#39;</span><span class="p">:</span>
+        <span class="n">st_id</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="k">if</span> <span class="n">elem_type</span> <span class="o">==</span> <span class="s1">&#39;cI&#39;</span><span class="p">:</span>
+        <span class="n">st_id</span> <span class="o">=</span> <span class="mi">3</span>  
+    <span class="k">if</span> <span class="n">elem_type</span> <span class="o">==</span> <span class="s1">&#39;cF&#39;</span><span class="p">:</span>
+        <span class="n">st_id</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">elem_type</span> <span class="o">==</span> <span class="s1">&#39;hP&#39;</span><span class="p">:</span>
+        <span class="n">st_id</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">NoSurfArea</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Find the smallest single crystal range</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">pos_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">position_np</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">a</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">pos_max</span> <span class="o">=</span> <span class="n">pos_min</span> <span class="o">+</span> <span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">str_alg</span> <span class="o">==</span> <span class="s2">&quot;ptm&quot;</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">ptm_struct</span> <span class="o">!=</span> <span class="n">st_id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&lt;</span> <span class="n">pos_max</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&gt;</span> <span class="n">pos_min</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">csc</span> <span class="o">&gt;</span> <span class="n">csc_tol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&lt;</span> <span class="n">pos_max</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&gt;</span> <span class="n">pos_min</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">pos_min</span> <span class="o">+=</span> <span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+
+    <span class="n">NoSurfArea</span> <span class="o">=</span> <span class="n">NoSurfArea</span> <span class="o">+</span> <span class="p">[</span><span class="n">pos_min</span><span class="p">]</span>
+
+    <span class="c1"># Find the largest single crystal range</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">pos_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">position_np</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">a</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">pos_min</span> <span class="o">=</span> <span class="n">pos_max</span> <span class="o">-</span> <span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">str_alg</span> <span class="o">==</span> <span class="s2">&quot;ptm&quot;</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">ptm_struct</span> <span class="o">!=</span> <span class="n">st_id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&lt;</span> <span class="n">pos_max</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&gt;</span> <span class="n">pos_min</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">csc</span> <span class="o">&gt;</span> <span class="n">csc_tol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&lt;</span> <span class="n">pos_max</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&gt;</span> <span class="n">pos_min</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">pos_max</span> <span class="o">-=</span> <span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+
+    <span class="n">NoSurfArea</span> <span class="o">=</span> <span class="n">NoSurfArea</span> <span class="o">+</span> <span class="p">[</span><span class="n">pos_min</span> <span class="o">+</span> <span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]]</span>
+
+    <span class="k">if</span> <span class="n">str_alg</span> <span class="o">==</span> <span class="s2">&quot;ptm&quot;</span><span class="p">:</span>
+        <span class="n">gb_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">ptm_struct</span> <span class="o">!=</span> <span class="n">st_id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&lt;</span> <span class="n">NoSurfArea</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&gt;</span> <span class="n">NoSurfArea</span><span class="p">[</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gb_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">csc</span> <span class="o">&gt;</span> <span class="n">csc_tol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&lt;</span> <span class="n">NoSurfArea</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_np</span> <span class="o">&gt;</span> <span class="n">NoSurfArea</span><span class="p">[</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">outlierConstant</span> <span class="o">=</span> <span class="mf">1.51</span>
+    <span class="n">upper_quartile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">position_np</span><span class="p">[</span><span class="n">gb_index</span><span class="p">],</span> <span class="mi">75</span><span class="p">)</span>
+    <span class="n">lower_quartile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">position_np</span><span class="p">[</span><span class="n">gb_index</span><span class="p">],</span> <span class="mi">25</span><span class="p">)</span>
+    <span class="n">IQR</span> <span class="o">=</span> <span class="p">(</span><span class="n">upper_quartile</span> <span class="o">-</span> <span class="n">lower_quartile</span><span class="p">)</span> <span class="o">*</span> <span class="n">outlierConstant</span>
+    <span class="n">quartileSet</span> <span class="o">=</span> <span class="p">(</span><span class="n">lower_quartile</span> <span class="o">-</span> <span class="n">IQR</span><span class="p">,</span> <span class="n">upper_quartile</span> <span class="o">+</span> <span class="n">IQR</span><span class="p">)</span>
+    <span class="n">GbIndex</span> <span class="o">=</span> <span class="n">gb_index</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">position_np</span><span class="p">[</span><span class="n">gb_index</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">quartileSet</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;</span>
+                                <span class="p">(</span><span class="n">position_np</span><span class="p">[</span><span class="n">gb_index</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">quartileSet</span><span class="p">[</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]]</span>
+
+    <span class="n">GbZ</span> <span class="o">=</span> <span class="n">position_np</span><span class="p">[</span><span class="n">GbIndex</span><span class="p">]</span>
+    <span class="n">GbRegion</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">GbZ</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">GbZ</span><span class="p">)]</span>
+    <span class="n">GbWidth</span> <span class="o">=</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">w_bottom_SC</span> <span class="o">=</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">NoSurfArea</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">w_top_SC</span> <span class="o">=</span> <span class="n">NoSurfArea</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">GbRegion</span><span class="p">,</span> <span class="n">GbIndex</span><span class="p">,</span> <span class="n">GbWidth</span><span class="p">,</span> <span class="n">w_bottom_SC</span><span class="p">,</span> <span class="n">w_top_SC</span></div>
+
+
+<div class="viewcode-block" id="num_rep_2d"><a class="viewcode-back" href="../../Modules.html#gbpy.pad_dump_file.num_rep_2d">[docs]</a><span class="k">def</span> <span class="nf">num_rep_2d</span><span class="p">(</span><span class="n">xvec</span><span class="p">,</span> <span class="n">yvec</span><span class="p">,</span> <span class="n">rCut</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function finds the number of replications necessary such that thecircle of radius rCut at the</span>
+<span class="sd">    center of the primitive-cell lies completely inside the super-cell.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    xvec : numpy array</span>
+<span class="sd">        The basis vector in x direction in x-z plane</span>
+<span class="sd">    yvec : numpy array</span>
+<span class="sd">        The basis vector in z direction in x-z plane</span>
+<span class="sd">    rCut : float</span>
+<span class="sd">        Cut-off radius for computing Delaunay triangulations</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ------------</span>
+<span class="sd">    [int(m_x), int(m_y)] : list</span>
+<span class="sd">        int(m_x) is the number of replications in x direction, int(m_y)</span>
+<span class="sd">        is the number of replication in z direction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c_vec_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">xvec</span><span class="p">,</span> <span class="n">yvec</span><span class="p">))</span>
+    <span class="n">d_y</span> <span class="o">=</span> <span class="n">c_vec_norm</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">yvec</span><span class="p">))</span>
+    <span class="n">d_x</span> <span class="o">=</span> <span class="n">c_vec_norm</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">xvec</span><span class="p">))</span>
+    <span class="n">m_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">rCut</span><span class="o">/</span><span class="n">d_y</span><span class="p">)</span>
+    <span class="n">m_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">rCut</span><span class="o">/</span><span class="n">d_x</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">m_x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">m_y</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="pad_gb_perp"><a class="viewcode-back" href="../../Modules.html#gbpy.pad_dump_file.pad_gb_perp">[docs]</a><span class="k">def</span> <span class="nf">pad_gb_perp</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">GbRegion</span><span class="p">,</span> <span class="n">GbIndex</span><span class="p">,</span> <span class="n">rCut</span><span class="p">,</span> <span class="n">non_p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to take as input the dump data (from OVITO), find the GB atoms</span>
+<span class="sd">    and add padding to the GB atoms  within rCut in Z direction.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -------------</span>
+<span class="sd">    data : class</span>
+<span class="sd">        Data object computed using OVITO I/O</span>
+<span class="sd">    GbRegion : list</span>
+<span class="sd">        Indices of atoms in GB area</span>
+<span class="sd">    GbIndex : numpy array</span>
+<span class="sd">        Indices of atoms in GB area</span>
+<span class="sd">    rCut : float</span>
+<span class="sd">        Cut-off radius for computing Delaunay triangulations</span>
+<span class="sd">    non_pbc : int</span>
+<span class="sd">        The non-periodic direction. 0 , 1 or 2 which corresponds to</span>
+<span class="sd">        x, y and z direction, respectively.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    pts1 : numpy array</span>
+<span class="sd">        Indices of the atoms which Z value is in range [GBRegion[0] - rCut, GBRegion[1] + rCut].</span>
+<span class="sd">    gb1_inds : numpy array</span>
+<span class="sd">        Indices of the GB atoms</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">arr0</span> <span class="o">=</span> <span class="n">p_arr</span><span class="p">(</span><span class="n">non_p</span><span class="p">)</span>
+
+    <span class="n">position_nonp</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">particles</span><span class="p">[</span><span class="s1">&#39;Position&#39;</span><span class="p">][</span><span class="o">...</span><span class="p">][:,</span> <span class="n">non_p</span><span class="p">]</span>
+    <span class="n">position_p1</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">particles</span><span class="p">[</span><span class="s1">&#39;Position&#39;</span><span class="p">][</span><span class="o">...</span><span class="p">][:,</span> <span class="n">arr0</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">position_p2</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">particles</span><span class="p">[</span><span class="s1">&#39;Position&#39;</span><span class="p">][</span><span class="o">...</span><span class="p">][:,</span> <span class="n">arr0</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+    <span class="n">Zmin</span><span class="p">,</span> <span class="n">Zmax</span> <span class="o">=</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">rCut</span><span class="p">,</span> <span class="n">GbRegion</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">rCut</span>
+
+    <span class="n">pad1_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">position_nonp</span> <span class="o">&lt;=</span> <span class="n">Zmax</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_nonp</span> <span class="o">&gt;=</span> <span class="n">Zmin</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">int1</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">pad1_inds</span><span class="p">,</span> <span class="n">GbIndex</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">gb1_inds</span> <span class="o">=</span> <span class="n">a1</span>
+
+    <span class="c1"># Replicate the GB structure along periodic directions (nx and ny times)</span>
+    <span class="n">num1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">pad1_inds</span><span class="p">)</span>
+    <span class="n">pts1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">pts1</span><span class="p">[:,</span> <span class="n">arr0</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">position_p1</span><span class="p">[</span><span class="n">pad1_inds</span><span class="p">])</span>
+    <span class="n">pts1</span><span class="p">[:,</span> <span class="n">arr0</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">position_p2</span><span class="p">[</span><span class="n">pad1_inds</span><span class="p">])</span>
+    <span class="n">pts1</span><span class="p">[:,</span> <span class="n">non_p</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">position_nonp</span><span class="p">[</span><span class="n">pad1_inds</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">pts1</span><span class="p">,</span> <span class="n">gb1_inds</span></div>
+
+
+<div class="viewcode-block" id="create_imgs"><a class="viewcode-back" href="../../Modules.html#gbpy.pad_dump_file.create_imgs">[docs]</a><span class="k">def</span> <span class="nf">create_imgs</span><span class="p">(</span><span class="n">pts1</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">sim_1vec</span><span class="p">,</span> <span class="n">sim_2vec</span><span class="p">,</span> <span class="n">non_p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates the replicates of the main cell in X and Z direction.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -------------</span>
+<span class="sd">    pts1 : numpy array</span>
+<span class="sd">        Indices of the atoms which Y value is in range [GBRegion[0] - rCut, GBRegion[1] + rCut].</span>
+<span class="sd">    n1 : int</span>
+<span class="sd">        Number of replications in 1st periodic direction</span>
+<span class="sd">    n2 : int</span>
+<span class="sd">        Number of replications in 2nd periodic direction</span>
+<span class="sd">    sim_1vec : numpy array</span>
+<span class="sd">        The simulation cell basis vector in 1st periodic direction</span>
+<span class="sd">    sim_2vec : numpy array</span>
+<span class="sd">        The simulation cell basis vector in 2nd periodic direction</span>
+<span class="sd">    non_pbc : int</span>
+<span class="sd">        The non-periodic direction. 0 , 1 or 2 which corresponds to</span>
+<span class="sd">        x, y and z direction, respectively.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pts_w_imgs : numpy array</span>
+<span class="sd">        The position of atoms after replicating the box n_x and n_z times in X and Z direction.</span>
+<span class="sd">    inds_array : numpy array</span>
+<span class="sd">        The atom indices of the initial unit cell with no replicates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">pts1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pts_w_imgs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num1</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">inds_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num1</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="p">))</span>
+    <span class="n">tinds1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num1</span><span class="p">)</span>
+
+    <span class="c1"># The first set of atoms correspond to the main</span>
+    <span class="c1"># cell.</span>
+    <span class="n">ct1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ind_st</span> <span class="o">=</span> <span class="n">num1</span><span class="o">*</span><span class="n">ct1</span>
+    <span class="n">ind_stop</span> <span class="o">=</span> <span class="n">num1</span><span class="o">*</span><span class="p">(</span><span class="n">ct1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+    <span class="n">pts_w_imgs</span><span class="p">[</span><span class="n">ind_st</span><span class="p">:</span><span class="n">ind_stop</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">pts1</span>
+    <span class="n">inds_array</span><span class="p">[</span><span class="n">ind_st</span><span class="p">:</span><span class="n">ind_stop</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tinds1</span>
+    <span class="n">ct1</span> <span class="o">=</span> <span class="n">ct1</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># Array for translating the main cell</span>
+    <span class="n">n1_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">n1</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">n1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">n2_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">n2</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">n2</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">mval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">n1_val</span><span class="p">,</span> <span class="n">n2_val</span><span class="p">)</span>
+    <span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">mval</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">mval</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">i1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">m1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">m2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">i1</span><span class="p">)</span>
+    <span class="n">m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span> <span class="n">i1</span><span class="p">)</span>
+    <span class="n">p1_trans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">sim_1vec</span><span class="p">,</span> <span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">p2_trans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">sim_2vec</span><span class="p">,</span> <span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Creating the images</span>
+    <span class="k">for</span> <span class="n">ct2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">m1</span><span class="p">)):</span>
+        <span class="n">mp1</span> <span class="o">=</span> <span class="n">m1</span><span class="p">[</span><span class="n">ct2</span><span class="p">]</span>
+        <span class="n">mp2</span> <span class="o">=</span> <span class="n">m2</span><span class="p">[</span><span class="n">ct2</span><span class="p">]</span>
+        <span class="n">pts_trans</span> <span class="o">=</span> <span class="n">pts1</span> <span class="o">+</span> <span class="n">mp1</span><span class="o">*</span><span class="n">p1_trans</span> <span class="o">+</span> <span class="n">mp2</span><span class="o">*</span><span class="n">p2_trans</span>
+
+        <span class="n">ind_st</span> <span class="o">=</span> <span class="n">num1</span><span class="o">*</span><span class="n">ct1</span>
+        <span class="n">ind_stop</span> <span class="o">=</span> <span class="n">num1</span><span class="o">*</span><span class="p">(</span><span class="n">ct1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">pts_w_imgs</span><span class="p">[</span><span class="n">ind_st</span><span class="p">:</span><span class="n">ind_stop</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">pts_trans</span>
+        <span class="n">inds_array</span><span class="p">[</span><span class="n">ind_st</span><span class="p">:</span><span class="n">ind_stop</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tinds1</span>
+        <span class="n">ct1</span> <span class="o">=</span> <span class="n">ct1</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">pts_w_imgs</span><span class="p">,</span> <span class="n">inds_array</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="slice_along_planes"><a class="viewcode-back" href="../../Modules.html#gbpy.pad_dump_file.slice_along_planes">[docs]</a><span class="k">def</span> <span class="nf">slice_along_planes</span><span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">sim_1vec</span><span class="p">,</span> <span class="n">sim_2vec</span><span class="p">,</span> <span class="n">sim_nonp_vec</span><span class="p">,</span> <span class="n">rCut</span><span class="p">,</span> <span class="n">pts_w_imgs</span><span class="p">,</span> <span class="n">gb1_inds</span><span class="p">,</span> <span class="n">non_p</span><span class="p">,</span> <span class="n">inds_arr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Function cuts the pts_w_imgs within an rCut from the GB.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    orig : numpy array</span>
+<span class="sd">        The origin of the main cell.</span>
+<span class="sd">    sim_1vec : numpy array</span>
+<span class="sd">        The simulation cell basis vector in a direction</span>
+<span class="sd">    sim_2vec : numpy array</span>
+<span class="sd">        The simulation cell basis vector in b direction</span>
+<span class="sd">    sim_nonp_vec : numpy array</span>
+<span class="sd">        The simulation cell basis vector in c direction</span>
+<span class="sd">    rCut : float</span>
+<span class="sd">        Cut-off radius for computing Delaunay triangulations</span>
+<span class="sd">    pts_w_imgs : numpy array</span>
+<span class="sd">        The position of atoms after replicating the box n_x and n_z times in X and Z direction.</span>
+<span class="sd">    gb1_inds : numpy array</span>
+<span class="sd">        Indices of the GB atoms</span>
+<span class="sd">    non_pbc : int</span>
+<span class="sd">        The non-periodic direction. 0 , 1 or 2 which corresponds to</span>
+<span class="sd">        x, y and z direction, respectively.</span>
+<span class="sd">    inds_arr : numpy array</span>
+<span class="sd">        The atom indices of the initial unit cell with no replicates.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ------------</span>
+<span class="sd">    pts_w_imgs : numpy array</span>
+<span class="sd">            The position of atoms after replicating the box, n_x and n_z times in x and z direction.</span>
+<span class="sd">    gb1_inds : numpy array</span>
+<span class="sd">            Indices of the GB atoms</span>
+<span class="sd">    inds_arr : numpy array</span>
+<span class="sd">        The atom indices of the initial unit cell with no replicates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p1u_vec</span> <span class="o">=</span> <span class="n">sim_1vec</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">sim_1vec</span><span class="p">)</span>
+    <span class="n">p2u_vec</span> <span class="o">=</span> <span class="n">sim_2vec</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">sim_2vec</span><span class="p">)</span>
+    <span class="n">nonp_u_vec</span> <span class="o">=</span> <span class="n">sim_nonp_vec</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">sim_nonp_vec</span><span class="p">)</span>
+
+    <span class="n">p1cut_nvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">p1u_vec</span><span class="p">,</span> <span class="n">nonp_u_vec</span><span class="p">)</span>
+    <span class="n">p1cut_nvec</span> <span class="o">=</span> <span class="n">p1cut_nvec</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p1cut_nvec</span><span class="p">)</span>
+    <span class="n">p2cut_nvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">p2u_vec</span><span class="p">,</span> <span class="n">nonp_u_vec</span><span class="p">)</span>
+    <span class="n">p2cut_nvec</span> <span class="o">=</span> <span class="n">p2cut_nvec</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p2cut_nvec</span><span class="p">)</span>
+
+    <span class="n">pl_nvecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">p1cut_nvec</span><span class="p">,</span> <span class="n">p1cut_nvec</span><span class="p">,</span> <span class="n">p2cut_nvec</span><span class="p">,</span> <span class="n">p2cut_nvec</span><span class="p">))</span>
+    <span class="n">lvals</span> <span class="o">=</span> <span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+    <span class="c1"># pl_pts = np.zeros((4, 3))</span>
+    <span class="n">ct1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">l1</span> <span class="ow">in</span> <span class="n">lvals</span><span class="p">:</span>
+        <span class="n">pt1</span> <span class="o">=</span> <span class="n">orig</span> <span class="o">+</span> <span class="n">sim_1vec</span><span class="o">*</span><span class="n">l1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p1u_vec</span><span class="o">*</span><span class="n">rCut</span><span class="o">*</span><span class="n">l1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">sim_2vec</span><span class="o">*</span><span class="n">l1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2u_vec</span><span class="o">*</span><span class="n">rCut</span><span class="o">*</span><span class="n">l1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">pl_nvec</span> <span class="o">=</span> <span class="n">pl_nvecs</span><span class="p">[</span><span class="n">ct1</span><span class="p">]</span>
+        <span class="n">inds_keep1</span> <span class="o">=</span> <span class="n">inds_to_keep</span><span class="p">(</span><span class="n">pl_nvec</span><span class="p">,</span> <span class="n">pt1</span><span class="p">,</span> <span class="n">orig</span><span class="p">,</span> <span class="n">pts_w_imgs</span><span class="p">)</span>
+        <span class="n">pts_w_imgs</span><span class="p">,</span> <span class="n">gb1_inds</span><span class="p">,</span> <span class="n">inds_arr</span> <span class="o">=</span> <span class="n">del_inds</span><span class="p">(</span><span class="n">inds_keep1</span><span class="p">,</span> <span class="n">pts_w_imgs</span><span class="p">,</span> <span class="n">gb1_inds</span><span class="p">,</span> <span class="n">inds_arr</span><span class="p">)</span>
+        <span class="n">ct1</span> <span class="o">=</span> <span class="n">ct1</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">pts_w_imgs</span><span class="p">,</span> <span class="n">gb1_inds</span><span class="p">,</span> <span class="n">inds_arr</span></div>
+
+
+<div class="viewcode-block" id="del_inds"><a class="viewcode-back" href="../../Modules.html#gbpy.pad_dump_file.del_inds">[docs]</a><span class="k">def</span> <span class="nf">del_inds</span><span class="p">(</span><span class="n">ind1</span><span class="p">,</span> <span class="n">pts1</span><span class="p">,</span> <span class="n">gb1_inds</span><span class="p">,</span> <span class="n">inds_arr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function deletes the indices of atoms outside of the main box plus rCut margin around it</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    ind1 : numpy array</span>
+<span class="sd">        The indices of atoms we want to keep</span>
+<span class="sd">    pts1 : numpy array</span>
+<span class="sd">        The position of atoms after replicating the box n_x and n_z times in x and z direction.</span>
+<span class="sd">    gb1_ind : numpy array</span>
+<span class="sd">        Indices of the GB atoms</span>
+<span class="sd">    inds_arr : numpy array</span>
+<span class="sd">        The atom indices of the initial unit cell with no replicates.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    pts1 : numpy array</span>
+<span class="sd">        The position of atoms we want to keep</span>
+<span class="sd">    gb1_inds : numpy array</span>
+<span class="sd">        Indices of the GB atoms</span>
+<span class="sd">    inds_arr : numpy array</span>
+<span class="sd">        The atom indices of the initial unit cell with no replicates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">int1</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">ind1</span><span class="p">,</span> <span class="n">gb1_inds</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">gb1_inds</span> <span class="o">=</span> <span class="n">a1</span>
+    <span class="n">pts1</span> <span class="o">=</span> <span class="n">pts1</span><span class="p">[</span><span class="n">ind1</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">inds_arr</span> <span class="o">=</span> <span class="n">inds_arr</span><span class="p">[</span><span class="n">ind1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">pts1</span><span class="p">,</span> <span class="n">gb1_inds</span><span class="p">,</span> <span class="n">inds_arr</span></div>
+
+
+<div class="viewcode-block" id="inds_to_keep"><a class="viewcode-back" href="../../Modules.html#gbpy.pad_dump_file.inds_to_keep">[docs]</a><span class="k">def</span> <span class="nf">inds_to_keep</span><span class="p">(</span><span class="n">norm_vec</span><span class="p">,</span> <span class="n">pl_pt</span><span class="p">,</span> <span class="n">orig</span><span class="p">,</span> <span class="n">pts</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function identifies the indices of atoms which are in inside the main box  plus a rCut margin around it</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -------------</span>
+<span class="sd">    norm_vec : numpy array</span>
+<span class="sd">        Plane normal within rCut distance from the considered  box face</span>
+<span class="sd">    pl_pt : numpy array</span>
+<span class="sd">        A point on a plane within rCut distance from the considered box face</span>
+<span class="sd">    orig : numpy array</span>
+<span class="sd">        The origin of the main cell.</span>
+<span class="sd">    pts : numpy array</span>
+<span class="sd">        The position of atoms after replicating the box, n_x and n_z times in x and z direction.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inds_keep : numpy array</span>
+<span class="sd">        The indices of atoms within the replicates which are within rCut distance of the main cell</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sign-values for pts_w_imgs</span>
+    <span class="c1"># npts = np.shape(pts)[0]</span>
+    <span class="c1"># pts1 = pts - np.tile(pl_pt, (npts,1))</span>
+    <span class="n">pts1</span> <span class="o">=</span> <span class="n">pts</span> <span class="o">-</span> <span class="n">pl_pt</span>  <span class="c1"># numpy does broadcasting</span>
+    <span class="n">sign_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">pts1</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">norm_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">pts1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">norm_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pts1</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">norm_vec</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">orig_sign_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">orig</span> <span class="o">-</span> <span class="n">pl_pt</span><span class="p">),</span> <span class="n">norm_vec</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">orig_sign_val</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">inds_keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sign_vals</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inds_keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sign_vals</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">inds_keep</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Leila Khalili.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
