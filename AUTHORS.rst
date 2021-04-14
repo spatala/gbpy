@@ -6,8 +6,9 @@ Maintainer
 ----------
 
 * Leila Khalili <lkhalil@ncsu.edu>
+* Srikanth Patala <spatala@ncsu.edu >
 
 Contributors
 ------------
 
-None yet. Why not be the first? See: CONTRIBUTING.rst
+Contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given.
