@@ -1,5 +1,6 @@
 ./Modules.html
 ./_modules/gbpy/lammps_dump_writer.html
+./_modules/gbpy/lammps_script_writer.html
 ./_modules/gbpy/pad_dump_file.html
 ./_modules/gbpy/util_funcs.html
 ./_modules/gbpy/vv_props.html

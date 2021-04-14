@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Modules &mdash; gbpy 0.post52+g860344f documentation</title>
+  <title>Modules &mdash; gbpy 0.post52+ga907f98 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.post52+g860344f
+                0.post52+ga907f98
               </div>
             
           
@@ -99,6 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#pad-dump-file">Pad Dump File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#vv-props">vv props</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#utility-function">Utility Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lammps-dump-writer">Lammps Dump Writer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lammps-script-writer">Lammps Script Writer</a></li>
 </ul>
 </li>
@@ -901,8 +902,8 @@ to the lammps dump file.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="lammps-script-writer">
-<h2>Lammps Script Writer<a class="headerlink" href="#lammps-script-writer" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="lammps-dump-writer">
+<h2>Lammps Dump Writer<a class="headerlink" href="#lammps-dump-writer" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="gbpy.lammps_dump_writer.lammps_box">
 <code class="sig-prename descclassname"><span class="pre">gbpy.lammps_dump_writer.</span></code><code class="sig-name descname"><span class="pre">lammps_box</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkl_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/lammps_dump_writer.html#lammps_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.lammps_dump_writer.lammps_box" title="Permalink to this definition">¶</a></dt>
@@ -970,6 +971,112 @@ yhi, zlo, zhi, xy, xz, yz</p>
 zlo, zhi, xy, xz, yz</p>
 </dd>
 <dt><strong>dump_lamp :</strong></dt><dd><p>A numpy nd.array having atom ID, atom type( 1 for upper grain and 2 for lower grain), x, y, z</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="lammps-script-writer">
+<h2>Lammps Script Writer<a class="headerlink" href="#lammps-script-writer" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="gbpy.lammps_script_writer.file_gen">
+<code class="sig-prename descclassname"><span class="pre">gbpy.lammps_script_writer.</span></code><code class="sig-name descname"><span class="pre">file_gen</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fil_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/lammps_script_writer.html#file_gen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.lammps_script_writer.file_gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function opens the input file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fil_name</strong><span class="classifier">str</span></dt><dd><p>name of the input lammps dump file</p>
+</dd>
+<dt><strong>Returns</strong></dt><dd></dd>
+<dt><strong>———-</strong></dt><dd></dd>
+<dt><strong>fiw:</strong></dt><dd><p>the opened lammps dump file</p>
+</dd>
+<dt><strong>fil_name: str</strong></dt><dd><p>name of the input lammps dump file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.lammps_script_writer.run_lammps_anneal">
+<code class="sig-prename descclassname"><span class="pre">gbpy.lammps_script_writer.</span></code><code class="sig-name descname"><span class="pre">run_lammps_anneal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fil_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pot_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_fix_reg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lammps_exe_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Etol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ftol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MaxIter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MaxEval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Iter_heat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Iter_equil</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Iter_cool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/lammps_script_writer.html#run_lammps_anneal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.lammps_script_writer.run_lammps_anneal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function runs the lammps script</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename0</strong><span class="classifier">str</span></dt><dd><p>the opened lammps dump file</p>
+</dd>
+<dt><strong>fil_name: str</strong></dt><dd><p>name of the input lammps dump file</p>
+</dd>
+<dt><strong>pot_path: str</strong></dt><dd><p>The directory of the interatomic potential</p>
+</dd>
+<dt><strong>lat_par: int</strong></dt><dd><p>The lattice parameter</p>
+</dd>
+<dt><strong>tol_fix_reg: int</strong></dt><dd><p>The thickness of the fix rigid part in the simulation cell</p>
+</dd>
+<dt><strong>lammps_exe_path: str</strong></dt><dd><p>The path of the lammps .exe file</p>
+</dd>
+<dt><strong>output: str</strong></dt><dd><p>The name of the lammps output file</p>
+</dd>
+<dt><strong>Tm: int</strong></dt><dd><p>The melting point of the material of interest</p>
+</dd>
+<dt><strong>Etol: int</strong></dt><dd><p>stopping tolerance for energy (unitless)</p>
+</dd>
+<dt><strong>Ftol: int</strong></dt><dd><p>stopping tolerance for force (force units)</p>
+</dd>
+<dt><strong>MaxIter: int</strong></dt><dd><p>max iterations of minimizer</p>
+</dd>
+<dt><strong>MaxEval: int</strong></dt><dd><p>max number of force/energy evaluations</p>
+</dd>
+<dt><strong>Iter_heat: int</strong></dt><dd><p>number of iteration for the heating process</p>
+</dd>
+<dt><strong>Iter_equil: int</strong></dt><dd><p>number of iteration for the equilibration process</p>
+</dd>
+<dt><strong>Iter_cool: int</strong></dt><dd><p>number of iteration for the cooling process</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gbpy.lammps_script_writer.run_lmp">
+<code class="sig-prename descclassname"><span class="pre">gbpy.lammps_script_writer.</span></code><code class="sig-name descname"><span class="pre">run_lmp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">non_p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fil_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Etol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ftol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MaxIter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MaxEval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Iter_heat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Iter_equil</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Iter_cool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dump_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pot_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gbpy/lammps_script_writer.html#run_lmp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbpy.lammps_script_writer.run_lmp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function writes the lammps script for heating/equil/cooling process</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>non_p: int</strong></dt><dd><p>The non-periodic direction. 0 , 1 or 2 which corresponds to
+x, y and z direction, respectively.</p>
+</dd>
+<dt><strong>fil_name: str</strong></dt><dd><p>name of the input lammps dump file</p>
+</dd>
+<dt><strong>Etol: int</strong></dt><dd><p>stopping tolerance for energy (unitless)</p>
+</dd>
+<dt><strong>Ftol: int</strong></dt><dd><p>stopping tolerance for force (force units)</p>
+</dd>
+<dt><strong>MaxIter: int</strong></dt><dd><p>max iterations of minimizer</p>
+</dd>
+<dt><strong>MaxEval: int</strong></dt><dd><p>max number of force/energy evaluations</p>
+</dd>
+<dt><strong>Iter_heat: int</strong></dt><dd><p>number of iteration for the heating procedure</p>
+</dd>
+<dt><strong>Iter_equil: int</strong></dt><dd><p>number of iteration for the equilibration procedure</p>
+</dd>
+<dt><strong>Iter_cool: int</strong></dt><dd><p>number of iteration for the cooling procedure</p>
+</dd>
+<dt><strong>lat_par :</strong></dt><dd><p>Lattice parameter for the crystal being simulated</p>
+</dd>
+<dt><strong>dump_name: str</strong></dt><dd><p>Name of the lammps dump file</p>
+</dd>
+<dt><strong>pot_path: str</strong></dt><dd><p>The directory of the interatomic potential</p>
+</dd>
+<dt><strong>output: str</strong></dt><dd><p>Name of the lammps script</p>
+</dd>
+<dt><strong>check: str</strong></dt><dd><p>If check=”SC” it means the gb gets very close to the GB.</p>
 </dd>
 </dl>
 </dd>
