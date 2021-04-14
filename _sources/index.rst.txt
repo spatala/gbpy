@@ -14,3 +14,5 @@ gbpy Documentation
    release-history
    min_versions
    Modules
+   credits
+
