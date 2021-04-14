@@ -7,5 +7,4 @@ Tutorials
 
 .. toctree::
 
-    
     create_cubic_surface_slabs_fcc
