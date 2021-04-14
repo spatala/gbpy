@@ -24,6 +24,7 @@ Pad Dump File
 
 .. autofunction:: gbpy.pad_dump_file.inds_to_keep
 
+
 vv props
 --------------------
 
@@ -73,7 +74,7 @@ Utility Function
 .. autofunction:: gbpy.util_funcs.add_sc
 
 
-Lammps Script Writer
+Lammps Dump Writer
 --------------------
 
 .. autofunction:: gbpy.lammps_dump_writer.lammps_box
@@ -81,3 +82,13 @@ Lammps Script Writer
 .. autofunction:: gbpy.lammps_dump_writer.box_bound_func
 
 .. autofunction:: gbpy.lammps_dump_writer.write_lammps_dump
+
+
+Lammps Script Writer
+--------------------
+
+.. autofunction:: gbpy.lammps_script_writer.file_gen
+
+.. autofunction:: gbpy.lammps_script_writer.run_lammps_anneal
+
+.. autofunction:: gbpy.lammps_script_writer.run_lmp
