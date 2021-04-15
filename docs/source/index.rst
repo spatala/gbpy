@@ -12,7 +12,7 @@ gbpy Documentation
    get_started
    installation
    usage
-   Tutorials/index
+   Tutorials/FCC/index
    release-history
    min_versions
    Modules
