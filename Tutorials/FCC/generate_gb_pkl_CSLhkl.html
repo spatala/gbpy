@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Variable Definitions &mdash; gbpy 0.post52+gace0eb1 documentation</title>
+  <title>Generate GB CSL hkl &mdash; gbpy 0.post52+gac37472 documentation</title>
   
 
   
@@ -44,7 +44,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Variable Definitions" href="make_lmp_dump.html" />
+    <link rel="next" title="Create LAMMPS Dump File" href="make_lmp_dump.html" />
     <link rel="prev" title="Generate a list of boundary-plane vectors" href="enumerate_cubic_bplist.html" /> 
 </head>
 
@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                0.post52+gace0eb1
+                0.post52+gac37472
               </div>
             
           
@@ -102,12 +102,12 @@
 <li class="toctree-l2"><a class="reference internal" href="create_cubic_surface_slabs.html">Create Surface Slabs in FCC Crystals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="enumerate_byxtal_props.html">Compute Bicrystallographic properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="enumerate_cubic_bplist.html">Generate a list of boundary-plane vectors</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Variable Definitions</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Generate GB CSL hkl</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Convert-CSL-BP-to">Convert CSL-BP to</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#If-we-want-the-global-Y-axis-to-be-perpendicular-to-the-GB">If we want the global Y-axis to be perpendicular to the GB</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="make_lmp_dump.html">Variable Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="make_lmp_dump.html">Create LAMMPS Dump File</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
@@ -164,7 +164,7 @@
         
           <li><a href="index.html">Tutorials</a> &raquo;</li>
         
-      <li>Variable Definitions</li>
+      <li>Generate GB CSL hkl</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -453,17 +453,8 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="Variable-Definitions">
-<h1>Variable Definitions<a class="headerlink" href="#Variable-Definitions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Generate-GB-CSL-hkl">
+<h1>Generate GB CSL hkl<a class="headerlink" href="#Generate-GB-CSL-hkl" title="Permalink to this headline">¶</a></h1>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">l_Cbpb_Cp</span></code>: Basis of the 2D lattice in the CSLp reference frame for the given (hkl) plane.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">l_CRbpb_Cp</span></code>: Basis of the 2D lattice such that the basis vectors have length that is greater than rCut and the basis vectors are similar in lengths and the angle between them is close to 90. Defined in the CSLp reference frame</p></li>
@@ -736,7 +727,7 @@ array([-270.64125,   24.60375,   24.60375])
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/Tutorials_FCC_generate_gb_pkl_CSLhkl_12_0.png" src="../../_images/Tutorials_FCC_generate_gb_pkl_CSLhkl_12_0.png" />
+<img alt="../../_images/Tutorials_FCC_generate_gb_pkl_CSLhkl_11_0.png" src="../../_images/Tutorials_FCC_generate_gb_pkl_CSLhkl_11_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -977,7 +968,7 @@ array([-270.64125,   24.60375,   24.60375])
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="make_lmp_dump.html" class="btn btn-neutral float-right" title="Variable Definitions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="make_lmp_dump.html" class="btn btn-neutral float-right" title="Create LAMMPS Dump File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="enumerate_cubic_bplist.html" class="btn btn-neutral float-left" title="Generate a list of boundary-plane vectors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

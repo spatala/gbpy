@@ -10,7 +10,7 @@
 ./Tutorials/FCC/index.html
 ./Tutorials/FCC/make_lmp_dump.html
 ./Tutorials/FCC/make_lmp_dump.ipynb
-./_images/Tutorials_FCC_generate_gb_pkl_CSLhkl_12_0.png
+./_images/Tutorials_FCC_generate_gb_pkl_CSLhkl_11_0.png
 ./_modules/gbpy/lammps_dump_writer.html
 ./_modules/gbpy/lammps_script_writer.html
 ./_modules/gbpy/pad_dump_file.html

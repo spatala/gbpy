@@ -4,7 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Variable Definitions\n",
+    "## Create  LAMMPS Dump File\n",
     "1. `l_Cbpb_Cp`: Basis of the 2D lattice in the CSLp reference frame for the given (hkl) plane.\n",
     "2. `l_CRbpb_Cp`: Basis of the 2D lattice such that the basis vectors have length that is greater than rCut and the basis vectors are similar in lengths and the angle between them is close to 90. Defined in the CSLp reference frame"
    ]
