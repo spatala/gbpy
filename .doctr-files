@@ -10,6 +10,7 @@
 ./Tutorials/FCC/index.html
 ./Tutorials/FCC/make_lmp_dump.html
 ./Tutorials/FCC/make_lmp_dump.ipynb
+./Tutorials/index.html
 ./_images/Tutorials_FCC_generate_gb_pkl_CSLhkl_11_0.png
 ./_modules/gbpy/lammps_dump_writer.html
 ./_modules/gbpy/lammps_script_writer.html
@@ -24,6 +25,7 @@
 ./_sources/Tutorials/FCC/generate_gb_pkl_CSLhkl.ipynb.txt
 ./_sources/Tutorials/FCC/index.rst.txt
 ./_sources/Tutorials/FCC/make_lmp_dump.ipynb.txt
+./_sources/Tutorials/index.rst.txt
 ./_sources/credits.rst.txt
 ./_sources/get_started.rst.txt
 ./_sources/index.rst.txt
