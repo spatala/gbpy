@@ -12,6 +12,7 @@ gbpy Documentation
    get_started
    installation
    usage
+   Tutorials/index
    release-history
    min_versions
    Modules

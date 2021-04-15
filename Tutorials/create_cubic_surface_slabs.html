@@ -1,0 +1,1036 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Create Surface Slabs in FCC Crystals &mdash; gbpy 0.post52+g02e86c7 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Release History" href="../release-history.html" />
+    <link rel="prev" title="Tutorials" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> gbpy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.post52+g02e86c7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../get_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Create Surface Slabs in FCC Crystals</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../release-history.html">Release History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../min_versions.html">Minimum Version of Python and NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../credits.html">Credits</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gbpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Create Surface Slabs in FCC Crystals</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/Tutorials/create_cubic_surface_slabs.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Create-Surface-Slabs-in-FCC-Crystals">
+<h1>Create Surface Slabs in FCC Crystals<a class="headerlink" href="#Create-Surface-Slabs-in-FCC-Crystals" title="Permalink to this headline">¶</a></h1>
+<p>In this code, a slab for simulating free-surfaces are created. For given Miller indices <span class="math notranslate nohighlight">\((h \, k \, l)\)</span> of the plane, input configuration containing the simulation-cell and atoms is created.</p>
+<ol class="arabic simple">
+<li><p>Load relevant modules</p></li>
+<li><p>Define necessary parameters</p>
+<ul class="simple">
+<li><p>Miller indices</p></li>
+<li><p>Lattice (e.g. Aluminum)</p></li>
+<li><p>Cut-off radius (r_cut) and area (a_cut)</p></li>
+</ul>
+</li>
+<li><p>Compute basis-vectos of the 2D lattice of the <span class="math notranslate nohighlight">\((h \, k \, l)\)</span> plane</p></li>
+<li><p>Compute the basis-vectors of sublattice with r_cut and a_cut constraints</p>
+<ul class="simple">
+<li><p>Determine appropriate <span class="math notranslate nohighlight">\(\Sigma\)</span> using a_cut</p></li>
+<li><p>Generate unique set of sub-lattices (HNF matrices and LLL reduction)</p></li>
+</ul>
+</li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">byxtal.lattice</span> <span class="k">as</span> <span class="nn">gbl</span>
+<span class="kn">import</span> <span class="nn">byxtal.integer_manipulations</span> <span class="k">as</span> <span class="nn">iman</span>
+<span class="kn">import</span> <span class="nn">byxtal.bp_basis</span> <span class="k">as</span> <span class="nn">bpb</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">nla</span>
+<span class="kn">import</span> <span class="nn">math</span> <span class="k">as</span> <span class="nn">mt</span>
+<span class="kn">import</span> <span class="nn">gbpy.util_funcs_create_byxtal</span> <span class="k">as</span> <span class="nn">uf</span>
+<span class="kn">import</span> <span class="nn">gbpy.generate_hkl_indices</span> <span class="k">as</span> <span class="nn">ghi</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">(h</span>&#160; <span class="pre">k</span>&#160; <span class="pre">l)</span></code> : Miller indices defined in primitive lattice</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l1</span></code> : Lattice object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lat_par</span></code> : Lattice parameter</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">r_cut</span></code> : Cutoff radius</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a_cut</span></code> : Cutoff Area</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zCut</span></code> : The lenght of the surface-slab is equal to 2(zCut)</p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">h</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span> <span class="p">,</span> <span class="o">-</span><span class="mi">2</span>
+<span class="n">hkl_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">h</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">l</span><span class="p">])</span>
+
+<span class="n">l1</span> <span class="o">=</span> <span class="n">gbl</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="s1">&#39;Al&#39;</span><span class="p">)</span>
+
+<span class="n">lat_par</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="n">r_cut</span> <span class="o">=</span> <span class="n">lat_par</span><span class="o">*</span><span class="mi">4</span>
+<span class="n">a_cut</span> <span class="o">=</span> <span class="n">r_cut</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">zCut</span> <span class="o">=</span> <span class="mi">25</span><span class="o">*</span><span class="n">lat_par</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">l_p_po</span></code> : <span class="math notranslate nohighlight">\(\Lambda_{p}^{po}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l_po_p</span></code> : <span class="math notranslate nohighlight">\(\Lambda_{po}^{p}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l_bpb_p</span></code> : <span class="math notranslate nohighlight">\(\Lambda_{\mathrm{2D}}^{p}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l_bpb_po</span></code> : <span class="math notranslate nohighlight">\(\Lambda_{\mathrm{2D}}^{po}\)</span></p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># import numpy as np</span>
+<span class="c1"># from math import gcd</span>
+<span class="c1"># import os</span>
+
+<span class="c1"># def bp_basis(miller_ind):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     The function computes the primitve basis of the plane if the</span>
+<span class="c1">#     boundary plane indices are specified</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ---------------</span>
+<span class="c1">#     miller_ind: numpy array</span>
+<span class="c1">#         Miller indices of the plane (h k l)</span>
+
+<span class="c1">#     Returns</span>
+<span class="c1">#     -----------</span>
+<span class="c1">#     l_pl_g1: numpy array</span>
+<span class="c1">#         The primitive basis of the plane in &#39;g1&#39; reference frame</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     # If *miller_inds* are not integers or if the gcd != 1</span>
+<span class="c1">#     # miller_ind = int_man.int_finder(miller_ind)</span>
+<span class="c1">#     if (np.ndim(miller_ind) == 2):</span>
+<span class="c1">#         Sz = np.shape(miller_ind)</span>
+<span class="c1">#         if ((Sz[0] == 1) or (Sz[1] == 1)):</span>
+<span class="c1">#             miller_ind = miller_ind.flatten()</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             raise Exception(&quot;Wrong Input Type.&quot;)</span>
+<span class="c1">#     h = miller_ind[0]</span>
+<span class="c1">#     k = miller_ind[1]</span>
+<span class="c1">#     l = miller_ind[2]</span>
+
+<span class="c1">#     if h == 0 and k == 0 and l == 0:</span>
+<span class="c1">#         raise Exception(&#39;hkl indices cannot all be zero&#39;)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         if h != 0 and k != 0 and l != 0:</span>
+<span class="c1">#             gc_f1_p = gcd(k, l)</span>
+<span class="c1">#             bv1_g1 = np.array([[0], [-l / gc_f1_p], [k / gc_f1_p]])</span>
+<span class="c1">#             bv2_g1 = bpb.compute_basis_vec([h, k, l])</span>
+<span class="c1">#             bv2_g1 = bv2_g1.reshape(np.shape(bv2_g1)[0],1)</span>
+<span class="c1">#         else:</span>
+<span class="c1">#                 if h == 0:</span>
+<span class="c1">#                     if k == 0:</span>
+<span class="c1">#                         bv1_g1 = np.array([[1], [0], [0]])</span>
+<span class="c1">#                         bv2_g1 = np.array([[0], [1], [0]])</span>
+<span class="c1">#                     elif l == 0:</span>
+<span class="c1">#                         bv1_g1 = np.array([[0], [0], [1]])</span>
+<span class="c1">#                         bv2_g1 = np.array([[1], [0], [0]])</span>
+<span class="c1">#                     else:</span>
+<span class="c1">#                         gc_f1_p = gcd(k, l)</span>
+<span class="c1">#                         bv1_g1 = np.array([[0], [-l / gc_f1_p],</span>
+<span class="c1">#                                            [k / gc_f1_p]])</span>
+<span class="c1">#                         bv2_g1 = np.array([[1], [-l / gc_f1_p],</span>
+<span class="c1">#                                            [k / gc_f1_p]])</span>
+<span class="c1">#                 else:</span>
+<span class="c1">#                     if k == 0:</span>
+<span class="c1">#                         if l == 0:</span>
+<span class="c1">#                             bv1_g1 = np.array([[0], [1], [0]])</span>
+<span class="c1">#                             bv2_g1 = np.array([[0], [0], [1]])</span>
+<span class="c1">#                         else:</span>
+<span class="c1">#                             gc_f1_p = gcd(h, l)</span>
+<span class="c1">#                             bv1_g1 = np.array([[-l / gc_f1_p], [0],</span>
+<span class="c1">#                                                [h / gc_f1_p]])</span>
+<span class="c1">#                             bv2_g1 = np.array([[-l / gc_f1_p], [1],</span>
+<span class="c1">#                                                [h / gc_f1_p]])</span>
+<span class="c1">#                     else:</span>
+<span class="c1">#                         if l == 0:</span>
+<span class="c1">#                             gc_f1_p = gcd(h, k)</span>
+<span class="c1">#                             bv1_g1 = np.array([[-k / gc_f1_p],</span>
+<span class="c1">#                                                [h / gc_f1_p], [0]])</span>
+<span class="c1">#                             bv2_g1 = np.array([[-k / gc_f1_p],</span>
+<span class="c1">#                                                [h / gc_f1_p], [1]])</span>
+
+<span class="c1">#     #  The reduced basis vectors for the plane</span>
+<span class="c1">#     Tmat = np.array(np.column_stack([bv1_g1, bv2_g1]), dtype=&#39;int64&#39;)</span>
+<span class="c1">#     l_pl_g1 = lll_reduction(Tmat)</span>
+<span class="c1">#     return l_pl_g1</span>
+
+<span class="c1"># def lll_reduction(int_mat):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     exec_str = &#39;/compute_lll.py&#39;</span>
+<span class="c1">#     inp_args = {}</span>
+<span class="c1">#     inp_args[&#39;mat&#39;] = int_mat</span>
+<span class="c1">#     lll_int_mat = call_sage_math(exec_str, inp_args)</span>
+<span class="c1">#     return lll_int_mat</span>
+
+<span class="c1"># def call_sage_math(exec_str, inp_args):</span>
+<span class="c1">#     print(exec_str)</span>
+<span class="c1">#     print(inp_args)</span>
+<span class="c1">#     byxtal_dir = os.path.dirname((inspect.getfile(byxtal)))</span>
+<span class="c1">#     exec_str1 = byxtal_dir+exec_str</span>
+<span class="c1">#     run_lst = []</span>
+<span class="c1">#     run_lst.append(exec_str1)</span>
+
+<span class="c1">#     A = inp_args[&#39;mat&#39;]</span>
+<span class="c1">#     Sz = np.shape(A)</span>
+<span class="c1">#     run_lst.append(str(Sz[0]))</span>
+<span class="c1">#     run_lst.append(str(Sz[1]))</span>
+
+<span class="c1">#     if len(inp_args.keys()) == 2:</span>
+<span class="c1">#         sig_num = inp_args[&#39;sig_num&#39;]</span>
+<span class="c1">#         str1 = str(sig_num)</span>
+<span class="c1">#         run_lst.append(str1)</span>
+
+<span class="c1">#     for i1 in range(Sz[0]):</span>
+<span class="c1">#         for j1 in range(Sz[1]):</span>
+<span class="c1">#             str1 = str(A[i1, j1])</span>
+<span class="c1">#             run_lst.append(str1)</span>
+
+<span class="c1">#     result = subprocess.run(run_lst, stdout=subprocess.PIPE)</span>
+<span class="c1">#     print(&#39;result&#39;, result)</span>
+<span class="c1">#     print(&#39;result.stdout&#39;, result.stdout)</span>
+<span class="c1">#     str_out = (result.stdout).split()</span>
+<span class="c1">#     print(&#39;str_out&#39;, str_out)</span>
+
+<span class="c1">#     sz1 = len(str_out)</span>
+<span class="c1">#     M_out = np.zeros((Sz[0],Sz[1]), dtype=&#39;int64&#39;)</span>
+<span class="c1">#     print(M_out)</span>
+<span class="c1">#     ct1 = 0</span>
+<span class="c1">#     for i1 in range(Sz[0]):</span>
+<span class="c1">#         for j1 in range(Sz[1]):</span>
+<span class="c1">#             print(&#39;i1&#39;, i1)</span>
+<span class="c1">#             print(&#39;j1&#39;, j1)</span>
+<span class="c1">#             print(&#39;int&#39;, str_out)</span>
+<span class="c1">#             M_out[i1, j1] = int(str_out[ct1])</span>
+<span class="c1">#             ct1 = ct1 + 1</span>
+
+<span class="c1">#     return M_out</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># import inspect</span>
+<span class="c1"># import byxtal</span>
+<span class="c1"># import subprocess</span>
+<span class="c1"># l_p_po = l1.l_p_po</span>
+<span class="c1"># l_po_p = nla.inv(l_p_po)</span>
+
+<span class="c1"># ## l_bpb_p: Primitive Basis vectors of the boundary-plane (in p reference frame)</span>
+<span class="c1"># l_bpb_p = bp_basis(hkl_p)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+/compute_lll.py
+{&#39;mat&#39;: array([[ 0,  1],
+       [ 1,  0],
+       [-1, -1]])}
+result CompletedProcess(args=[&#39;/home/leila/Leila_sndhard/codes/byxtal/byxtal/byxtal/compute_lll.py&#39;, &#39;3&#39;, &#39;2&#39;, &#39;0&#39;, &#39;1&#39;, &#39;1&#39;, &#39;0&#39;, &#39;-1&#39;, &#39;-1&#39;], returncode=126, stdout=b&#39;&#39;)
+result.stdout b&#39;&#39;
+str_out []
+[[0 0]
+ [0 0]
+ [0 0]]
+i1 0
+j1 0
+int []
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-66-4bb23afa5176&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span> <span class="ansi-red-fg">## l_bpb_p: Primitive Basis vectors of the boundary-plane (in p reference frame)</span>
+<span class="ansi-green-fg">----&gt; 8</span><span class="ansi-red-fg"> </span>l_bpb_p <span class="ansi-blue-fg">=</span> bp_basis<span class="ansi-blue-fg">(</span>hkl_p<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-65-0ac95a520c52&gt;</span> in <span class="ansi-cyan-fg">bp_basis</span><span class="ansi-blue-fg">(miller_ind)</span>
+<span class="ansi-green-intense-fg ansi-bold">     73</span>     <span class="ansi-red-fg">#  The reduced basis vectors for the plane</span>
+<span class="ansi-green-intense-fg ansi-bold">     74</span>     Tmat <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>np<span class="ansi-blue-fg">.</span>column_stack<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span>bv1_g1<span class="ansi-blue-fg">,</span> bv2_g1<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> dtype<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;int64&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 75</span><span class="ansi-red-fg">     </span>l_pl_g1 <span class="ansi-blue-fg">=</span> lll_reduction<span class="ansi-blue-fg">(</span>Tmat<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     76</span>     <span class="ansi-green-fg">return</span> l_pl_g1
+<span class="ansi-green-intense-fg ansi-bold">     77</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-65-0ac95a520c52&gt;</span> in <span class="ansi-cyan-fg">lll_reduction</span><span class="ansi-blue-fg">(int_mat)</span>
+<span class="ansi-green-intense-fg ansi-bold">     83</span>     inp_args <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">     84</span>     inp_args<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;mat&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> int_mat
+<span class="ansi-green-fg">---&gt; 85</span><span class="ansi-red-fg">     </span>lll_int_mat <span class="ansi-blue-fg">=</span> call_sage_math<span class="ansi-blue-fg">(</span>exec_str<span class="ansi-blue-fg">,</span> inp_args<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     86</span>     <span class="ansi-green-fg">return</span> lll_int_mat
+<span class="ansi-green-intense-fg ansi-bold">     87</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-65-0ac95a520c52&gt;</span> in <span class="ansi-cyan-fg">call_sage_math</span><span class="ansi-blue-fg">(exec_str, inp_args)</span>
+<span class="ansi-green-intense-fg ansi-bold">    124</span>             print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;j1&#39;</span><span class="ansi-blue-fg">,</span> j1<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    125</span>             print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;int&#39;</span><span class="ansi-blue-fg">,</span> str_out<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 126</span><span class="ansi-red-fg">             </span>M_out<span class="ansi-blue-fg">[</span>i1<span class="ansi-blue-fg">,</span> j1<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>str_out<span class="ansi-blue-fg">[</span>ct1<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    127</span>             ct1 <span class="ansi-blue-fg">=</span> ct1 <span class="ansi-blue-fg">+</span> <span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-intense-fg ansi-bold">    128</span>
+
+<span class="ansi-red-fg">IndexError</span>: list index out of range
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">l_p_po</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="n">l_p_po</span>
+<span class="n">l_po_p</span> <span class="o">=</span> <span class="n">nla</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">l_p_po</span><span class="p">)</span>
+
+<span class="c1">## l_bpb_p: Primitive Basis vectors of the boundary-plane (in p reference frame)</span>
+<span class="n">l_bpb_p</span> <span class="o">=</span> <span class="n">bpb</span><span class="o">.</span><span class="n">bp_basis</span><span class="p">(</span><span class="n">hkl_p</span><span class="p">)</span>
+<span class="n">l_bpb_p</span> <span class="o">=</span> <span class="n">l_bpb_p</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="c1">## l_bpb_p: Primitive Basis vectors of the boundary-plane (in po reference frame)</span>
+<span class="n">l_bpb_po</span> <span class="o">=</span> <span class="n">l_p_po</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l_bpb_p</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-16-4338a158805e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-red-fg">## l_bpb_p: Primitive Basis vectors of the boundary-plane (in p reference frame)</span>
+<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg"> </span>l_bpb_p <span class="ansi-blue-fg">=</span> bpb<span class="ansi-blue-fg">.</span>bp_basis<span class="ansi-blue-fg">(</span>hkl_p<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span> l_bpb_p <span class="ansi-blue-fg">=</span> l_bpb_p<span class="ansi-blue-fg">.</span>astype<span class="ansi-blue-fg">(</span>int<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span> <span class="ansi-red-fg">## l_bpb_p: Primitive Basis vectors of the boundary-plane (in po reference frame)</span>
+
+<span class="ansi-green-fg">~/Leila_sndhard/codes/byxtal/byxtal/byxtal/bp_basis.py</span> in <span class="ansi-cyan-fg">bp_basis</span><span class="ansi-blue-fg">(miller_ind)</span>
+<span class="ansi-green-intense-fg ansi-bold">    205</span>     <span class="ansi-red-fg">#  The reduced basis vectors for the plane</span>
+<span class="ansi-green-intense-fg ansi-bold">    206</span>     Tmat <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>np<span class="ansi-blue-fg">.</span>column_stack<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span>bv1_g1<span class="ansi-blue-fg">,</span> bv2_g1<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> dtype<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;int64&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 207</span><span class="ansi-red-fg">     </span>l_pl_g1 <span class="ansi-blue-fg">=</span> lt<span class="ansi-blue-fg">.</span>lll_reduction<span class="ansi-blue-fg">(</span>Tmat<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    208</span>     <span class="ansi-green-fg">return</span> l_pl_g1
+<span class="ansi-green-intense-fg ansi-bold">    209</span>
+
+<span class="ansi-green-fg">~/Leila_sndhard/codes/byxtal/byxtal/byxtal/lll_tools.py</span> in <span class="ansi-cyan-fg">lll_reduction</span><span class="ansi-blue-fg">(int_mat)</span>
+<span class="ansi-green-intense-fg ansi-bold">    107</span>     inp_args <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">    108</span>     inp_args<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;mat&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> int_mat
+<span class="ansi-green-fg">--&gt; 109</span><span class="ansi-red-fg">     </span>lll_int_mat <span class="ansi-blue-fg">=</span> rpl<span class="ansi-blue-fg">.</span>call_sage_math<span class="ansi-blue-fg">(</span>exec_str<span class="ansi-blue-fg">,</span> inp_args<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    110</span>     <span class="ansi-green-fg">return</span> lll_int_mat
+<span class="ansi-green-intense-fg ansi-bold">    111</span>
+
+<span class="ansi-green-fg">~/Leila_sndhard/codes/byxtal/byxtal/byxtal/reduce_po_lat.py</span> in <span class="ansi-cyan-fg">call_sage_math</span><span class="ansi-blue-fg">(exec_str, inp_args)</span>
+<span class="ansi-green-intense-fg ansi-bold">     36</span>     <span class="ansi-green-fg">for</span> i1 <span class="ansi-green-fg">in</span> range<span class="ansi-blue-fg">(</span>Sz<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     37</span>         <span class="ansi-green-fg">for</span> j1 <span class="ansi-green-fg">in</span> range<span class="ansi-blue-fg">(</span>Sz<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 38</span><span class="ansi-red-fg">             </span>M_out<span class="ansi-blue-fg">[</span>i1<span class="ansi-blue-fg">,</span> j1<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>str_out<span class="ansi-blue-fg">[</span>ct1<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     39</span>             ct1 <span class="ansi-blue-fg">=</span> ct1 <span class="ansi-blue-fg">+</span> <span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-intense-fg ansi-bold">     40</span>
+
+<span class="ansi-red-fg">IndexError</span>: list index out of range
+</pre></div></div>
+</div>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sig_num</span></code>: <span class="math notranslate nohighlight">\(\Sigma\)</span> number</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l_bpbSig_p</span></code> : <span class="math notranslate nohighlight">\(\Lambda_{\Sigma-\mathrm{2D}}^{p}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l_bpbSig_po</span></code> : <span class="math notranslate nohighlight">\(\Lambda_{\Sigma-\mathrm{2D}}^{po}\)</span></p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">## area_bpl: Area of the 2D-primitive-unit-cell</span>
+<span class="n">area_bpl</span> <span class="o">=</span> <span class="n">nla</span><span class="o">.</span><span class="n">norm</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">l_bpb_po</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">l_bpb_po</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])))</span>
+<span class="n">sig_num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">a_cut</span><span class="o">/</span><span class="n">area_bpl</span><span class="p">)</span>
+
+<span class="n">ind2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int64&#39;</span><span class="p">);</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">ind2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="c1"># Generate 2D hermite normal forms for sig_num (hnf_mats)</span>
+    <span class="n">hnf_mats</span> <span class="o">=</span> <span class="n">ghi</span><span class="o">.</span><span class="n">sig_hnf_mats</span><span class="p">(</span><span class="n">sig_num</span><span class="p">)</span>
+    <span class="c1"># Compute the properties of the sub-lattices</span>
+    <span class="n">l_sig_p_mats</span><span class="p">,</span> <span class="n">l_sig_po_mats</span> <span class="o">=</span> <span class="n">ghi</span><span class="o">.</span><span class="n">compute_hnf_props</span><span class="p">(</span><span class="n">hnf_mats</span><span class="p">,</span> <span class="n">l_bpb_p</span><span class="p">,</span> <span class="n">l_p_po</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
+    <span class="c1"># Get the index for the sub-lattice that has the minimum cost</span>
+    <span class="n">ind2</span> <span class="o">=</span> <span class="n">ghi</span><span class="o">.</span><span class="n">ind_min_cost</span><span class="p">(</span><span class="n">l_sig_po_mats</span><span class="p">,</span> <span class="n">r_cut</span><span class="p">)</span>
+    <span class="n">sig_num</span> <span class="o">=</span> <span class="n">sig_num</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="c1">## l_bpbSig_p: Basis vectors of the sub-lattice of the boundary-plane (in p reference frame)</span>
+<span class="n">l_bpbSig_p</span> <span class="o">=</span> <span class="n">l_sig_p_mats</span><span class="p">[</span><span class="n">ind2</span><span class="p">];</span>
+<span class="n">l_bpbSig_p</span> <span class="o">=</span> <span class="n">l_bpbSig_p</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">l_bpbSig_po</span> <span class="o">=</span> <span class="n">l_p_po</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l_bpbSig_p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-12-94b79fcf1741&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg">## area_bpl: Area of the 2D-primitive-unit-cell</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>area_bpl <span class="ansi-blue-fg">=</span> nla<span class="ansi-blue-fg">.</span>norm<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>np<span class="ansi-blue-fg">.</span>cross<span class="ansi-blue-fg">(</span>l_bpb_po<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> l_bpb_po<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> sig_num <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>ceil<span class="ansi-blue-fg">(</span>a_cut<span class="ansi-blue-fg">/</span>area_bpl<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> ind2 <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> dtype<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;int64&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">;</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;l_bpb_po&#39; is not defined
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">l_sig_p_mats</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">l_po_go</span></code>: <span class="math notranslate nohighlight">\(\Lambda_{PO}^{GO}\)</span> - Orientation of crystal with respect to global reference frame <span class="math notranslate nohighlight">\(\mathrm{GO}\)</span></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">go</span></code>: Orthogonal global reference frame (for LAMMPS)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">po</span></code>: Orhtogonal reference frame of the lattice</p></li>
+<li><p>function <code class="docutils literal notranslate"><span class="pre">compute_orientation</span></code>: computes the orientation of the crystal such that the basis vectors in <span class="math notranslate nohighlight">\(\Lambda_{\Sigma-\mathrm{2D}}^{po}\)</span> are along the x-axis and in the xy-plane.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l2D_bpbSig_go</span></code>: <span class="math notranslate nohighlight">\(\Lambda_{\Sigma-\mathrm{2D}}^{go}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l2D_bpb_go</span></code>: <span class="math notranslate nohighlight">\(\Lambda_{\Sigma-\mathrm{2D}}^{go}\)</span></p></li>
+</ol>
+<p>If computed accurately, the <span class="math notranslate nohighlight">\(z\)</span>-components of the basis-vectors in the <span class="math notranslate nohighlight">\(\mathrm{GO}\)</span> frame, <span class="math notranslate nohighlight">\(\Lambda_{\mathrm{2D}}^{go}\)</span> and <span class="math notranslate nohighlight">\(\Lambda_{\Sigma-\mathrm{2D}}^{go}\)</span>, are zero.</p>
+<ol class="arabic simple" start="4">
+<li><p><code class="docutils literal notranslate"><span class="pre">twoD_mat</span></code>: The <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y\)</span> components of the 2D basis vectors of <span class="math notranslate nohighlight">\(\Lambda_{\mathrm{2D}}^{go}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">twoDSig_mat</span></code>: The <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y\)</span> components of the 2D basis vectors of <span class="math notranslate nohighlight">\(\Lambda_{\Sigma-\mathrm{2D}}^{go}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">r_cut1</span></code>: The cut-off radius for replicating the lattice basis. Given two vectors that form the basis of the interface plane, <span class="math notranslate nohighlight">\(\Lambda_{\Sigma-\mathrm{2D}}^{go}\)</span>, the function <code class="docutils literal notranslate"><span class="pre">compute_rCut</span></code> determines the maximum of the norms of the two vectors.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">twoD_pts</span></code>: The lattice points in the 2D periodic box for the 3D slab.</p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">l_po_go</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">compute_orientation</span><span class="p">(</span><span class="n">l_bpbSig_po</span><span class="p">)</span>
+<span class="n">l2D_bpbSig_go</span> <span class="o">=</span> <span class="n">l_po_go</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l_bpbSig_po</span><span class="p">)</span>
+<span class="n">l2D_bpb_go</span> <span class="o">=</span> <span class="n">l_po_go</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l_bpb_po</span><span class="p">)</span>
+<span class="n">twoD_mat</span> <span class="o">=</span> <span class="n">l2D_bpb_go</span><span class="p">[:</span><span class="mi">2</span><span class="p">,:]</span>
+<span class="n">twoDSig_mat</span> <span class="o">=</span> <span class="n">l2D_bpbSig_go</span><span class="p">[:</span><span class="mi">2</span><span class="p">,:]</span>
+<span class="n">r_cut1</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">compute_rCut</span><span class="p">(</span><span class="n">l_bpbSig_po</span><span class="p">)</span>
+
+<span class="c1">## Create 2D periodic box</span>
+<span class="n">twoD_pts</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">replicate_pts</span><span class="p">(</span><span class="n">twoD_mat</span><span class="p">,</span> <span class="n">r_cut1</span><span class="p">)</span>
+<span class="n">twoD_pts</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">remove_periodic_overlaps</span><span class="p">(</span><span class="n">twoD_pts</span><span class="p">,</span> <span class="n">twoDSig_mat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">avec</span></code>: Basis vector <span class="math notranslate nohighlight">\(\vec{a}\)</span> of the 3D lattice defined using <span class="math notranslate nohighlight">\(\mathcal{B}_{P2}\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bvec</span></code>: Basis vector <span class="math notranslate nohighlight">\(\vec{b}\)</span> of the 3D lattice defined using <span class="math notranslate nohighlight">\(\mathcal{B}_{P2}\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l_p2_p1</span></code>: Equivalent basis for the 3D lattice, <span class="math notranslate nohighlight">\(\Lambda_{P2}^{P1}\)</span>.</p>
+<ul class="simple">
+<li><p>The function <code class="docutils literal notranslate"><span class="pre">find_int_solns</span></code> computes the third basis-vector, <span class="math notranslate nohighlight">\(\vec{c}\)</span>, such that <span class="math notranslate nohighlight">\(\mathcal{B}_{P1} \equiv \mathcal{B}_{P2}\)</span></p></li>
+</ul>
+</li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">avec</span> <span class="o">=</span> <span class="n">l_bpb_p</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">bvec</span> <span class="o">=</span> <span class="n">l_bpb_p</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">l_p2_p1</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">find_int_solns</span><span class="p">(</span><span class="n">avec</span><span class="p">,</span> <span class="n">bvec</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">l2D_bpbSig_go</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">l_p2_po1</span></code>: <span class="math notranslate nohighlight">\(\Lambda_{p2}^{po1}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l_p2_go</span></code>: <span class="math notranslate nohighlight">\(\Lambda_{p2}^{go}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tz_vec</span></code>: The components of <span class="math notranslate nohighlight">\(\vec{c}\)</span> of <span class="math notranslate nohighlight">\(\mathcal{B}_{P2}\)</span> in <span class="math notranslate nohighlight">\(go\)</span> reference frame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">threeD_pts</span></code>: The 3D slab of atoms for simulating free surfaces.</p>
+<ul class="simple">
+<li><p>This is obtained by replicating <code class="docutils literal notranslate"><span class="pre">twoD_pts</span></code> along the <code class="docutils literal notranslate"><span class="pre">tz_vec</span></code> in both +<span class="math notranslate nohighlight">\(z\)</span> and -<span class="math notranslate nohighlight">\(z\)</span> directions.</p></li>
+</ul>
+</li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">l_p2_po1</span> <span class="o">=</span> <span class="n">l_p_po</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l_p2_p1</span><span class="p">)</span>
+<span class="n">l_p2_go</span> <span class="o">=</span> <span class="n">l_po_go</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l_p2_po1</span><span class="p">)</span>
+<span class="n">tz_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">l_p2_go</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;double&#39;</span><span class="p">)</span>
+<span class="n">tz_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tz_vec</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+
+<span class="c1">################################################################################</span>
+<span class="c1">## Translate 2D points in the Z-direction with zCut</span>
+<span class="n">num_rep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">zCut</span><span class="o">/</span><span class="n">tz_vec</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+<span class="n">num_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">twoD_pts</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">num_3d_pts</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">num_rep</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">num_2d</span><span class="p">)</span>
+<span class="n">threeD_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_3d_pts</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+
+<span class="n">twoD_pts1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">twoD_pts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_2d</span><span class="p">,</span><span class="mi">1</span><span class="p">))));</span>
+
+<span class="k">for</span> <span class="n">ct1</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">num_rep</span><span class="p">,</span> <span class="n">num_rep</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">ct2</span> <span class="o">=</span> <span class="n">ct1</span> <span class="o">+</span> <span class="n">num_rep</span>
+    <span class="n">ind_st</span> <span class="o">=</span> <span class="p">(</span><span class="n">ct2</span><span class="p">)</span><span class="o">*</span><span class="n">num_2d</span>
+    <span class="n">ind_stop</span> <span class="o">=</span> <span class="n">ind_st</span> <span class="o">+</span> <span class="n">num_2d</span>
+    <span class="n">trans_vec</span> <span class="o">=</span> <span class="n">tz_vec</span><span class="o">*</span><span class="n">ct1</span>
+    <span class="n">threeD_pts</span><span class="p">[</span><span class="n">ind_st</span><span class="p">:</span><span class="n">ind_stop</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">twoD_pts1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">trans_vec</span><span class="p">,</span> <span class="p">(</span><span class="n">num_2d</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>The simulation box vectors are defined using Ovito’s convenction. 1. <code class="docutils literal notranslate"><span class="pre">sim_avec</span></code>: The components of <span class="math notranslate nohighlight">\(\vec{a}\)</span> in the global reference, <span class="math notranslate nohighlight">\(go\)</span>, of LAMMPS. <span class="math notranslate nohighlight">\(\vec{a}\)</span> is along <span class="math notranslate nohighlight">\(\hat{e}_x\)</span>. 2. <code class="docutils literal notranslate"><span class="pre">sim_bvec</span></code>: The components of <span class="math notranslate nohighlight">\(\vec{b}\)</span> in the global reference, <span class="math notranslate nohighlight">\(go\)</span>, of LAMMPS. <span class="math notranslate nohighlight">\(\vec{b}\)</span> lies in the <span class="math notranslate nohighlight">\(x-y\)</span> plane. 3. <code class="docutils literal notranslate"><span class="pre">sim_cvec</span></code>: The components of <span class="math notranslate nohighlight">\(\vec{c}\)</span> in the global reference, <span class="math notranslate nohighlight">\(go\)</span>, of LAMMPS. 4. <code class="docutils literal notranslate"><span class="pre">sim_orig</span></code>: The origin of the simulation
+box.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">### Simulation Cell Box</span>
+<span class="c1">### Following Ovito&#39;s convention</span>
+<span class="n">l_bpbSig_po_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">l2D_bpbSig_go</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;double&#39;</span><span class="p">)</span>
+<span class="n">sim_cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">sim_avec</span> <span class="o">=</span> <span class="n">l_bpbSig_po_arr</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">sim_bvec</span> <span class="o">=</span> <span class="n">l_bpbSig_po_arr</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">### Change this with inter-planar spacing</span>
+<span class="n">sim_cvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">zCut</span><span class="p">]);</span> <span class="c1"># sim_cvec = np.array([0,0,zCut]);</span>
+<span class="n">sim_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">zCut</span><span class="p">]);</span> <span class="c1"># sim_orig = np.array([0,0,0]);</span>
+
+<span class="n">sim_cell</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_avec</span>
+<span class="n">sim_cell</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_bvec</span>
+<span class="n">sim_cell</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cvec</span>
+<span class="n">sim_cell</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_orig</span>
+
+<span class="n">box_vecs</span> <span class="o">=</span> <span class="n">sim_cell</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">threeD_pts1</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">wrap_cc</span><span class="p">(</span><span class="n">sim_cell</span><span class="p">,</span> <span class="n">threeD_pts</span><span class="p">)</span>
+<span class="c1"># tpts1 = np.dot(np.linalg.inv(box_vecs), threeD_pts.transpose()).transpose();</span>
+</pre></div>
+</div>
+</div>
+<p>Plot of 3D lattice points along with the simulation box.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">plotting_routines</span> <span class="k">as</span> <span class="nn">plr</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="n">fig1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plr</span><span class="o">.</span><span class="n">plot_3d_pts_box</span><span class="p">(</span><span class="n">fig1</span><span class="p">,</span> <span class="n">threeD_pts1</span><span class="p">,</span> <span class="n">sim_cell</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">sim_orig</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../release-history.html" class="btn btn-neutral float-right" title="Release History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Leila Khalili.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

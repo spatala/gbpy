@@ -1,4 +1,7 @@
 ./Modules.html
+./Tutorials/create_cubic_surface_slabs.html
+./Tutorials/create_cubic_surface_slabs.ipynb
+./Tutorials/index.html
 ./_modules/gbpy/lammps_dump_writer.html
 ./_modules/gbpy/lammps_script_writer.html
 ./_modules/gbpy/pad_dump_file.html
@@ -6,6 +9,8 @@
 ./_modules/gbpy/vv_props.html
 ./_modules/index.html
 ./_sources/Modules.rst.txt
+./_sources/Tutorials/create_cubic_surface_slabs.ipynb.txt
+./_sources/Tutorials/index.rst.txt
 ./_sources/credits.rst.txt
 ./_sources/get_started.rst.txt
 ./_sources/index.rst.txt
