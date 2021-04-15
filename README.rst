@@ -13,8 +13,13 @@ Python package for doing science.
 
 * Free software: 3-clause BSD license
 * Documentation:  https://spatala.github.io/gbpy.
+* GitHub: https://github.com/spatala/gbpy
+* PyPI: https://pypi.org/project/GBpy/
 
 Features
 --------
 
-* TODO
+Did someone say features?
+
+* Cross-platform: Linux is officially supported.
+* Works with Python 3.6.
