@@ -8,3 +8,8 @@ Tutorials
 .. toctree::
 
     create_cubic_surface_slabs
+    enumerate_byxtal_props
+    enumerate_cubic_bplist
+    generate_gb_pkl_CSLhkl
+    make_lmp_dump
+

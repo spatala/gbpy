@@ -1,0 +1,1022 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Variable Definitions &mdash; gbpy 0.post52+gace0eb1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Variable Definitions" href="make_lmp_dump.html" />
+    <link rel="prev" title="Generate a list of boundary-plane vectors" href="enumerate_cubic_bplist.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> gbpy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.post52+gace0eb1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../get_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="create_cubic_surface_slabs.html">Create Surface Slabs in FCC Crystals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enumerate_byxtal_props.html">Compute Bicrystallographic properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enumerate_cubic_bplist.html">Generate a list of boundary-plane vectors</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Variable Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Convert-CSL-BP-to">Convert CSL-BP to</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#If-we-want-the-global-Y-axis-to-be-perpendicular-to-the-GB">If we want the global Y-axis to be perpendicular to the GB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="make_lmp_dump.html">Variable Definitions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../min_versions.html">Minimum Version of Python and NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../credits.html">Credits</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">gbpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Variable Definitions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/Tutorials/FCC/generate_gb_pkl_CSLhkl.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Variable-Definitions">
+<h1>Variable Definitions<a class="headerlink" href="#Variable-Definitions" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">l_Cbpb_Cp</span></code>: Basis of the 2D lattice in the CSLp reference frame for the given (hkl) plane.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">l_CRbpb_Cp</span></code>: Basis of the 2D lattice such that the basis vectors have length that is greater than rCut and the basis vectors are similar in lengths and the angle between them is close to 90. Defined in the CSLp reference frame</p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">byxtal.tools</span> <span class="k">as</span> <span class="nn">gbt</span>
+<span class="kn">import</span> <span class="nn">byxtal.lattice</span> <span class="k">as</span> <span class="nn">gbl</span>
+<span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pkl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">nla</span>
+<span class="kn">import</span> <span class="nn">byxtal.misorient_fz</span> <span class="k">as</span> <span class="nn">mfz</span>
+<span class="kn">import</span> <span class="nn">gbpy.generate_hkl_indices</span> <span class="k">as</span> <span class="nn">ghi</span>
+<span class="kn">import</span> <span class="nn">gbpy.util_funcs_create_byxtal</span> <span class="k">as</span> <span class="nn">uf</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">########################################################################</span>
+<span class="n">l1</span><span class="o">=</span><span class="n">gbl</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="s1">&#39;Al&#39;</span><span class="p">)</span>
+<span class="n">pkl_name</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="n">elem_type</span><span class="o">+</span><span class="s1">&#39;_byxtal_props.pkl&#39;</span>
+<span class="n">jar</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pkl_name</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">);</span>
+
+<span class="n">csl_props</span> <span class="o">=</span> <span class="n">pkl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">jar</span><span class="p">)</span>
+<span class="n">sig_mats</span> <span class="o">=</span> <span class="n">csl_props</span><span class="p">[</span><span class="s1">&#39;sig_mats&#39;</span><span class="p">]</span>
+<span class="n">csl_mats</span> <span class="o">=</span> <span class="n">csl_props</span><span class="p">[</span><span class="s1">&#39;csl_mats&#39;</span><span class="p">]</span>
+<span class="n">dsc_mats</span> <span class="o">=</span> <span class="n">csl_props</span><span class="p">[</span><span class="s1">&#39;dsc_mats&#39;</span><span class="p">]</span>
+<span class="n">bxt_symm_props</span> <span class="o">=</span> <span class="n">csl_props</span><span class="p">[</span><span class="s1">&#39;csl_symm_props&#39;</span><span class="p">]</span>
+<span class="n">jar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1">########################################################################</span>
+
+<span class="c1">########################################################################</span>
+<span class="n">pkl_name</span> <span class="o">=</span> <span class="s1">&#39;bp_list_&#39;</span> <span class="o">+</span> <span class="n">l1</span><span class="o">.</span><span class="n">elem_type</span> <span class="o">+</span> <span class="s1">&#39;.pkl&#39;</span>
+<span class="n">jar</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pkl_name</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">);</span>
+
+<span class="n">bp_list</span> <span class="o">=</span> <span class="n">pkl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">jar</span><span class="p">)</span>
+<span class="n">l_p_po</span> <span class="o">=</span> <span class="n">bp_list</span><span class="p">[</span><span class="s1">&#39;l_p_po&#39;</span><span class="p">]</span>
+<span class="n">hkl_sig_inds</span> <span class="o">=</span> <span class="n">bp_list</span><span class="p">[</span><span class="s1">&#39;miller_inds&#39;</span><span class="p">]</span>
+
+<span class="n">jar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1">########################################################################</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">l1</span> <span class="o">=</span> <span class="n">gbl</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="s1">&#39;Al&#39;</span><span class="p">)</span>
+<span class="n">lat_par</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="n">rCut</span> <span class="o">=</span> <span class="n">lat_par</span><span class="o">*</span><span class="mi">3</span>
+<span class="n">A_cut</span> <span class="o">=</span> <span class="p">(</span><span class="n">rCut</span><span class="o">+</span><span class="n">lat_par</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="n">l_p_po</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="n">l_p_po</span>
+<span class="n">l_po_p</span> <span class="o">=</span> <span class="n">nla</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">l_p_po</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">s1_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">hkl_sig_inds</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">ind1</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">sig_id</span> <span class="o">=</span> <span class="n">s1_keys</span><span class="p">[</span><span class="n">ind1</span><span class="p">]</span>
+<span class="n">hkl_inds</span> <span class="o">=</span> <span class="n">hkl_sig_inds</span><span class="p">[</span><span class="n">sig_id</span><span class="p">]</span>
+<span class="n">l_csl_p1</span> <span class="o">=</span> <span class="n">csl_mats</span><span class="p">[</span><span class="n">sig_id</span><span class="p">]</span>
+<span class="n">l_csl_po1</span> <span class="o">=</span> <span class="n">l_p_po</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l_csl_p1</span><span class="p">)</span>
+
+<span class="n">tct1</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">hkl1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span>
+<span class="n">hkl1</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">hkl_inds</span><span class="p">[</span><span class="n">tct1</span><span class="p">,:]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># for num_ct in range(len(hkl_inds)):</span>
+<span class="c1">#     tct1 = num_ct</span>
+<span class="c1">#     hkl1 = np.zeros((1,3), dtype=&#39;int64&#39;)</span>
+<span class="c1">#     hkl1[0,:] = hkl_inds[tct1,:]</span>
+<span class="c1">#     print(num_ct)</span>
+<span class="c1">#     print(hkl1)</span>
+<span class="c1">#     l_CSLbpb_CSLp = {}</span>
+<span class="c1">#     l_CSLbpbSig_CSLp = {}</span>
+
+<span class="c1">#     l_CSLbpb_CSLp_mat = ghi.compute_hkl_bpb(hkl1)</span>
+<span class="c1">#     l_CSLbpbSig_CSLp_mat = ghi.gen_Acut_bpb(l_CSLbpb_CSLp_mat, l_csl_po1, rCut, A_cut)</span>
+
+<span class="c1">#     l_Cbpb_Cp  = l_CSLbpb_CSLp_mat[0]</span>
+<span class="c1">#     l_CRbpb_Cp = l_CSLbpbSig_CSLp_mat[0]</span>
+
+<span class="c1">#     l_bp_po1 = l_csl_po1.dot(l_CRbpb_Cp)</span>
+
+<span class="c1">#     symm_grp_ax = bxt_symm_props[sig_id][&#39;symm_grp_ax&#39;];</span>
+<span class="c1">#     bp_symm_grp = bxt_symm_props[sig_id][&#39;bxt_symm_grp&#39;];</span>
+
+<span class="c1">#     l_p2_p1 = sig_mats[sig_id]</span>
+<span class="c1">#     gb_ID = uf.get_gb_uID(l1, l_bp_po1, l_p2_p1, l_p_po, bp_symm_grp, symm_grp_ax, sig_id)</span>
+<span class="c1">#     print(gb_ID)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">l_CSLbpb_CSLp</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">l_CSLbpbSig_CSLp</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">l_CSLbpb_CSLp_mat</span> <span class="o">=</span> <span class="n">ghi</span><span class="o">.</span><span class="n">compute_hkl_bpb</span><span class="p">(</span><span class="n">hkl1</span><span class="p">)</span>
+<span class="n">l_CSLbpbSig_CSLp_mat</span> <span class="o">=</span> <span class="n">ghi</span><span class="o">.</span><span class="n">gen_Acut_bpb</span><span class="p">(</span><span class="n">l_CSLbpb_CSLp_mat</span><span class="p">,</span> <span class="n">l_csl_po1</span><span class="p">,</span> <span class="n">rCut</span><span class="p">,</span> <span class="n">A_cut</span><span class="p">)</span>
+
+<span class="n">l_Cbpb_Cp</span>  <span class="o">=</span> <span class="n">l_CSLbpb_CSLp_mat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">l_CRbpb_Cp</span> <span class="o">=</span> <span class="n">l_CSLbpbSig_CSLp_mat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">l_bp_po1</span> <span class="o">=</span> <span class="n">l_csl_po1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l_CRbpb_Cp</span><span class="p">)</span>
+
+<span class="n">symm_grp_ax</span> <span class="o">=</span> <span class="n">bxt_symm_props</span><span class="p">[</span><span class="n">sig_id</span><span class="p">][</span><span class="s1">&#39;symm_grp_ax&#39;</span><span class="p">];</span>
+<span class="n">bp_symm_grp</span> <span class="o">=</span> <span class="n">bxt_symm_props</span><span class="p">[</span><span class="n">sig_id</span><span class="p">][</span><span class="s1">&#39;bxt_symm_grp&#39;</span><span class="p">];</span>
+
+<span class="n">l_p2_p1</span> <span class="o">=</span> <span class="n">sig_mats</span><span class="p">[</span><span class="n">sig_id</span><span class="p">]</span>
+<span class="n">gb_ID</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">get_gb_uID</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l_bp_po1</span><span class="p">,</span> <span class="n">l_p2_p1</span><span class="p">,</span> <span class="n">l_p_po</span><span class="p">,</span> <span class="n">bp_symm_grp</span><span class="p">,</span> <span class="n">symm_grp_ax</span><span class="p">,</span> <span class="n">sig_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-5-14b42f4fea6b&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> l_CSLbpbSig_CSLp <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span>
+<span class="ansi-green-fg">----&gt; 4</span><span class="ansi-red-fg"> </span>l_CSLbpb_CSLp_mat <span class="ansi-blue-fg">=</span> ghi<span class="ansi-blue-fg">.</span>compute_hkl_bpb<span class="ansi-blue-fg">(</span>hkl1<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> l_CSLbpbSig_CSLp_mat <span class="ansi-blue-fg">=</span> ghi<span class="ansi-blue-fg">.</span>gen_Acut_bpb<span class="ansi-blue-fg">(</span>l_CSLbpb_CSLp_mat<span class="ansi-blue-fg">,</span> l_csl_po1<span class="ansi-blue-fg">,</span> rCut<span class="ansi-blue-fg">,</span> A_cut<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span>
+
+<span class="ansi-green-fg">~/Leila_sndhard/codes/gbpy/gbpy/gbpy/generate_hkl_indices.py</span> in <span class="ansi-cyan-fg">compute_hkl_bpb</span><span class="ansi-blue-fg">(hkl_inds)</span>
+<span class="ansi-green-intense-fg ansi-bold">    237</span>         hkl1 <span class="ansi-blue-fg">=</span> hkl_inds<span class="ansi-blue-fg">[</span>ct1<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    238</span>         hkl1 <span class="ansi-blue-fg">=</span> hkl1<span class="ansi-blue-fg">.</span>astype<span class="ansi-blue-fg">(</span>int<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 239</span><span class="ansi-red-fg">         </span>bp1 <span class="ansi-blue-fg">=</span> bpb<span class="ansi-blue-fg">.</span>bp_basis<span class="ansi-blue-fg">(</span>hkl1<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    240</span>         a_vec <span class="ansi-blue-fg">=</span> bp1<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    241</span>         b_vec <span class="ansi-blue-fg">=</span> bp1<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-green-fg">~/Leila_sndhard/codes/byxtal/byxtal/byxtal/bp_basis.py</span> in <span class="ansi-cyan-fg">bp_basis</span><span class="ansi-blue-fg">(miller_ind)</span>
+<span class="ansi-green-intense-fg ansi-bold">    205</span>     <span class="ansi-red-fg">#  The reduced basis vectors for the plane</span>
+<span class="ansi-green-intense-fg ansi-bold">    206</span>     Tmat <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>np<span class="ansi-blue-fg">.</span>column_stack<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span>bv1_g1<span class="ansi-blue-fg">,</span> bv2_g1<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> dtype<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;int64&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 207</span><span class="ansi-red-fg">     </span>l_pl_g1 <span class="ansi-blue-fg">=</span> lt<span class="ansi-blue-fg">.</span>lll_reduction<span class="ansi-blue-fg">(</span>Tmat<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    208</span>     <span class="ansi-green-fg">return</span> l_pl_g1
+<span class="ansi-green-intense-fg ansi-bold">    209</span>
+
+<span class="ansi-green-fg">~/Leila_sndhard/codes/byxtal/byxtal/byxtal/lll_tools.py</span> in <span class="ansi-cyan-fg">lll_reduction</span><span class="ansi-blue-fg">(int_mat)</span>
+<span class="ansi-green-intense-fg ansi-bold">    107</span>     inp_args <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">    108</span>     inp_args<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;mat&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> int_mat
+<span class="ansi-green-fg">--&gt; 109</span><span class="ansi-red-fg">     </span>lll_int_mat <span class="ansi-blue-fg">=</span> rpl<span class="ansi-blue-fg">.</span>call_sage_math<span class="ansi-blue-fg">(</span>exec_str<span class="ansi-blue-fg">,</span> inp_args<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    110</span>     <span class="ansi-green-fg">return</span> lll_int_mat
+<span class="ansi-green-intense-fg ansi-bold">    111</span>
+
+<span class="ansi-green-fg">~/Leila_sndhard/codes/byxtal/byxtal/byxtal/reduce_po_lat.py</span> in <span class="ansi-cyan-fg">call_sage_math</span><span class="ansi-blue-fg">(exec_str, inp_args)</span>
+<span class="ansi-green-intense-fg ansi-bold">     36</span>     <span class="ansi-green-fg">for</span> i1 <span class="ansi-green-fg">in</span> range<span class="ansi-blue-fg">(</span>Sz<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     37</span>         <span class="ansi-green-fg">for</span> j1 <span class="ansi-green-fg">in</span> range<span class="ansi-blue-fg">(</span>Sz<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 38</span><span class="ansi-red-fg">             </span>M_out<span class="ansi-blue-fg">[</span>i1<span class="ansi-blue-fg">,</span> j1<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>str_out<span class="ansi-blue-fg">[</span>ct1<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     39</span>             ct1 <span class="ansi-blue-fg">=</span> ct1 <span class="ansi-blue-fg">+</span> <span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-intense-fg ansi-bold">     40</span>
+
+<span class="ansi-red-fg">IndexError</span>: list index out of range
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">l_bp_po1</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">l_bp_po1</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([-270.64125,   24.60375,   24.60375])
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">zCut</span> <span class="o">=</span> <span class="mi">25</span><span class="o">*</span><span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+
+<span class="n">threeD_upts</span><span class="p">,</span> <span class="n">sim_cell2</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">create_half_cryst</span><span class="p">(</span><span class="n">l_csl_p1</span><span class="p">,</span> <span class="n">l_CRbpb_Cp</span><span class="p">,</span> <span class="n">l_p_po</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">zCut</span><span class="p">)</span>
+
+<span class="n">l_p1_p2</span> <span class="o">=</span> <span class="n">nla</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">l_p2_p1</span><span class="p">)</span>
+<span class="n">l_csl_p2</span> <span class="o">=</span> <span class="n">l_p1_p2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l_csl_p1</span><span class="p">)</span>
+<span class="n">threeD_lpts</span><span class="p">,</span> <span class="n">sim_cell1</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">create_half_cryst</span><span class="p">(</span><span class="n">l_csl_p2</span><span class="p">,</span> <span class="n">l_CRbpb_Cp</span><span class="p">,</span> <span class="n">l_p_po</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">zCut</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">gb_attr</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">gb_attr</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cell1</span>
+<span class="n">gb_attr</span><span class="p">[</span><span class="s1">&#39;upts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">threeD_upts</span>
+<span class="n">gb_attr</span><span class="p">[</span><span class="s1">&#39;lpts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">threeD_lpts</span>
+
+<span class="n">pkl_name</span> <span class="o">=</span> <span class="s1">&#39;gb_attr_&#39;</span><span class="o">+</span><span class="n">gb_ID</span><span class="o">+</span><span class="s1">&#39;.pkl&#39;</span>
+<span class="n">jar</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pkl_name</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+<span class="n">pkl</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">gb_attr</span><span class="p">,</span> <span class="n">jar</span><span class="p">)</span>
+<span class="n">jar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">plotting_routines</span> <span class="k">as</span> <span class="nn">plr</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="n">threeD_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">threeD_upts</span><span class="p">,</span> <span class="n">threeD_lpts</span><span class="p">))</span>
+<span class="n">sim_orig</span> <span class="o">=</span> <span class="n">sim_cell1</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">sim_cell</span> <span class="o">=</span> <span class="n">sim_cell1</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">fig1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plr</span><span class="o">.</span><span class="n">plot_3d_pts_box</span><span class="p">(</span><span class="n">fig1</span><span class="p">,</span> <span class="n">threeD_pts</span><span class="p">,</span> <span class="n">sim_cell</span><span class="p">,</span> <span class="n">sim_orig</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Tutorials_FCC_generate_gb_pkl_CSLhkl_12_0.png" src="../../_images/Tutorials_FCC_generate_gb_pkl_CSLhkl_12_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;a&#39;: 4.05,
+ &#39;b&#39;: 4.05,
+ &#39;c&#39;: 4.05,
+ &#39;alpha&#39;: 1.5707963267948966,
+ &#39;beta&#39;: 1.5707963267948966,
+ &#39;gamma&#39;: 1.5707963267948966}
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">byxtal</span>
+<span class="c1"># path = os.path.dirname(byxtal.__file__)+&#39;/tests/&#39;;</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">byxtal</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/data_files/&#39;</span>
+<span class="n">csl_pkl</span> <span class="o">=</span> <span class="n">path</span><span class="o">+</span><span class="n">l1</span><span class="o">.</span><span class="n">pearson</span><span class="o">+</span><span class="s1">&#39;_Id_csl_common_rotations.pkl&#39;</span>
+<span class="n">jar</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">csl_pkl</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+<span class="n">s1</span><span class="o">=</span><span class="n">pkl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">jar</span><span class="p">)</span>
+<span class="n">jar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tct1</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">t1_num</span> <span class="o">=</span> <span class="n">t_num</span><span class="p">[</span><span class="n">tct1</span><span class="p">]</span>
+<span class="n">bpn_po1</span> <span class="o">=</span> <span class="n">bpn_list</span><span class="p">[</span><span class="n">tct1</span><span class="p">]</span>
+
+<span class="n">sig_id</span> <span class="o">=</span> <span class="n">s1_keys</span><span class="p">[</span><span class="n">t1_num</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sig ID: &quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">t1_num</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; -- &quot;</span><span class="o">+</span> <span class="n">sig_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-13-897782b7ce51&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> tct1 <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">3</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>t1_num <span class="ansi-blue-fg">=</span> t_num<span class="ansi-blue-fg">[</span>tct1<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> bpn_po1 <span class="ansi-blue-fg">=</span> bpn_list<span class="ansi-blue-fg">[</span>tct1<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> sig_id <span class="ansi-blue-fg">=</span> s1_keys<span class="ansi-blue-fg">[</span>t1_num<span class="ansi-blue-fg">]</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;t_num&#39; is not defined
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+
+<span></span><span class="n">l_csl_p1</span> <span class="o">=</span> <span class="n">csl_mats</span><span class="p">[</span><span class="n">sig_id</span><span class="p">];</span>
+<span class="n">l_csl_po1</span> <span class="o">=</span> <span class="n">l_p_po</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l_csl_p1</span><span class="p">)</span>
+
+
+<span class="c1">##############################################################################</span>
+<span class="c1">#### From MBP</span>
+<span class="n">sig_id</span> <span class="o">=</span> <span class="n">s1_keys</span><span class="p">[</span><span class="n">t1_num</span><span class="p">]</span>
+<span class="n">l_rp_po</span> <span class="o">=</span> <span class="n">fcd</span><span class="o">.</span><span class="n">reciprocal_mat</span><span class="p">(</span><span class="n">l_csl_po1</span><span class="p">)</span>
+<span class="n">l_po_rp</span> <span class="o">=</span> <span class="n">nla</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">l_rp_po</span><span class="p">)</span>
+<span class="n">norm_uvec</span> <span class="o">=</span> <span class="n">bpn_po1</span><span class="o">/</span><span class="n">bpn_po1</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+<span class="n">n1_rp</span> <span class="o">=</span> <span class="n">l_po_rp</span><span class="o">*</span><span class="n">norm_uvec</span>
+<span class="n">hkl_ind</span> <span class="o">=</span> <span class="n">iman</span><span class="o">.</span><span class="n">int_finder</span><span class="p">(</span><span class="n">n1_rp</span><span class="p">)</span>
+<span class="n">hkl1</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hkl_ind</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;double&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+
+<span class="kn">import</span> <span class="nn">gbpy.generate_hkl_indices</span> <span class="k">as</span> <span class="nn">ghi</span>
+<span class="c1"># l_CSLbpb_CSLp = ghi.compute_hkl_bpb(hkl1);</span>
+<span class="n">l_Cbpb_Cp</span> <span class="o">=</span> <span class="n">ghi</span><span class="o">.</span><span class="n">compute_hkl_bpb</span><span class="p">(</span><span class="n">hkl1</span><span class="p">)</span>
+<span class="n">l_CSLbpbSig_CSLp</span> <span class="o">=</span> <span class="n">ghi</span><span class="o">.</span><span class="n">gen_Acut_bpb</span><span class="p">(</span><span class="n">l_Cbpb_Cp</span><span class="p">,</span> <span class="n">l_csl_po1</span><span class="p">,</span> <span class="n">rCut</span><span class="p">,</span> <span class="n">A_cut</span><span class="p">)</span>
+<span class="n">l_CRbpb_Cp</span><span class="o">=</span><span class="n">l_CSLbpbSig_CSLp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1">##############################################################################</span>
+
+<span class="n">l_bp_po1</span> <span class="o">=</span> <span class="n">l_csl_po1</span><span class="o">*</span><span class="n">l_CRbpb_Cp</span><span class="p">;</span>
+
+<span class="n">symm_grp_ax</span> <span class="o">=</span> <span class="n">csl_bp_props</span><span class="p">[</span><span class="n">sigr_id</span><span class="p">][</span><span class="s1">&#39;symm_grp_ax&#39;</span><span class="p">];</span>
+<span class="n">bp_symm_grp</span> <span class="o">=</span> <span class="n">csl_bp_props</span><span class="p">[</span><span class="n">sig_id</span><span class="p">][</span><span class="s1">&#39;bp_symm_grp&#39;</span><span class="p">];</span>
+
+<span class="n">l_p2_p1</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="n">sig_mats</span><span class="p">[</span><span class="n">sig_id</span><span class="p">]);</span>
+<span class="n">gb_ID</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">get_gb_uID</span><span class="p">(</span><span class="n">l_bp_po1</span><span class="p">,</span> <span class="n">l_p2_p1</span><span class="p">,</span> <span class="n">l_p_po</span><span class="p">,</span> <span class="n">bp_symm_grp</span><span class="p">,</span> <span class="n">symm_grp_ax</span><span class="p">,</span> <span class="n">sig_id</span><span class="p">);</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gb_ID</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-14-1854f955e549&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-red-fg">##############################################################################</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-red-fg">#### From MBP</span>
+<span class="ansi-green-fg">----&gt; 7</span><span class="ansi-red-fg"> </span>sig_id <span class="ansi-blue-fg">=</span> s1_keys<span class="ansi-blue-fg">[</span>t1_num<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">      8</span> l_rp_po <span class="ansi-blue-fg">=</span> fcd<span class="ansi-blue-fg">.</span>reciprocal_mat<span class="ansi-blue-fg">(</span>l_csl_po1<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      9</span> l_po_rp <span class="ansi-blue-fg">=</span> nla<span class="ansi-blue-fg">.</span>inv<span class="ansi-blue-fg">(</span>l_rp_po<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;t1_num&#39; is not defined
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">zCut</span> <span class="o">=</span> <span class="mi">25</span><span class="o">*</span><span class="n">l1</span><span class="o">.</span><span class="n">lat_params</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">];</span>
+
+<span class="n">threeD_upts</span><span class="p">,</span> <span class="n">sim_cell2</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">create_half_cryst</span><span class="p">(</span><span class="n">l_csl_p1</span><span class="p">,</span> <span class="n">l_CRbpb_Cp</span><span class="p">,</span> <span class="n">l_p_po</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">zCut</span><span class="p">)</span>
+
+<span class="n">l_p1_p2</span> <span class="o">=</span> <span class="n">l_p2_p1</span><span class="o">.</span><span class="n">inv</span><span class="p">();</span> <span class="n">l_csl_p2</span> <span class="o">=</span> <span class="n">l_p1_p2</span><span class="o">*</span><span class="n">l_csl_p1</span><span class="p">;</span>
+<span class="n">threeD_lpts</span><span class="p">,</span> <span class="n">sim_cell1</span> <span class="o">=</span> <span class="n">uf</span><span class="o">.</span><span class="n">create_half_cryst</span><span class="p">(</span><span class="n">l_csl_p2</span><span class="p">,</span> <span class="n">l_CRbpb_Cp</span><span class="p">,</span> <span class="n">l_p_po</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">zCut</span><span class="p">)</span>
+
+<span class="n">pkl_name</span> <span class="o">=</span> <span class="s1">&#39;gb_attr_&#39;</span><span class="o">+</span><span class="n">gb_ID</span><span class="o">+</span><span class="s1">&#39;.pkl&#39;</span><span class="p">;</span>
+<span class="n">jar</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pkl_name</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">);</span> <span class="n">pkl</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">gb_attr</span><span class="p">,</span> <span class="n">jar</span><span class="p">);</span> <span class="n">jar</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+
+<span class="n">gb_attr</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="n">gb_attr</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cell1</span><span class="p">;</span>
+<span class="n">gb_attr</span><span class="p">[</span><span class="s1">&#39;upts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">threeD_upts</span><span class="p">;</span>
+<span class="n">gb_attr</span><span class="p">[</span><span class="s1">&#39;lpts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">threeD_lpts</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Convert-CSL-BP-to">
+<h2>Convert CSL-BP to<a class="headerlink" href="#Convert-CSL-BP-to" title="Permalink to this headline">¶</a></h2>
+<p>The boundary-plane can be described in different lattices and conventions</p>
+<ol class="arabic simple">
+<li><p>As planar Miller-indices in <span class="math notranslate nohighlight">\(\mathcal{B}_{csl}\)</span></p></li>
+<li><p>As planar Miller-indices in <span class="math notranslate nohighlight">\(\mathcal{B}_{p}\)</span></p></li>
+<li><p>As planar Miller-indices in <span class="math notranslate nohighlight">\(\mathcal{B}_{po}\)</span></p></li>
+<li><p>As direction Miller-indices of the normal vector in <span class="math notranslate nohighlight">\(\mathcal{B}_{p}\)</span></p></li>
+<li><p>As direction Miller-indices of the normal vector in <span class="math notranslate nohighlight">\(\mathcal{B}_{po}\)</span></p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="If-we-want-the-global-Y-axis-to-be-perpendicular-to-the-GB">
+<h2>If we want the global Y-axis to be perpendicular to the GB<a class="headerlink" href="#If-we-want-the-global-Y-axis-to-be-perpendicular-to-the-GB" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">### Points with Y-axis perpendicular to the GB</span>
+<span class="n">rot_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]])</span>
+<span class="n">threeD_lypts</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rot_mat</span><span class="p">,</span> <span class="n">threeD_upts</span><span class="o">.</span><span class="n">transpose</span><span class="p">()))</span><span class="o">.</span><span class="n">transpose</span><span class="p">();</span>
+<span class="n">threeD_uypts</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rot_mat</span><span class="p">,</span> <span class="n">threeD_lpts</span><span class="o">.</span><span class="n">transpose</span><span class="p">()))</span><span class="o">.</span><span class="n">transpose</span><span class="p">();</span>
+
+<span class="n">sim_cell2</span> <span class="o">=</span> <span class="mi">0</span><span class="o">*</span><span class="n">sim_cell1</span>
+<span class="n">sim_cell2</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cell1</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">sim_cell2</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cell1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">sim_cell2</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cell1</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">sim_cell2</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cell1</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="n">sim_cell2</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cell1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">sim_cell2</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cell1</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">sim_cell2</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cell1</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">sim_cell2</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cell1</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="n">gbY_attr</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="n">gbY_attr</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim_cell2</span><span class="p">;</span>
+<span class="n">gbY_attr</span><span class="p">[</span><span class="s1">&#39;upts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">threeD_lypts</span><span class="p">;</span>
+<span class="n">gbY_attr</span><span class="p">[</span><span class="s1">&#39;lpts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">threeD_uypts</span><span class="p">;</span>
+
+<span class="n">pkl_name</span> <span class="o">=</span> <span class="s1">&#39;gbY_attr_&#39;</span><span class="o">+</span><span class="n">gb_ID</span><span class="o">+</span><span class="s1">&#39;.pkl&#39;</span><span class="p">;</span>
+<span class="n">jar</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pkl_name</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">);</span> <span class="n">pkl</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">gbY_attr</span><span class="p">,</span> <span class="n">jar</span><span class="p">);</span> <span class="n">jar</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="make_lmp_dump.html" class="btn btn-neutral float-right" title="Variable Definitions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="enumerate_cubic_bplist.html" class="btn btn-neutral float-left" title="Generate a list of boundary-plane vectors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Leila Khalili.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
