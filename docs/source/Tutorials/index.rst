@@ -1,4 +1,4 @@
-FCC
+Tutorials
 ==================
 
 .. toctree::
