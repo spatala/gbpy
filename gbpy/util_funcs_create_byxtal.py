@@ -1,10 +1,8 @@
-## Import modules
 import math as mt
 import numpy as np
 import byxtal.find_csl_dsc as fcd
 import byxtal.integer_manipulations as iman
 import byxtal.bp_basis as bpb
-# from sympy.matrices import Matrix, eye, zeros;
 import byxtal.pick_fz_bpl as pfb
 import numpy.linalg as nla
 
@@ -13,7 +11,6 @@ from ovito.pipeline import StaticSource, Pipeline
 import ovito.modifiers as ovm
 from ovito.data import CutoffNeighborFinder
 
-#--------------------------------------------------------------------------------------------------
 
 def find_int_solns(a_vec, b_vec):
     """
@@ -54,9 +51,8 @@ def find_int_solns(a_vec, b_vec):
     c = int(c)
     d = int(d)
 
-    ####
-    p = mt.gcd(a,b)
-    if p==0:
+    p = mt.gcd(a, b)
+    if p == 0:
         if c == 1:
             y1 = 0
             y2 = 0
@@ -69,7 +65,7 @@ def find_int_solns(a_vec, b_vec):
                 raise Exception('Error with Diophantine solution')
             else:
                 if det1 == -1:
-                    l_p2_p1[:,2] = -l_p2_p1[:,2]
+                    l_p2_p1[:, 2] = -l_p2_p1[:, 2]
         else:
             raise Exception('Error with boundary-plane indices')
     else:
@@ -96,7 +92,7 @@ def find_int_solns(a_vec, b_vec):
         # y = y0 - a'k - v0m
         # z = z0 + pm with k and m any integer in \mathbb{Z}
         tn1 = 10
-        ival = np.arange(-(tn1),tn1+1)
+        ival = np.arange(-(tn1), tn1+1)
         k1, m1 = np.meshgrid(ival, ival)
         k1 = k1.flatten()
         m1 = m1.flatten()
@@ -112,16 +108,17 @@ def find_int_solns(a_vec, b_vec):
         y2 = y[ind1]
         y3 = z[ind1]
 
-        l_p2_p1 = (np.vstack((a_vec, b_vec, np.array([ y1, y2, y3 ])))).transpose()
+        l_p2_p1 = (np.vstack((a_vec, b_vec, np.array([y1, y2, y3])))).transpose()
 
         det1 = nla.det(l_p2_p1)
         if (np.abs(det1-1) > (1e-10*np.max(np.abs(l_p2_p1)))):
             raise Exception('Error with Diophantine solution')
         else:
             if det1 == -1:
-                l_p2_p1[:,2] = -l_p2_p1[:,2]
+                l_p2_p1[:, 2] = -l_p2_p1[:, 2]
 
     return (l_p2_p1).astype(int)
+
 
 def compute_rCut(l2d_bp_po):
     """
@@ -140,13 +137,14 @@ def compute_rCut(l2d_bp_po):
         The cut-off radius for replicating the lattice basis.
 
     """
-    bv1 = l2d_bp_po[:,0]
-    bv2 = l2d_bp_po[:,1]
+    bv1 = l2d_bp_po[:, 0]
+    bv2 = l2d_bp_po[:, 1]
     l1 = nla.norm(bv1)
     l2 = nla.norm(bv2)
     l3 = nla.norm((bv1+bv2))
-    rCut = np.max([l1,l2,l3])
+    rCut = np.max([l1, l2, l3])
     return rCut
+
 
 def compute_orientation(l2d_bp_po):
     """
@@ -166,12 +164,12 @@ def compute_orientation(l2d_bp_po):
         Orientation of the lattice in p1 which line up with x-axis in the xy-plane.
 
     """
-    bv1 = l2d_bp_po[:,0]
-    bv2 = l2d_bp_po[:,1]
+    bv1 = l2d_bp_po[:, 0]
+    bv2 = l2d_bp_po[:, 1]
     l1 = nla.norm(bv1)
     l2 = nla.norm(bv2)
 
-    ### Orientation
+    #  Orientation
     l1_uvec = bv1/l1
     l2_uvec = bv2/l2
 
@@ -185,6 +183,7 @@ def compute_orientation(l2d_bp_po):
     l_po1_go = (np.vstack((x_vec, y_vec, z_vec))).transpose()
 
     return nla.inv(l_po1_go)
+
 
 def compute_hkl_p(l2d_bp_po, l_p_po):
     """
@@ -204,10 +203,9 @@ def compute_hkl_p(l2d_bp_po, l_p_po):
     nuI_vec_rp: numpy.array
         The (hkl) indices  of the plane defined the vectors
         in the matrix **l2d_bp_po**.
-
     """
-    avec_po = l2d_bp_po[:,0]
-    bvec_po = l2d_bp_po[:,1]
+    avec_po = l2d_bp_po[:, 0]
+    bvec_po = l2d_bp_po[:, 1]
 
     nvec = np.cross(avec_po, bvec_po)
     nu_vec = nvec/nla.norm(nvec)
@@ -281,21 +279,26 @@ def replicate_pts(l_bpb_po, rCut):
         The coordinates of the replicated points
 
     """
-    bx = l_bpb_po[:,0]; by = l_bpb_po[:,1]
+    bx = l_bpb_po[:, 0]
+    by = l_bpb_po[:, 1]
     mx, my = num_rep_2d(bx, by, rCut)
 
-    mx1 = np.arange(-mx,mx+1); my1 = np.arange(-my,my+1)
+    mx1 = np.arange(-mx, mx+1)
+    my1 = np.arange(-my, my+1)
     mx2, my2 = np.meshgrid(mx1, my1)
-    mx3 = mx2.flatten(); my3 = my2.flatten()
+    mx3 = mx2.flatten()
+    my3 = my2.flatten()
 
     num1 = np.size(mx3)
-    twoD_pts = np.zeros((num1,2))
-    bx1 = bx.reshape(1,2)
-    by1 = by.reshape(1,2)
+    twoD_pts = np.zeros((num1, 2))
+    bx1 = bx.reshape(1, 2)
+    by1 = by.reshape(1, 2)
     for ct1 in range(num1):
-        mx_val = mx3[ct1]; my_val = my3[ct1]
+        mx_val = mx3[ct1]
+        my_val = my3[ct1]
         twoD_pts[ct1, :] = (mx_val*bx1 + my_val*by1)
     return twoD_pts
+
 
 def change_basis(twoD_pts, l_bpb_po):
     """
@@ -308,7 +311,7 @@ def change_basis(twoD_pts, l_bpb_po):
         The coordinates of the replicated points
 
     l_bpb_po: numpy.array
-        2D basis vector in po 
+        2D basis vector in po
 
     Returns
     ------------
@@ -319,6 +322,7 @@ def change_basis(twoD_pts, l_bpb_po):
     mat1 = nla.inv(l_bpb_po)
     # return np.array((mat1*(Matrix(twoD_pts.transpose()))).transpose(), dtype='double')
     return (mat1.dot(twoD_pts.transpose())).transpose()
+
 
 def cut_box_pts(twoD_pts, tol=1e-8):
     """
@@ -337,14 +341,15 @@ def cut_box_pts(twoD_pts, tol=1e-8):
     twoD_pts[tind1,:]: numpy.ndarray
         The coordinates of replicated points which lies inside the 2D box
     """
-    tx1 = twoD_pts[:,0]
-    ty1 = twoD_pts[:,1]
+    tx1 = twoD_pts[:, 0]
+    ty1 = twoD_pts[:, 1]
     cond1 = (tx1 >= 0-tol)
     cond2 = (tx1 <= 1+tol)
     cond3 = (ty1 >= 0-tol)
     cond4 = (ty1 <= 1+tol)
     tind1 = np.where(cond1 & cond2 & cond3 & cond4)[0]
-    return twoD_pts[tind1,:]
+    return twoD_pts[tind1, :]
+
 
 def knnsearch_v1(X, Y):
     """
@@ -357,84 +362,135 @@ def knnsearch_v1(X, Y):
     Parameters
     -----------------
     X: numpy.ndarray
-        The coordinates of the replicated points
+        set of points
 
-    Y: float
-        User defined tolerance
+    Y: numpy.ndarray
+        set of points
 
     Returns
     ------------
-    Idx:
-    dval:
+    Idx: numpy.ndarray
+        the indices of the nearest neighbors
+    dval: numpy.ndarray
+        nearest neighbor distances
     """
     num_x = np.shape(X)[0]
     num_y = np.shape(Y)[0]
     dval = np.zeros((num_y,))
     Idx = np.zeros((num_y,), dtype='int')
     for ct1 in range(num_y):
-        tpt2 = Y[ct1,:]
-        diff1 = X - np.tile(tpt2, (num_x,1))
-        dval1 = np.sqrt(np.sum(diff1**2,axis=1))
+        tpt2 = Y[ct1, :]
+        diff1 = X - np.tile(tpt2, (num_x, 1))
+        dval1 = np.sqrt(np.sum(diff1**2, axis=1))
         dval[ct1] = np.min(dval1)
         Id1 = np.where(dval1 == np.min(dval1))[0]
         Idx[ct1] = int(Id1[0])
     return Idx, dval
+
 
 def overlap_inds(pts, tx_vec, d_tol):
     """
     Translate pts by the tx_vec vector. Return the indices
     of points in pts that would overlap with the translated
     set of points.
+
+    Parameters
+    -----------------
+    pts: numpy.ndarray
+        the position of atoms
+    tx_vec: 
+        The basis vector in x direction in x-z plane
+    d_tol: float
+        tolerance
+
+    Returns
+    ------------
+    Idx[np.where(D < d_tol)[0]]:
+        the indices of the points which overlap wothe the translated
+        set of points
     """
     num1 = np.shape(pts)[0]
-    tpts2 = pts+np.tile(tx_vec.transpose(), (num1,1))
+    tpts2 = pts+np.tile(tx_vec.transpose(), (num1, 1))
     Idx, D = knnsearch_v1(tpts2, pts)
     return Idx[np.where(D < d_tol)[0]]
+
 
 def find_bound_inds(twoD_pts, tol1):
     """
     Given set of **twoD_pts** in fractional coordinates,
     provide the indices of the points that are close to the
     boundaries of the box.
+
+    Parameters
+    -----------------
+    twoD_pts: numpy.ndarray
+        the position of atoms in fractional coordinates
+    tol1: float
+        tolerance
+
+    Returns
+    ------------
+    ind1:
+        indices of the points
+    ind2:
+        indices of the points
     """
-    cond1 = (np.abs(twoD_pts[:,0]) < tol1)
-    cond2 = (np.abs(twoD_pts[:,0]-1) < tol1)
-    cond3 = (np.abs(twoD_pts[:,1]) < tol1)
-    cond4 = (np.abs(twoD_pts[:,1]-1) < tol1)
+    cond1 = (np.abs(twoD_pts[:, 0]) < tol1)
+    cond2 = (np.abs(twoD_pts[:, 0]-1) < tol1)
+    cond3 = (np.abs(twoD_pts[:, 1]) < tol1)
+    cond4 = (np.abs(twoD_pts[:, 1]-1) < tol1)
     ind1 = np.where(cond1 | cond2 | cond3 | cond4)[0]
 
     ind2 = np.where(~(cond1 | cond2 | cond3 | cond4))[0]
     return ind1, ind2
+
 
 def remove_2d_overlaps(l_bp_po, ind1, ind2, pts1):
     """
     Given the two vectors of that define the box and the set of points (pts1)
     inside the box, remove the set of points that will overlap under
     periodic boundary conditions.
+
+    Parameters
+    -----------------
+    l_bp_po: numpy.ndarray
+
+    ind1:
+        indices of the points
+    ind2:
+        indices of the points
+    pts1:
+        the position of atoms
+
+    Returns
+    ------------
+    twoD_pts: numpy.array
+        set of atoms without overlap under periodic boundary condition
     """
-    x0 = np.arange(-1,2)
+    x0 = np.arange(-1, 2)
     x1, y1 = np.meshgrid(x0, x0)
     x2 = x1.flatten()
     y2 = y1.flatten()
-    mg1 = (np.vstack((x2,y2))).transpose()
-    tind1 = np.where((mg1[:,0] == 0) & (mg1[:,1] == 0))[0][0]
+    mg1 = (np.vstack((x2, y2))).transpose()
+    tind1 = np.where((mg1[:, 0] == 0) & (mg1[:, 1] == 0))[0][0]
     mg1 = np.delete(mg1, tind1, axis=0)
 
-    #### Translate pts1[ind1,:] and remove overlaps
-    tx_vec = np.array(l_bp_po[:,0], dtype='double')
-    ty_vec = np.array(l_bp_po[:,1], dtype='double')
+    #  Translate pts1[ind1,:] and remove overlaps
+    tx_vec = np.array(l_bp_po[:, 0], dtype='double')
+    ty_vec = np.array(l_bp_po[:, 1], dtype='double')
     num_trans = np.shape(mg1)[0]
 
     for ct1 in range(num_trans):
-        mx = mg1[ct1,0]
-        my = mg1[ct1,1]
-        tpts1 = pts1[ind1,:]
+        mx = mg1[ct1, 0]
+        my = mg1[ct1, 1]
+        tpts1 = pts1[ind1, :]
         i2 = overlap_inds(tpts1, mx*tx_vec + my*ty_vec, 0.1)
         tpts1 = np.delete(tpts1, i2, axis=0)
         ind1 = np.delete(ind1, i2)
 
-    twoD_pts = np.vstack((pts1[ind1,:], pts1[ind2,:]))
+    twoD_pts = np.vstack((pts1[ind1, :], pts1[ind2, :]))
     return twoD_pts
+
 
 def create_twoD_slab(l_bp_po, l_p_po):
     """
@@ -442,10 +498,25 @@ def create_twoD_slab(l_bp_po, l_p_po):
     and the basis vectors of the lattice, **l_p_po**, create the 2D slab of
     atoms (that satisfies the periodic boundary conditions). The plane is
     oriented such that the two vectors in **l_bp_po** are in the X-Y plane.
+
+    Parameters
+    -----------------
+    l_bp_po: numpy.ndarray
+
+    l_p_po: numpy array
+        The primitive basis vectors of the underlying lattice in the orthogonal
+        reference frame.
+
+    Returns
+    ------------
+    l2D_bpbSig_po1: numpy.array
+    l2D_bpbSig_po1:
+    twoD_pts:
+
     """
     rCut = compute_rCut(l_bp_po)
-    ### Lower crystal orientation
-    ### Find the lcryst vectors along a-vec, b-vec
+    #  Lower crystal orientation
+    #  Find the lcryst vectors along a-vec, b-vec
     l_po1_go = compute_orientation(l_bp_po)
     l2D_bpbSig_po1 = l_po1_go.dot(l_bp_po)
 
@@ -456,12 +527,13 @@ def create_twoD_slab(l_bp_po, l_p_po):
     l_bpb_po1 = l_p_po.dot(l_bpb_p1)
 
     l2D_bpb_po1 = l_po1_go.dot(l_bpb_po1)
-    twoD_mat = l2D_bpb_po1[:2,:]
-    twoDSig_mat = l2D_bpbSig_po1[:2,:]
+    twoD_mat = l2D_bpb_po1[:2, :]
+    twoDSig_mat = l2D_bpbSig_po1[:2, :]
     twoD_pts = replicate_pts(twoD_mat, rCut)
     twoD_pts = remove_periodic_overlaps(twoD_pts, twoDSig_mat)
 
     return l_bpb_p1, l2D_bpbSig_po1, twoD_pts
+
 
 def create_threeD_slab(l1, zCut, tz_vec, l_bp_po, twoD_pts):
     """
@@ -471,62 +543,61 @@ def create_threeD_slab(l1, zCut, tz_vec, l_bp_po, twoD_pts):
     oriented such that the two vectors in **l_bp_po** are in the X-Y plane.
     """
 
-    ################################################################################
-    ## Translate 2D points in the Z-direction with zCut
-    num_rep = np.abs(int(np.ceil(zCut/np.dot(tz_vec,np.array([0,0,1])))))
+    # Translate 2D points in the Z-direction with zCut
+    num_rep = np.abs(int(np.ceil(zCut/np.dot(tz_vec, np.array([0, 0, 1])))))
     num_2d = np.shape(twoD_pts)[0]
-    num_3d_pts = int((2*num_rep+1)*num_2d); # num_3d_pts = int(num_rep*num_2d);
-    threeD_pts = np.zeros((num_3d_pts,3))
+    num_3d_pts = int((2*num_rep+1)*num_2d)
+    threeD_pts = np.zeros((num_3d_pts, 3))
 
-    twoD_pts1 = np.hstack((twoD_pts, np.zeros((num_2d,1))))
+    twoD_pts1 = np.hstack((twoD_pts, np.zeros((num_2d, 1))))
 
     for ct1 in np.arange(-num_rep, num_rep+1):
         ct2 = ct1 + num_rep
         ind_st = (ct2)*num_2d
         ind_stop = ind_st + num_2d
         trans_vec = tz_vec*ct1
-        threeD_pts[ind_st:ind_stop, :] = twoD_pts1 + np.tile(trans_vec, (num_2d,1))
+        threeD_pts[ind_st:ind_stop, :] = twoD_pts1 + np.tile(trans_vec, (num_2d, 1))
 
-    ### Simulation Cell Box
-    ### Following Ovito's convention
-    sim_cell = np.zeros((3,4))
-    sim_avec = l_bp_po[:,0]
-    sim_bvec = l_bp_po[:,1]
-    ### Change this with inter-planar spacing
-    sim_cvec = np.array([0,0,2*zCut])
-    sim_orig = np.array([0,0,-zCut])
+    #   Simulation Cell Box
+    #  Following Ovito's convention
+    sim_cell = np.zeros((3, 4))
+    sim_avec = l_bp_po[:, 0]
+    sim_bvec = l_bp_po[:, 1]
+    #  Change this with inter-planar spacing
+    sim_cvec = np.array([0, 0, 2*zCut])
+    sim_orig = np.array([0, 0, -zCut])
 
-    sim_cell[:,0] = sim_avec
-    sim_cell[:,1] = sim_bvec
-    sim_cell[:,2] = sim_cvec
-    sim_cell[:,3] = sim_orig
+    sim_cell[:, 0] = sim_avec
+    sim_cell[:, 1] = sim_bvec
+    sim_cell[:, 2] = sim_cvec
+    sim_cell[:, 3] = sim_orig
 
-    box_vecs = sim_cell[:,0:3]
+    box_vecs = sim_cell[:, 0:3]
 
     threeD_pts1 = wrap_cc(sim_cell, threeD_pts)
     threeD_pts1 = wrap_cc(sim_cell, threeD_pts)
     l_po_go = compute_orientation(l_bp_po)
-    if len(l1.basis_atoms)==2:
+    if len(l1.basis_atoms) == 2:
         second_atom = (np.array([l1.lat_params['a']*l1.basis_atoms[1][0],
                                  l1.lat_params['b']*l1.basis_atoms[1][1],
-                                 l1.lat_params['c']*l1.basis_atoms[1][2]])).reshape(3,1)
+                                 l1.lat_params['c']*l1.basis_atoms[1][2]])).reshape(3, 1)
         shift = np.dot(l_po_go, second_atom)
-        th_z = sim_cell[2,2] + sim_cell[2,3]
+        th_z = sim_cell[2, 2] + sim_cell[2, 3]
         threeD_pts_1 = threeD_pts1 + shift.transpose()
-        threeD_pts_f = np.append(threeD_pts1, threeD_pts_1,axis=0)
-        threeD_pts_f = threeD_pts_f[threeD_pts_f[:,2] <= th_z]
-        threeD_pts_f = threeD_pts_f[threeD_pts_f[:,2] >= -th_z]
+        threeD_pts_f = np.append(threeD_pts1, threeD_pts_1, axis=0)
+        threeD_pts_f = threeD_pts_f[threeD_pts_f[:, 2] <= th_z]
+        threeD_pts_f = threeD_pts_f[threeD_pts_f[:, 2] >= -th_z]
         threeD_pts_final = wrap_cc(sim_cell, threeD_pts_f)
         tpts1 = np.dot(nla.inv(box_vecs), threeD_pts_final.transpose()).transpose()
     else:
         tpts1 = np.dot(nla.inv(box_vecs), threeD_pts1.transpose()).transpose()
     for ct1 in range(2):
-        tpts_x = tpts1[:,ct1]
+        tpts_x = tpts1[:, ct1]
         y1, y2 = np.modf(tpts_x)
         tpts_x = tpts_x - y2
         ind1 = np.where(tpts_x < 0)[0]
         tpts_x[ind1] = tpts_x[ind1] + 1
-        tpts1[:,ct1] = tpts_x
+        tpts1[:, ct1] = tpts_x
 
     threeD_pts = np.dot(box_vecs, tpts1.transpose()).transpose()
 
@@ -535,70 +606,101 @@ def create_threeD_slab(l1, zCut, tz_vec, l_bp_po, twoD_pts):
 
 def create_half_cryst(l1, l_csl_p1, l_bp_CSLp, l_p_po, cryst_typ, zCut):
     """
+    l_p_po: numpy array
+        The primitive basis vectors of the underlying lattice in the orthogonal
+        reference frame.
 
+    Parameters
+    -----------
+    l1: class
+        the lattice class
+    l_csl_p1: numpy.array
+        the csl basis vector  in the primitive p1 basis.
+    l_bp_CSLp: numpy array
+        The planar basis vector  in the csl basis.
+    l_p_po: numpy array
+        The primitive basis vectors of the underlying lattice in the orthogonal
+        reference frame.
+    cryst_typ: string
+        crystal type
+    zCut: float
+        The lenght of the surface-slab is equal to 2(zCut)
+
+    Returns
+    --------
+    threeD_pts: numpy.array
+        the position of points
+    sim_cell: numpy.ndarray
+        A 3x4 matrix (with column-major ordering). The first
+        three columns of the matrix represent the three cell
+        vectors and the last column is the position of the cell’s origin.
     """
     l_csl_po1 = l_p_po.dot(l_csl_p1)
     l_bp_po1 = l_csl_po1.dot(l_bp_CSLp)
     l_bpb_p1, l2D_bp_po1, twoD_pts = create_twoD_slab(l_bp_po1, l_p_po)
     l_po1_go = compute_orientation(l_bp_po1)
 
-    ################################################################################
-    #### Replicate the 2D points in 3D (either in +Z or -Z)
-    avec = l_bpb_p1[:,0]
-    bvec = l_bpb_p1[:,1]
+    #  Replicate the 2D points in 3D (either in +Z or -Z)
+    avec = l_bpb_p1[:, 0]
+    bvec = l_bpb_p1[:, 1]
     l_p2_p1 = find_int_solns(avec, bvec)
     l_p2_po1 = (l_p_po.dot(l_p2_p1))
     l_p2_go = (l_po1_go.dot(l_p2_po1))
 
-    tz_vec = l_p2_go[:,2]
+    tz_vec = l_p2_go[:, 2]
     threeD_pts, sim_cell = create_threeD_slab(l1, zCut, tz_vec, l2D_bp_po1, twoD_pts)
 
     if cryst_typ == 'upper':
-        tol1 = 1e-8; ind1 = np.where(threeD_pts[:,2] >= -tol1)[0]
-        threeD_pts = threeD_pts[ind1,:]
+        tol1 = 1e-8
+        ind1 = np.where(threeD_pts[:, 2] >= -tol1)[0]
+        threeD_pts = threeD_pts[ind1, :]
     if cryst_typ == 'lower':
-        tol1 = 1e-8; ind1 = np.where(threeD_pts[:,2] <= tol1)[0]
-        threeD_pts = threeD_pts[ind1,:]
+        tol1 = 1e-8
+        ind1 = np.where(threeD_pts[:, 2] <= tol1)[0]
+        threeD_pts = threeD_pts[ind1, :]
 
     return threeD_pts, sim_cell
 
+
 def get_gb_uID(l1, l_bp_po1, l_p2_p1, l_p_po, bp_symm_grp, symm_grp_ax, sig_id):
     """
-    Returns 
+    Function created a unique gb ID.
 
     Parameters
     -----------
-    l1: 
-
-    l_bp_po1: 
-
-    l_p2_p1:
-
-    l_p_po:
-
-    bp_symm_grp: The point group symmetry of the underlying bicrystal.
-    * python string with allowed values 'C_s', 'C_2h', 'D_3d', 'D_2h', 'D_4h', 'D_6h', 'D_8h' and 'O_h'
-
-    symm_grp_ax: The principal axes of bicrystal symmetry group in orthogonal reference frame of crystal 1 (po1).
-    * numpy array of size (3 x 3)
-    * x_axis == symm_grp_axes[:, 0]; y_axis == symm_grp_axes[:, 1]; z_axis == symm_grp_axes[:, 2]
-
-    sig_id:
-
+    l1: class
+        the lattice class
+    l_bp_po1: numpy.array
+        the basis vector of planar basis in the orthogonal po1 basis.
+    l_p2_p1: numpy array
+        The basis vector of plane 2 in the p1 basis.
+    l_p_po: numpy array
+        The primitive basis vectors of the underlying lattice in the orthogonal
+        reference frame.
+    bp_symm_grp: 
+        The point group symmetry of the underlying bicrystal.
+        * python string with allowed values 'C_s', 'C_2h', 'D_3d', 'D_2h',
+        'D_4h', 'D_6h', 'D_8h' and 'O_h'
+    symm_grp_ax:
+        The principal axes of bicrystal symmetry group in orthogonal reference frame of crystal 1 (po1).
+        * numpy array of size (3 x 3)
+        * x_axis == symm_grp_axes[:, 0]; y_axis == symm_grp_axes[:, 1]; z_axis == symm_grp_axes[:, 2]
+    sig_id: int
+        sigma number
 
     Returns
     --------
     gb_id: string
         The unique name of the grain boundary
     """
-    bpn_go1 = np.cross(l_bp_po1[:,0], l_bp_po1[:,1])
+    bpn_go1 = np.cross(l_bp_po1[:, 0], l_bp_po1[:, 1])
     bpn_go1 = bpn_go1/nla.norm(bpn_go1)
-    bpn_go1 = bpn_go1.reshape((1,3))
+    bpn_go1 = bpn_go1.reshape((1, 3))
 
     bp_fz_norms_go1, bp_fz_stereo = pfb.pick_fz_bpl(bpn_go1, bp_symm_grp, symm_grp_ax, 1e-04)
     bp_fz_go1, tm1 = iman.int_approx(bp_fz_norms_go1)
 
-    bp_fz_go1 = bp_fz_go1.reshape(3,1)
+    bp_fz_go1 = bp_fz_go1.reshape(3, 1)
 
     l_po_p = nla.inv(l_p_po)
     l_po2_po1 = l_p_po.dot(l_p2_p1.dot(l_po_p))
@@ -608,19 +710,21 @@ def get_gb_uID(l1, l_bp_po1, l_p2_p1, l_p_po, bp_symm_grp, symm_grp_ax, sig_id):
     bp_go2, tm1 = iman.int_approx(bp_go2)
 
     gb_id = l1.elem_type + '_S' + sig_id + '_N1_'
-    gb_id = gb_id + str(bp_fz_go1[0,0]) + '_'
-    gb_id = gb_id + str(bp_fz_go1[1,0]) + '_'
-    gb_id = gb_id + str(bp_fz_go1[2,0]) + '_'
+    gb_id = gb_id + str(bp_fz_go1[0, 0]) + '_'
+    gb_id = gb_id + str(bp_fz_go1[1, 0]) + '_'
+    gb_id = gb_id + str(bp_fz_go1[2, 0]) + '_'
     gb_id = gb_id + 'N2_'
-    gb_id = gb_id + str(bp_go2[0,0]) + '_'
-    gb_id = gb_id + str(bp_go2[1,0]) + '_'
-    gb_id = gb_id + str(bp_go2[2,0])
+    gb_id = gb_id + str(bp_go2[0, 0]) + '_'
+    gb_id = gb_id + str(bp_go2[1, 0]) + '_'
+    gb_id = gb_id + str(bp_go2[2, 0])
 
     return gb_id
+
 
 def wrap_cc(cell1, pts):
     """
     Function finds the indices of atoms making tetrahedrons
+
     Parameters
     -------------
     cell1 :
@@ -628,6 +732,7 @@ def wrap_cc(cell1, pts):
         cell vectors and the last column is the box origin)
     pts :
         Position of atoms in initial cell, the atoms within an rCut of the initial cell.
+
     Returns
     ------------
     pts1 :
@@ -635,11 +740,11 @@ def wrap_cc(cell1, pts):
         and the Voronoi coordinates as the new set of atoms.
     """
 
-    cell = ovd.SimulationCell(pbc = (True, True, False))
-    cell[:,0] = cell1[:,0]
-    cell[:,1] = cell1[:,1]
-    cell[:,2] = cell1[:,2]
-    cell[:,3] = cell1[:,3]
+    cell = ovd.SimulationCell(pbc=(True, True, False))
+    cell[:, 0] = cell1[:, 0]
+    cell[:, 1] = cell1[:, 1]
+    cell[:, 2] = cell1[:, 2]
+    cell[:, 3] = cell1[:, 3]
 
     data = ovd.DataCollection()
     data.objects.append(cell)
@@ -658,7 +763,23 @@ def wrap_cc(cell1, pts):
 
 def remove_periodic_overlaps(twoD_pts, twoDSig_mat):
     """
+    Function removes the periodic overlaps
+
+    Parameters
+    -------------
+    twoD_pts: numpy.array
+        set of atoms 
+
+    twoDSig_mat :
+
+
+    Returns
+    ------------
+    twoD_pts: numpy.array
+        set of atoms after removing the periodic overlaps
+        
     """
+
     twoD_pts_sc1 = change_basis(twoD_pts, twoDSig_mat)
     twoD_pts_sc1 = cut_box_pts(twoD_pts_sc1, 1e-8)
     twoDSig_mat_inv = nla.inv(twoDSig_mat)
@@ -669,15 +790,15 @@ def remove_periodic_overlaps(twoD_pts, twoDSig_mat):
     twoD_mat = np.array(twoDSig_mat, dtype='double')
 
     # Use ovito nearest-neighbor alogrithm to remove overlaps
-    cell = ovd.SimulationCell(pbc = (True, True, False))
+    cell = ovd.SimulationCell(pbc=(True, True, False))
     cell.is2D = True
-    cell[0:2,0] = twoD_mat[:,0]
-    cell[0:2,1] = twoD_mat[:,1]
+    cell[0:2, 0] = twoD_mat[:, 0]
+    cell[0:2, 1] = twoD_mat[:, 1]
 
     npts = np.shape(twoD_pts)[0]
-    pts1 = np.zeros((npts,3))
-    pts1[:,0] = twoD_pts[:,0]
-    pts1[:,1] = twoD_pts[:,1]
+    pts1 = np.zeros((npts, 3))
+    pts1[:, 0] = twoD_pts[:, 0]
+    pts1[:, 1] = twoD_pts[:, 1]
 
     data = ovd.DataCollection()
     data.objects.append(cell)
@@ -688,15 +809,17 @@ def remove_periodic_overlaps(twoD_pts, twoDSig_mat):
     rCut = 0.01
 
     finder = CutoffNeighborFinder(rCut, data)
-    num_n = np.zeros((npts,1), dtype='int64')
-    nn_inds = []; max_nn = 100
+    num_n = np.zeros((npts, 1), dtype='int64')
+    nn_inds = []
+    max_nn = 100
     nn_inds_arr = np.ones((npts, max_nn), dtype='int64')
     nn_inds_arr = 2*int(npts)*nn_inds_arr
     ct3 = 0
     # Loop over all particles:
     for index in range(data.particles.count):
-        # print("Neighbors of particle %i:" % index);
-        num_neigh = 0; n_inds = []
+        # print("Neighbors of particle %i:" % index)
+        num_neigh = 0
+        n_inds = []
         n_inds.append(index)
         # Iterate over the neighbors of the current particle:
         for neigh in finder.find(index):
@@ -705,11 +828,11 @@ def remove_periodic_overlaps(twoD_pts, twoDSig_mat):
         num_n[index] = num_neigh
         if num_neigh > 0:
             nn_inds.append(n_inds)
-            nn_inds_arr[ct3,0:len(n_inds)] = np.array(n_inds)
+            nn_inds_arr[ct3, 0:len(n_inds)] = np.array(n_inds)
             ct3 = ct3 + 1
 
-    nn_inds_arr = np.unique(np.sort(nn_inds_arr[:ct3,:max(num_n)[0]+1]), axis=0)
-    inds1 = np.unique((nn_inds_arr[:,1:]).flatten())
+    nn_inds_arr = np.unique(np.sort(nn_inds_arr[:ct3, :max(num_n)[0]+1]), axis=0)
+    inds1 = np.unique((nn_inds_arr[:, 1:]).flatten())
     tinds1 = np.where(inds1 == 2*int(npts))[0]
     if np.size(tinds1) > 0:
         # inds1 = np.delete(inds1, -1);
@@ -717,5 +840,3 @@ def remove_periodic_overlaps(twoD_pts, twoDSig_mat):
     twoD_pts = np.delete(twoD_pts, inds1, 0)
 
     return twoD_pts
-
-
