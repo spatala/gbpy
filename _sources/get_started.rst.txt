@@ -18,7 +18,7 @@ Mission Statement
 
 The purpose of gbpy is to 
 
-* clearly written
+* create the LAMMPS dump file of the minimum energy structure of any GB of interest
 
 We hope that, if we fail to do this, you will let us know and we will try and make it better.
 
@@ -38,7 +38,7 @@ Features
 License
 ---------
 
-FURY is distributed under the BSD 3 License
+gbpy is distributed under the BSD 3 License
 
 Credits
 --------
