@@ -3,7 +3,7 @@ Credits
 =======
 
 Maintainers
-----------
+-----------
 
 * Leila Khalili <lkhalil@ncsu.edu>
 * Srikanth Patala <spatala@ncsu.edu >
