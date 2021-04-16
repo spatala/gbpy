@@ -82,5 +82,5 @@ target/
 .ipynb_checkpoints
 
 #dump_files
-gbpy/lammps_dump/
+# gbpy/lammps_dump/
 
