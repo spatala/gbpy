@@ -2,7 +2,7 @@
 Credits
 =======
 
-Maintainer
+Maintainers
 ----------
 
 * Leila Khalili <lkhalil@ncsu.edu>
