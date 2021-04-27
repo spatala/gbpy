@@ -32,13 +32,13 @@ How to Use This Package:
 3. ** call the function by using**
 	.. code-block:: pycon
 		>>> gbpy.<name_of_the_function>
-	* For example to find the minimum energy structure of GB Σ(0,0,1)(0,0,-1) in Mg
+	* For example to find the minimum energy structure of GB Σ(0 0 1)(0 0 -1) in Mg
 		.. code-block:: pycon
-		>>> element = 'Mg_sun'
-		>>> CohEng = -1.5287  # calculated from in.cohesive
-		>>> Tm = 923.1
-		>>> lammps_exe_path = '/home/leila/Downloads/mylammps/src/lmp_mpi'
-		>>> gb_name = 'gb_attr_Mg_sun_S7_1_N1_0_0_1_N2_0_0_-1'
+		>>> element = 'Mg' # Name of the element
+		>>> CohEng = -1.5287  # Cohesive energy in ev
+		>>> Tm = 923.1 # Melting point in K
+		>>> lammps_exe_path = '/home/leila/Downloads/mylammps/src/lmp_mpi' # The lammps excutable directory
+		>>> gb_name = 'gb_attr_Mg_sun_S7_1_N1_0_0_1_N2_0_0_-1' # Name of the GB
 		>>> gbpy.MC_MD(gb_name, element, CohEng, Tm, lammps_exe_path)
 
 Consult the `documentation <https://spatala.github.io/gbpy/>`__ for further details.
