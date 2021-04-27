@@ -38,7 +38,7 @@ How to Use This Package:
 		>>> element = 'Mg' # Name of the element
 		>>> CohEng = -1.5287  # Cohesive energy in ev
 		>>> Tm = 923.1 # Melting point in K
-		>>> lammps_exe_path = '/home/leila/Downloads/mylammps/src/lmp_mpi' # The lammps excutable directory
+		>>> lammps_exe_path = <LAMMPS-EXCUTABLE-DIRECTORY> # 
 		>>> gb_name = 'gb_attr_Mg_sun_S7_1_N1_0_0_1_N2_0_0_-1' # Name of the GB
 		>>> gbpy.MC_MD(gb_name, element, CohEng, Tm, lammps_exe_path)
 
