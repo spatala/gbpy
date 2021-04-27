@@ -32,7 +32,7 @@ How to Use This Package:
 3. ** call the function by using**
 	.. code-block:: pycon
 		>>> gbpy.<name_of_the_function>
-	* For example to find the minimum energy structure of GB $\Sigma (0,0,1)(0,0,\bar{1})$ in Mg
+	* For example to find the minimum energy structure of GB Σ(0,0,1)(0,0,-1) in Mg
 		.. code-block:: pycon
 		>>> element = 'Mg_sun'
 		>>> CohEng = -1.5287  # calculated from in.cohesive
