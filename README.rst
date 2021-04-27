@@ -26,6 +26,21 @@ How to Use This Package:
                 
         $ pip install gbpy
                 
+2. **Import the package**
+	.. code-block:: pycon
+		>>> import gbpy
+3. ** call the function by using**
+	.. code-block:: pycon
+		>>> gbpy.<name_of_the_function>
+	* For example to find the minimum energy structure of GB $\Sigma (0,0,1)(0,0,\bar{1})$ in Mg
+		.. code-block:: pycon
+		>>> element = 'Mg_sun'
+		>>> CohEng = -1.5287  # calculated from in.cohesive
+		>>> Tm = 923.1
+		>>> lammps_exe_path = '/home/leila/Downloads/mylammps/src/lmp_mpi'
+		>>> gb_name = 'gb_attr_Mg_sun_S7_1_N1_0_0_1_N2_0_0_-1'
+		>>> gbpy.MC_MD(gb_name, element, CohEng, Tm, lammps_exe_path)
+
 Consult the `documentation <https://spatala.github.io/gbpy/>`__ for further details.
         
         
