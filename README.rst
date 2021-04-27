@@ -29,11 +29,11 @@ How to Use This Package:
 2. **Import the package**
 	.. code-block:: pycon
 		>>> import gbpy
-3. ** call the function by using**
+3. **call the function by using**
 	.. code-block:: pycon
 		>>> gbpy.<name_of_the_function>
-	* For example to find the minimum energy structure of GB Σ(0 0 1)(0 0 -1) in Mg.
-	* The potential, lattice parameter and cohesive energy are taken from Sun, D. Y., et al. "Crystal-melt interfacial free energies in hcp metals: A molecular dynamics study of Mg." Physical Review B 73.2 (2006): 024116.*
+	*For example to find the minimum energy structure of GB Σ(0 0 1)(0 0 -1) in Mg.*
+	*The potential, lattice parameter and cohesive energy are taken from Sun, D. Y., et al. "Crystal-melt interfacial free energies in hcp metals: A molecular dynamics study of Mg." Physical Review B 73.2 (2006): 024116.*
 		.. code-block:: pycon
 		>>> element = 'Mg' # Name of the element
 		>>> CohEng = -1.5287  # Cohesive energy in ev
