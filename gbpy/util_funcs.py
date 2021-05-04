@@ -1,7 +1,7 @@
 import ovito.io as oio
 import ovito.modifiers as ovm
 from itertools import islice
-import gbpy.pad_dump_file as pdf
+import pad_dump_file as pdf
 import bisect
 import pickle as pkl
 import numpy as np

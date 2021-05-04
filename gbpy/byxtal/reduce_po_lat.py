@@ -1,7 +1,6 @@
 import subprocess
 import os
 import inspect
-import byxtal
 import numpy as np
 import numpy.linalg as nla
 from . import integer_manipulations as iman

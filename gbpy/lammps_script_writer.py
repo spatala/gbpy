@@ -1,6 +1,6 @@
 
 import numpy as np
-import gbpy.util_funcs as uf
+import util_funcs as uf
 import os
 
 def file_gen(fil_name):

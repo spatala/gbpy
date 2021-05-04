@@ -1,8 +1,8 @@
-import gbpy.util_funcs as uf
-import gbpy.pad_dump_file as pdf
-import gbpy.vv_props as vvp
-import gbpy.lammps_dump_writer as ldw
-import gbpy.lammps_script_writer as lsw
+import util_funcs as uf
+import pad_dump_file as pdf
+import vv_props as vvp
+import lammps_dump_writer as ldw
+import lammps_script_writer as lsw
 from shutil import copyfile
 import numpy as np
 import sys
@@ -239,9 +239,9 @@ def MC_MD(gb_name, element, CohEng, Tm, lammps_exe_path, str_alg="ptm"):
     ff.close()
 
 
-# element = 'Mg_sun'
-# CohEng = -1.5287  # calculated from in.cohesive
-# Tm = 923.1
-# lammps_exe_path = '/home/leila/Downloads/mylammps/src/lmp_mpi'
-# gb_name = 'gb_attr_Mg_sun_S7_1_N1_0_0_1_N2_0_0_-1'
-# MC_MD(gb_name, element, CohEng, Tm, lammps_exe_path, str_alg="ptm")
+element = 'Mg_sun'
+CohEng = -1.5287  # calculated from in.cohesive
+Tm = 923.1
+lammps_exe_path = '/home/leila/Downloads/mylammps/src/lmp_mpi'
+gb_name = 'gb_attr_Mg_sun_S7_1_N1_0_0_1_N2_0_0_-1'
+MC_MD(gb_name, element, CohEng, Tm, lammps_exe_path, str_alg="ptm")
