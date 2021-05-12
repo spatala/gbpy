@@ -370,7 +370,7 @@ def int_finder(input_v, tol=1e-6, order='all', tol1=1e-6):
         output_v = input1
         if len(Sz) == 1:
             output_v = np.reshape(output_v, (np.size(output_v),))
-        return output_v
+        return output_v.astype(int)
     else:
         #   By default it flattens the array (if nargin < 3)
         if order.lower() == 'all':
@@ -432,7 +432,7 @@ def int_finder(input_v, tol=1e-6, order='all', tol1=1e-6):
         if len(Sz) == 1:
             output_v = np.reshape(output_v, (np.size(output_v), ))
 
-        return output_v
+        return output_v.astype(int)
 
 
 def int_check(input, precis=6):
