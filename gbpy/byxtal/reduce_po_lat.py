@@ -4,7 +4,7 @@ import inspect
 import numpy as np
 import numpy.linalg as nla
 from . import integer_manipulations as iman
-
+import byxtal
 
 def call_sage_math(exec_str, inp_args):
     """
