@@ -38,17 +38,17 @@ class Col(object):
         --------
         N/A
         """
-        if color is 'pink':
+        if color == 'pink':
             a = self.pink
-        elif color is 'blue':
+        elif color == 'blue':
             a = self.blue
-        elif color is 'green':
+        elif color == 'green':
             a = self.green
-        elif color is 'dgrn':
+        elif color == 'dgrn':
             a = self.dgrn
-        elif color is 'yel':
+        elif color == 'yel':
             a = self.yellow
-        elif color is 'amber':
+        elif color == 'amber':
             a = self.amber
         else:
             raise Exception('The color you selected is not acceptable')
