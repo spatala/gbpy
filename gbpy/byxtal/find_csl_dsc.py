@@ -402,11 +402,14 @@ def reciprocal_mat(l_g_go):
         The primitve reciprocal basis vectors
     """
     InMat = np.copy(l_g_go)
+    InMat = InMat.astype(float)
 
     L3 = np.cross(InMat[:, 0], InMat[:, 1]) / np.linalg.det(InMat)
     L1 = np.cross(InMat[:, 1], InMat[:, 2]) / np.linalg.det(InMat)
     L2 = np.cross(InMat[:, 2], InMat[:, 0]) / np.linalg.det(InMat)
     rl_g_go = np.vstack((L1, L2, L3)).T
+    # rl_g_go = Matrix(rl_g_go)
+
 
     return rl_g_go
 
