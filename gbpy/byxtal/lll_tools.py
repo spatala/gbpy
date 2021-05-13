@@ -81,8 +81,10 @@ def check_basis_equi(l_p1, l_p2, tol1 = 1e-10):
         tol2 = tol1*np.max(np.abs(int_mat))
         cond2 = ( abs(abs(nla.det(int_mat)) - 1) < tol2)
         if (cond1 and cond2):
-            l_p2_inv = (((l_p2.T*l_p1).inv())*l_p2.T)
-            int_mat = (l_p2_inv)*l_p1
+            l_p2_T = l_p2.transpose()
+            # l_p2_inv = (((l_p2_T*l_p1).inv())*l_p2.T)
+            l_p2_inv = nla.inv((l_p2_T.dot(l_p1))).dot(l_p2.T)
+            int_mat = (l_p2_inv).dot(l_p1)
             cond1 = int_man.check_int_mat(int_mat, tol1)
             tol2 = tol1*np.max(np.abs(int_mat))
             cond2 = ( abs(abs(nla.det(int_mat)) - 1) < tol2)
