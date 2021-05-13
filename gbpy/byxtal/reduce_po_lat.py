@@ -4,12 +4,13 @@ import inspect
 import numpy as np
 import numpy.linalg as nla
 from . import integer_manipulations as iman
-import byxtal
+# import byxtal
+import gbpy
 
 def call_sage_math(exec_str, inp_args):
     """
     """
-    byxtal_dir = os.path.dirname((inspect.getfile(byxtal)))
+    byxtal_dir = os.path.dirname((inspect.getfile(gbpy.byxtal)))
     exec_str1 = byxtal_dir+exec_str
     run_lst = []
     run_lst.append(exec_str1)
