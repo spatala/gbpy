@@ -63,7 +63,7 @@ def reduce_po_lat(l_csl_p, l_p_po, tol):
                 M4 = np.array([[0,1,0],[1,0,0],[0,0,1]])
                 lllInt_csl_po = lllInt_csl_po.dot(M4)
             if Sz[0] == 2:
-                M4 = Matrix([[0,1],[1,0]])
+                M4 = np.array([[0,1],[1,0]])
                 lllInt_csl_po = lllInt_csl_po.dot(M4)
 
         Tmat = ((nla.inv(lInt_csl_po))).dot(lllInt_csl_po)
