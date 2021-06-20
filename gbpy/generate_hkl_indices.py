@@ -1,19 +1,19 @@
 import os
 import random
 
-import byxtal.tools as gbt
-import byxtal.lattice as gbl
+import gbpy.byxtal.tools as gbt
+import gbpy.byxtal.lattice as gbl
 import pickle as pkl
 import math as mt
 import numpy as np
-import byxtal.quaternion as gbq
-import byxtal.misorient_fz as mfz
-import byxtal.disorient_symm_props as dsp
-import byxtal.find_csl_dsc as fcd
-import byxtal.integer_manipulations as iman
-import byxtal.pick_fz_bpl as pfb
-import byxtal.bp_basis as bpb
-import byxtal.reduce_po_lat as rpl
+import gbpy.byxtal.quaternion as gbq
+import gbpy.byxtal.misorient_fz as mfz
+import gbpy.byxtal.disorient_symm_props as dsp
+import gbpy.byxtal.find_csl_dsc as fcd
+import gbpy.byxtal.integer_manipulations as iman
+import gbpy.byxtal.pick_fz_bpl as pfb
+import gbpy.byxtal.bp_basis as bpb
+import gbpy.byxtal.reduce_po_lat as rpl
 
 # from . import reduce_po_lat as rpl
 # import byxtal.lll_tools as lt

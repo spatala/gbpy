@@ -1,4 +1,4 @@
-import util_funcs as uf
+import gbpy.util_funcs as uf
 import numpy as np
 
 from sympy import Rational

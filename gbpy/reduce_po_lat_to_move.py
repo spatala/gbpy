@@ -1,6 +1,6 @@
 import subprocess
 import numpy as np
-import integer_manipulations as iman
+import gbpy.integer_manipulations as iman
 from sympy.matrices import Matrix, eye, zeros;
 
 def call_sage_math(exec_str, inp_args):

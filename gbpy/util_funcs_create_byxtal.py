@@ -1,9 +1,9 @@
 import math as mt
 import numpy as np
-import byxtal.find_csl_dsc as fcd
-import byxtal.integer_manipulations as iman
-import byxtal.bp_basis as bpb
-import byxtal.pick_fz_bpl as pfb
+import gbpy.byxtal.find_csl_dsc as fcd
+import gbpy.byxtal.integer_manipulations as iman
+import gbpy.byxtal.bp_basis as bpb
+import gbpy.byxtal.pick_fz_bpl as pfb
 import numpy.linalg as nla
 
 import ovito.data as ovd
