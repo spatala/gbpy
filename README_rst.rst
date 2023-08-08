@@ -2,14 +2,14 @@
 gbpy
 ====
 
-.. image:: https://img.shields.io/travis/spatala/gbpy.svg
-        :target: https://travis-ci.org/spatala/gbpy
+.. .. image:: https://img.shields.io/travis/spatala/gbpy.svg
+..         :target: https://travis-ci.org/spatala/gbpy
 
 .. image:: https://img.shields.io/pypi/v/gbpy.svg
         :target: https://pypi.python.org/pypi/gbpy
 
 
-Python package for doing science.
+Python package containing utiliites for grain boundary crystallography.
 
 * Free software: 3-clause BSD license
 * Documentation:  https://spatala.github.io/gbpy.
@@ -29,7 +29,7 @@ How to Use This Package:
 2. **Import the package**
 	.. code-block:: pycon
 		>>> import gbpy
-3. **call the function by using**
+1. **call the function by using**
 	.. code-block:: pycon
 		>>> gbpy.<name_of_the_function>
 	*For example to find the minimum energy structure of GB Σ(0 0 1)(0 0 -1) in Mg.*
@@ -68,8 +68,9 @@ Credits:
 ========
 gbpy is written by:
                 
-* `Srikanth Patala <spatala@ncsu.edu>`__
-* `Leila Khalili <lkhalil@ncsu.edu>`__
-* `Patala Research Group <http://research.mse.ncsu.edu/patala/>`__.
+* `Srikanth Patala <srikanth.patala@gmail.com>`__
+* `Arash Banadaki <a.dehghan.b@gmail.com>`__
+* `Leila Khalili <87khalili@gmail.com>`__.
+
         
-Copyright (c) 2015,  Leila Khalili and Srikanth Patala.
+Copyright (c) 2023,  Srikanth Patala

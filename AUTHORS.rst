@@ -5,8 +5,9 @@ Credits
 Maintainers
 -----------
 
-* Leila Khalili <lkhalil@ncsu.edu>
-* Srikanth Patala <spatala@ncsu.edu >
+* Srikanth Patala <srikanth.patala@gmail.com>
+* Arash Banadaki <a.dehghan.b@gmail.com>
+* Leila Khalili <87khalili@gmail.com>
 
 Contributors
 ------------
