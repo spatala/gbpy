@@ -10,6 +10,7 @@ import numpy as np
 from . import integer_manipulations as int_man
 import numpy.linalg as nla
 from . import reduce_po_lat as rpl
+from . import compute_csl as cCSL
 
 # def find_csl_dsc(l_p_po, T_p1top2_p1, tol1=1e-6, print_check=True):
 #     """
@@ -65,7 +66,7 @@ from . import reduce_po_lat as rpl
 #     return l_csl_p, l_dsc_p
 
 
-def find_csl_dsc(l_p_po, T_p1top2_p1, tol1=1e-6, return_dsc=True, print_check=False):
+def find_csl_dsc(l_p_po, T_p1top2_p1, tol1=1e-6, print_check=True):
     """
     This function calls the csl_finder and dsc_finder and returns
     the CSL and DSC basis vectors in 'g1' reference frame.
@@ -101,21 +102,13 @@ def find_csl_dsc(l_p_po, T_p1top2_p1, tol1=1e-6, return_dsc=True, print_check=Fa
     l_csl_p = csl_finder(T_p1top2_p1, l_p_po, tol1)
     check_val1 = check_csl(l_csl_p, l_p_po, T_p1top2_p1, Sigma, print_check)
 
+    l_dsc_p = dsc_finder(T_p1top2_p1, l_p_po, tol1)
+    check_val2 = check_dsc(l_dsc_p, l_csl_p, l_p_po, T_p1top2_p1, Sigma, print_check)
+
     print([check_val1])
     if (not(check_val1)):
-        raise Exception("Error in Computing CSL Lattices.")
-
-    if return_dsc:
-        l_dsc_p = dsc_finder(T_p1top2_p1, l_p_po, tol1)
-        check_val2 = check_dsc(l_dsc_p, l_csl_p, l_p_po, T_p1top2_p1, Sigma, print_check)
-        print([check_val2])
-        if (not(check_val2)):
-            raise Exception("Error in Computing DSC Lattices.")
-
-        return l_csl_p, l_dsc_p
-    
-    else:
-        return l_csl_p
+        raise Exception("Error in Computing CSL or DSC Lattices.")
+    return l_csl_p, l_dsc_p
 
 
 def csl_finder(T_p1top2_p1, l_p_po, tol1):
@@ -124,8 +117,8 @@ def csl_finder(T_p1top2_p1, l_p_po, tol1):
 
     Parameters
     ----------------
-    T_p1top2_p1: numpy.array
-        transformation matrix
+    TI_p1top2_p1: numpy.array
+        Sigma*(transformation matrix)
     l_p_po: numpy.array
         basis vectors (as columns) of the underlying lattice expressed in the
         orthogonal 'po' reference frame
@@ -157,11 +150,9 @@ def csl_finder(T_p1top2_p1, l_p_po, tol1):
         raise Exception("TI_p1top2_p1 is not an integer matrix.")
     ########################################################################
 
-    exec_str = '/compute_csl.py'
-    inp_args = {}
-    inp_args['mat'] = TI_p1top2_p1
-    inp_args['sig_num'] = Sigma
-    l_csl1_p = rpl.call_sage_math(exec_str, inp_args)
+    sz = np.shape(TI_p1top2_p1)[0]
+    l_csl1_p = cCSL.compute_csl_grimmer(TI_p1top2_p1, Sigma, sz)
+    
 
     l_csl_csl1 = rpl.reduce_po_lat(l_csl1_p, l_p_po, tol1)
     l_csl_p = l_csl1_p.dot(l_csl_csl1)
@@ -169,54 +160,6 @@ def csl_finder(T_p1top2_p1, l_p_po, tol1):
     l_csl_p = make_right_handed(l_csl_p, l_p_po)
     return l_csl_p
 
-def csl_finder_wSigma(TI_p1top2_p1, sig_num, l_p_po, tol1):
-    """
-    The CSL is computed for the bi-crystal
-
-    Parameters
-    ----------------
-    TI_p1top2_p1: numpy.array
-        Sigma*(transformation matrix)
-    sig_num: int
-        Sigma number
-    l_p_po: numpy.array
-        basis vectors (as columns) of the underlying lattice expressed in the
-        orthogonal 'po' reference frame
-    tol1: int
-        Tolerance to use to compute the reduced LLL lattice
-
-    Returns
-    ------------
-    l_csl_p: numpy.array
-        The CSL basis vectors (as columns) expressed in the primitive reference
-
-    Notes
-    ---------
-    The "Reduced" refer to the use of LLL algorithm to compute a
-    basis that is as close to orthogonal as possible.
-    (Refer to http://en.wikipedia.org/wiki/Lattice_reduction) for further
-    detials on the concept of Lattice Reduction
-    """
-
-    ########################################################################
-    cond1 = int_man.check_int_mat(TI_p1top2_p1, tol1)
-    if cond1:
-        TI_p1top2_p1 = (np.around(TI_p1top2_p1)).astype(int)
-    else:
-        raise Exception("TI_p1top2_p1 is not an integer matrix.")
-    ########################################################################
-
-    exec_str = '/compute_csl.py'
-    inp_args = {}
-    inp_args['mat'] = TI_p1top2_p1
-    inp_args['sig_num'] = sig_num
-    l_csl1_p = rpl.call_sage_math(exec_str, inp_args)
-
-    l_csl_csl1 = rpl.reduce_po_lat(l_csl1_p, l_p_po, tol1)
-    l_csl_p = l_csl1_p.dot(l_csl_csl1)
-
-    l_csl_p = make_right_handed(l_csl_p, l_p_po)
-    return l_csl_p
 
 def dsc_finder(L_G2_G1, L_G1_GO1, tol1):
     """
@@ -458,14 +401,11 @@ def reciprocal_mat(l_g_go):
         The primitve reciprocal basis vectors
     """
     InMat = np.copy(l_g_go)
-    InMat = InMat.astype(float)
 
     L3 = np.cross(InMat[:, 0], InMat[:, 1]) / np.linalg.det(InMat)
     L1 = np.cross(InMat[:, 1], InMat[:, 2]) / np.linalg.det(InMat)
     L2 = np.cross(InMat[:, 2], InMat[:, 0]) / np.linalg.det(InMat)
     rl_g_go = np.vstack((L1, L2, L3)).T
-    # rl_g_go = Matrix(rl_g_go)
-
 
     return rl_g_go
 

@@ -1,48 +1,13 @@
 import subprocess
 import os
 import inspect
+import byxtal
 import numpy as np
 import numpy.linalg as nla
 from . import integer_manipulations as iman
-# import byxtal
-import gbpy
 
-def call_sage_math(exec_str, inp_args):
-    """
-    """
-    byxtal_dir = os.path.dirname((inspect.getfile(gbpy.byxtal)))
-    exec_str1 = byxtal_dir+exec_str
-    run_lst = []
-    run_lst.append(exec_str1)
-
-    A = inp_args['mat']
-    Sz = np.shape(A)
-    run_lst.append(str(Sz[0]))
-    run_lst.append(str(Sz[1]))
-
-    if len(inp_args.keys()) == 2:
-        sig_num = inp_args['sig_num']
-        str1 = str(sig_num)
-        run_lst.append(str1)
-
-    for i1 in range(Sz[0]):
-        for j1 in range(Sz[1]):
-            str1 = str(A[i1, j1])
-            run_lst.append(str1)
-
-    result = subprocess.run(run_lst, stdout=subprocess.PIPE)
-    str_out = (result.stdout).split()
-
-    sz1 = len(str_out)
-    M_out = np.zeros((Sz[0],Sz[1]), dtype='int64')
-    ct1 = 0
-    for i1 in range(Sz[0]):
-        for j1 in range(Sz[1]):
-            M_out[i1, j1] = int(str_out[ct1])
-            ct1 = ct1 + 1
-
-    return M_out
-
+from sympy import Matrix
+from sympy.polys.matrices import DomainMatrix
 
 def reduce_po_lat(l_csl_p, l_p_po, tol):
     """
@@ -51,9 +16,9 @@ def reduce_po_lat(l_csl_p, l_p_po, tol):
     l_csl_po = l_p_po.dot(l_csl_p)
     lInt_csl_po, m1 = iman.int_approx(l_csl_po, tol)
 
-    inp_args={}
-    inp_args['mat'] = lInt_csl_po
-    lllInt_csl_po = call_sage_math('/compute_lll.py', inp_args)
+    M = Matrix(lInt_csl_po)
+    lll_reduced_dM = (M.transpose().to_DM().lll().to_Matrix()).transpose()
+    lllInt_csl_po = (np.array(lll_reduced_dM)).astype(int)
 
     Sz = np.shape(lllInt_csl_po)
 
@@ -63,7 +28,7 @@ def reduce_po_lat(l_csl_p, l_p_po, tol):
                 M4 = np.array([[0,1,0],[1,0,0],[0,0,1]])
                 lllInt_csl_po = lllInt_csl_po.dot(M4)
             if Sz[0] == 2:
-                M4 = np.array([[0,1],[1,0]])
+                M4 = Matrix([[0,1],[1,0]])
                 lllInt_csl_po = lllInt_csl_po.dot(M4)
 
         Tmat = ((nla.inv(lInt_csl_po))).dot(lllInt_csl_po)

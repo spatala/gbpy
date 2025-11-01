@@ -67,7 +67,7 @@ def largest_odd_factor(var_arr):
     """
     if var_arr.ndim == 1:
         odd_d = np.empty(np.shape(var_arr))
-        odd_d[:] = np.NaN
+        odd_d[:] = np.nan
 
         ind1 = np.where((np.remainder(var_arr, 2) != 0) | (var_arr == 0))[0]
         if np.size(ind1) != 0:
@@ -948,7 +948,7 @@ def disorient_sigmarots(r_g1tog2_g1, l_p_po, cryst_ptgrp):
     msz = np.shape(r_g1tog2_g1)[0]
 
     r_go1togo2_go1 = np.zeros(np.shape(r_g1tog2_g1))
-    r_go1togo2_go1[:] = np.NaN
+    r_go1togo2_go1[:] = np.nan
 
     for i in range(msz):
         r_go1togo2_go1[i, :, :] = np.dot(
@@ -964,7 +964,7 @@ def disorient_sigmarots(r_g1tog2_g1, l_p_po, cryst_ptgrp):
 
     # Change rotations to the fundamental zone
     rots_g1tog2_g1 = np.zeros((np.size(ia), 3, 3))
-    rots_g1tog2_g1[:] = np.NaN
+    rots_g1tog2_g1[:] = np.nan
     ct2 = 0
     for ct1 in range(np.size(ia)):
         if abs(abs(qfz_go1togo2_go1[:, ia[ct1]][0])-1) > 1e-10:

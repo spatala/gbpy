@@ -143,7 +143,7 @@ def misorient_fz(misquats, cryst_ptgrp, tol=1e-12):
         misquats = np.reshape(misquats, (5, 1))
 
     disquats = quat.Quaternion(np.zeros(np.shape(misquats)))
-    disquats[:] = np.NaN
+    disquats[:] = np.nan
 
     msz = quat.get_size(misquats)
     symm_sz = quat.get_size(symm_quat)

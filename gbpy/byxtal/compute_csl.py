@@ -1,48 +1,45 @@
-#!/usr/bin/env sage
-
 ############################################################
-### SAGEmath routines for computing the CSL lattice      ###
+### sympy routines for computing the CSL lattice      ###
 ############################################################
 
-import sys
-from sage.all import *
 import numpy as np
-import sage_util_funcs as suf
+from sympy import Matrix, numer
+from sympy.polys.matrices import DomainMatrix
+from . import smith_normal_form as snf
+
+def compute_csl_grimmer(A, sig_num, sz):
+   """
+   """
+   A = Matrix(np.array(A, dtype='int64'))
+   # D, U, V = A.smith_form()
+   U, D, V = snf.smith_normal_form(A)
 
 
-# Get input from stdin
-args = len(sys.argv)
+   l_csl_p1 = 0*A
+   T0 = D/sig_num
+   # l_p1n_p1 = U.inverse()
+   l_p1n_p1 = U.inv()
+   l_csl_p1[:, 0] = l_p1n_p1[:, 0]
+   l_csl_p1[:, 1] = (numer(T0[1, 1]))*l_p1n_p1[:, 1]
 
-Sz = np.zeros((2,), dtype='int64')
-Sz[0] = int(sys.argv[1])
-Sz[1] = int(sys.argv[2])
+   if sz == 3:
+      l_csl_p1[:, 2] = T0[2, 2]*l_p1n_p1[:, 2]
 
-sig_num = int(sys.argv[3])
+   l_csl_p1 = compute_lll(l_csl_p1)
+   return l_csl_p1
 
-nsz = Sz[0]*Sz[1]
-A_lst = []
-for ct1 in range(nsz):
-   arg1 = int(sys.argv[ct1+4])
-   A_lst.append(arg1)
 
-# Convert input list to matrix
-A = np.zeros((Sz[0], Sz[1]))
+def compute_lll(A):
+    """
+    """
+    M0 = Matrix(np.array(A, dtype='int64'))
+    # (M0.transpose().to_DM().lll().to_Matrix()).transpose()
+    M1 = M0.T
+    dM = DomainMatrix.from_Matrix(M1)
+    M2 = dM.lll()
+    M2 = M2.to_Matrix()
+    M3 = M2.T
+    return np.array(M3, dtype='int64')
 
-ct1 = 0
-for i1 in range(Sz[0]):
-   for j1 in range(Sz[1]):
-      A[i1, j1] = A_lst[ct1]
-      ct1 = ct1 + 1
-
-A = Matrix(np.array(A, dtype='int64'))
-
-M3 = suf.compute_csl_grimmer(A, sig_num, Sz[0])
-
-str1 = ''
-for i1 in range(Sz[0]):
-   for j1 in range(Sz[1]):
-      str1 = str1 + ' ' + str(M3[i1, j1])
-
-print(str1)
 
 

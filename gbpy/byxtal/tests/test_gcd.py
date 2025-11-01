@@ -1,5 +1,5 @@
 import numpy as np
-import gbpy.byxtal.integer_manipulations as iman
+import byxtal.integer_manipulations as iman
 
 ## Create vectors of arbitrary integers
 n1 = 5

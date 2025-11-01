@@ -4,24 +4,24 @@
 import numpy as np
 import pickle as pkl
 import numpy.linalg as nla
-import gbpy.byxtal.lattice as gbl
-import gbpy.byxtal.integer_manipulations as iman
-import gbpy.byxtal.find_csl_dsc as fcd
-
-import os
-import inspect
-# import byxtal
-import gbpy
-byxtal_dir = os.path.dirname((inspect.getfile(gbpy.byxtal)))
+import byxtal.lattice as gbl
+import byxtal.integer_manipulations as iman
+import byxtal.find_csl_dsc as fcd
 
 ## Directory and file names
-pkl_dir = byxtal_dir+'/tests/pkl_files/'
+# pkl_dir = byxtal_dir+'/tests/pkl_files/'
+import pathlib
+currDir = pathlib.Path().absolute()
+print(currDir)
+pkl_dir = currDir.joinpath('pkl_files')
+
 ##############################################################
 
 sig_num = 19
 
 l1 = gbl.Lattice()
-pkl_name = pkl_dir+l1.elem_type+'_csl_common_rotations.pkl'
+# pkl_name = pkl_dir+l1.elem_type+'_csl_common_rotations.pkl'
+pkl_name = pkl_dir.joinpath(l1.elem_type+'_csl_common_rotations.pkl')
 jar = open(pkl_name, "rb" )
 lat_sig_attr = pkl.load(jar)
 jar.close()

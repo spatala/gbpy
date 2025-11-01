@@ -1,7 +1,7 @@
-import gbpy.byxtal.lattice as gbl;
-import gbpy.byxtal.csl_utility_functions as cuf;
-import numpy as np;
-from sympy.matrices import Matrix, eye, zeros;
+import byxtal.lattice as gbl
+import byxtal.csl_utility_functions as cuf
+import numpy as np
+from sympy.matrices import Matrix, eye, zeros
 
 ########################################################
 #### Input Parameters
@@ -19,13 +19,13 @@ l_p_po = l1.l_p_po
 lat_sig_attr = {}
 sig_rots = {}
 
-lat_sig_attr['l_p_po'] = l_p_po;
+lat_sig_attr['l_p_po'] = l_p_po
 
 sig_var = 2*np.arange(0,num)+1
 sig_vars = []
 for sig_num in sig_var:
     print(sig_num)
-    s1 = cuf.csl_rotations(sig_num, sig_type, l1);
+    s1 = cuf.csl_rotations(sig_num, sig_type, l1)
     if np.size(s1['N']) > 0:
         sig_vars.append(sig_num)
         sig_rots[str(sig_num)] = s1

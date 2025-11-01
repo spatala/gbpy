@@ -3,7 +3,6 @@ from sympy import Rational
 import sympy as spy
 from fractions import Fraction
 import numpy.linalg as nla
-from sympy.matrices import Matrix, eye, zeros
 
 
 def gcd_vec(int_mat):
@@ -182,7 +181,7 @@ def check_int_mat(T, tol1):
         True: If the matrix has integer elements.
         False: If the matrix does not have integer elements.
     """
-    if isinstance(T, Matrix):
+    if isinstance(T, spy.Matrix):
         T = np.array(T, dtype='double')
     return (np.max(np.abs(T - np.around(T))) < tol1)
 
@@ -371,7 +370,7 @@ def int_finder(input_v, tol=1e-6, order='all', tol1=1e-6):
         output_v = input1
         if len(Sz) == 1:
             output_v = np.reshape(output_v, (np.size(output_v),))
-        return output_v.astype(int)
+        return output_v
     else:
         #   By default it flattens the array (if nargin < 3)
         if order.lower() == 'all':
@@ -433,7 +432,7 @@ def int_finder(input_v, tol=1e-6, order='all', tol1=1e-6):
         if len(Sz) == 1:
             output_v = np.reshape(output_v, (np.size(output_v), ))
 
-        return output_v.astype(int)
+        return output_v
 
 
 def int_check(input, precis=6):

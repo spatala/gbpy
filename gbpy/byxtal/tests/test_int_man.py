@@ -1,22 +1,19 @@
-import gbpy.byxtal.integer_manipulations as iman;
+import byxtal.integer_manipulations as iman
 import numpy as np
 import pickle as pkl
 
-import os
-import inspect
-import gbpy
+import pathlib
 
-byxtal_dir = os.path.dirname((inspect.getfile(gbpy.byxtal)))
-
-## Directory and file names
-pkl_dir = byxtal_dir+'/tests/pkl_files/'
+##############################################################
+currDir = pathlib.Path().absolute()
+pkl_dir = currDir.joinpath('pkl_files')
 ##############################################################
 
 
 ####################################################
 tau = 3/2.0
 tol1 = 1e-6
-n1, d1 = iman.rat_approx(np.array(tau), tol1);
+n1, d1 = iman.rat_approx(np.array(tau), tol1)
 print(np.abs(tau - n1/d1))
 ####################################################
 
@@ -41,45 +38,45 @@ while ct3 < num1:
     sz = np.shape(rMat)
     for ct1 in range(sz[0]):
         for ct2 in range(sz[1]):
-            diff_mat[ct1,ct2] = rMat[ct1,ct2] - N1[ct1, ct2]/D1[ct1, ct2];
-    diff_arr[ct3] = np.max(np.abs(diff_mat));
-    ct3 = ct3 + 1;
+            diff_mat[ct1,ct2] = rMat[ct1,ct2] - N1[ct1, ct2]/D1[ct1, ct2]
+    diff_arr[ct3] = np.max(np.abs(diff_mat))
+    ct3 = ct3 + 1
 
 print(np.max(diff_arr))
 ####################################################
 
 ####################################################
-r1 = np.random.rand(8,2,6,8);
+r1 = np.random.rand(8,2,6,8)
 N1, D1 = iman.rat_approx(r1)
 print(np.max(np.abs(r1 - N1/D1)))
 ####################################################
 
 ####################################################
-r1 = np.random.rand(5,8);
+r1 = np.random.rand(5,8)
 N1, D1 = iman.rat_approx(r1)
 print(np.max(np.abs(r1 - N1/D1)))
 ####################################################
 
 ####################################################
-r1 = np.random.rand(5,1);
+r1 = np.random.rand(5,1)
 N1, D1 = iman.rat_approx(r1)
 print(np.max(np.abs(r1 - N1/D1)))
 ####################################################
 
 ####################################################
-r1 = np.random.rand(5);
+r1 = np.random.rand(5)
 N1, D1 = iman.rat_approx(r1)
 print(np.max(np.abs(r1 - N1/D1)))
 ####################################################
 
 ####################################################
-r1 = np.random.rand(1,5);
+r1 = np.random.rand(1,5)
 N1, D1 = iman.rat_approx(r1)
 lcm1 = iman.lcm_array(D1)
 print(np.max(np.abs(r1 - N1/D1)))
 ####################################################
 
-pkl_name = pkl_dir+'vecs.pkl'
+pkl_name = pkl_dir.joinpath('vecs.pkl')
 jar = open(pkl_name,'rb')
 vecs_dict = pkl.load(jar)
 jar.close()
@@ -87,13 +84,13 @@ jar.close()
 vecs = vecs_dict['vecs']
 
 sz1 = np.shape(vecs)[0]
-
+tol1 = 1e-6
 diff_n = np.zeros((sz1,))
 for ct1 in range(sz1):
     print(ct1)
     vec1 = vecs[ct1]
     u_vec1 = vec1/np.linalg.norm(vec1)
-    i1, m1 = iman.int_approx(u_vec1, 1e-6)
+    i1, m1 = iman.int_approx(u_vec1, tol1)
 
     d_vec = i1-vec1
     if np.linalg.norm(d_vec) > 1e-10:
@@ -103,5 +100,7 @@ for ct1 in range(sz1):
         diff_n[ct1] = np.linalg.norm(i1*m2 - vec1)
     else:
         diff_n[ct1] = np.linalg.norm(vec1-i1)
+    
+assert(np.max(np.abs(diff_n)) < tol1)
 
 

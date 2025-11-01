@@ -1,18 +1,19 @@
-import gbpy.byxtal.lattice as gbl
-import gbpy.byxtal.integer_manipulations as iman
-import gbpy.byxtal.find_csl_dsc as fcd
+import byxtal.lattice as gbl
+import byxtal.integer_manipulations as iman
+import byxtal.find_csl_dsc as fcd
 import numpy as np
-import subprocess
-import numpy.linalg as nla
+import byxtal.compute_csl as cCSL
+import byxtal.reduce_po_lat as rpl
 
-import os
-import inspect
-import gbpy
-byxtal_dir = os.path.dirname((inspect.getfile(gbpy.byxtal)))
+import numpy.linalg as nla
 import pickle as pkl
 
+import pathlib
+currDir = pathlib.Path().absolute()
+print(currDir)
+
 ## Directory and file names
-pkl_dir = byxtal_dir+'/tests/pkl_files/'
+pkl_dir = currDir.joinpath('pkl_files/')
 pkl_inp_fname = 'csl_inp_mats.pkl'
 pkl_out_fname = 'csl_out_mats.pkl'
 ##############################################################
@@ -20,7 +21,7 @@ pkl_out_fname = 'csl_out_mats.pkl'
 
 ##############################################################
 l1 = gbl.Lattice()
-pkl_name = pkl_dir+l1.elem_type+'_csl_common_rotations.pkl'
+pkl_name = pkl_dir.joinpath(l1.elem_type+'_csl_common_rotations.pkl')
 jar = open(pkl_name, "rb" )
 lat_sig_attr = pkl.load(jar)
 jar.close()
@@ -60,43 +61,32 @@ csl_inp_mats['D'] = csl_D_mats
 csl_inp_mats['l_p_po'] = l_p_po
 csl_inp_mats['tol'] = 0.01
 
-pkl_name = pkl_dir+pkl_inp_fname
+pkl_name = pkl_dir.joinpath(pkl_inp_fname)
 jar = open(pkl_name, 'wb')
 pkl.dump(csl_inp_mats, jar, protocol=2)
 jar.close()
 ##############################################################
 
-exec_str = byxtal_dir+'/compute_csl_arr.py'
-run_lst = []
-run_lst.append(exec_str)
+Nmats = csl_inp_mats['N']
+Dmats = csl_inp_mats['D']
+l_p_po = csl_inp_mats['l_p_po']
+tol1 = csl_inp_mats['tol']
 
-run_lst.append(pkl_dir)
-run_lst.append(pkl_inp_fname)
-run_lst.append(pkl_out_fname)
+nsz = np.shape(Nmats)[0]
+l_csl_p_mats = np.zeros((nsz,3,3), dtype='int64')
 
-result = subprocess.run(run_lst, stdout=subprocess.PIPE)
-
-pkl_name = pkl_dir+pkl_out_fname
-jar = open(pkl_name, 'rb')
-l_csl_p_mats = pkl.load(jar, encoding='latin1')
-jar.close()
-
-nsz = np.shape(l_csl_p_mats)[0]
-
-csl_p_mats = {}
 for ct1 in range(nsz):
-    print(ct1)
-    Nmat = csl_N_mats[ct1]
-    Dmat = csl_D_mats[ct1]
-    sig_num = int(np.unique(Dmat)[0])
+   Nmat = Nmats[ct1]
+   Dmat = Dmats[ct1]
 
-    l_csl2_p = l_csl_p_mats[ct1]
-    T_p1top2_p1 = Nmat/Dmat
-    check_val = fcd.check_csl(l_csl2_p, l_p_po, T_p1top2_p1, sig_num, True)
-    if not(check_val):
-        raise Exception("CSL Finder failed")
-    else:
-        csl_p_mats[str(ct1+1)] = np.array(l_csl2_p, dtype='int64')
-        print('++++++++++++++++++')
+   sig_num = int(np.unique(Dmat)[0])
+   Sz = np.shape(Nmat)
+#    print(sig_num)
+   l_csl1_p = cCSL.compute_csl_grimmer(Nmat, sig_num, Sz[0])
+   l_csl2_csl1 = rpl.reduce_po_lat(l_csl1_p, l_p_po, tol1)
+
+#    print(l_csl2_csl1)
+#    print('================')
+
 
 

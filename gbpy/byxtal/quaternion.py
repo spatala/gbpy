@@ -126,11 +126,6 @@ class Quaternion(np.ndarray):
 
         * The above 5 cases are the only allowed ways to create an object of this class. An error is raised for any other case.
 
-    See Also
-    ---------
-        * numpy.ndarray
-        * geometry_tools.isnumeric
-
     """
     def __new__(cls, *args):
         nargs = len(args)
