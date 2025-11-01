@@ -4,18 +4,18 @@
 ## The code currently works for cubic lattices.
 ##################################################################
 
-import byxtal.lattice as gbl
-import byxtal.csl_utility_functions as cuf
-import byxtal.find_csl_dsc as fcd
+import gbpy.byxtal.lattice as gbl
+import gbpy.byxtal.csl_utility_functions as cuf
+import gbpy.byxtal.find_csl_dsc as fcd
 import numpy as np
-import byxtal.tools as gbt
-import byxtal.misorient_fz as mfz
-import byxtal.disorient_symm_props as dsp
+import gbpy.byxtal.tools as gbt
+import gbpy.byxtal.misorient_fz as mfz
+import gbpy.byxtal.disorient_symm_props as dsp
 
 import os
 import inspect
-import byxtal
-byxtal_dir = os.path.dirname((inspect.getfile(byxtal)))
+import gbpy
+byxtal_dir = os.path.dirname((inspect.getfile(gbpy.byxtal)))
 
 ## Directory and file names
 pkl_dir = byxtal_dir+'/tests/pkl_files/'

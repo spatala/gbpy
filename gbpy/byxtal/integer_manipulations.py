@@ -3,6 +3,7 @@ from sympy import Rational
 import sympy as spy
 from fractions import Fraction
 import numpy.linalg as nla
+from sympy.matrices import Matrix, eye, zeros
 
 
 def gcd_vec(int_mat):

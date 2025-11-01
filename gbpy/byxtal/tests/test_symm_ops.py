@@ -1,9 +1,11 @@
-import pickle as pkl;
-import numpy as np;
+import pickle as pkl
+import numpy as np
+import os
+import inspect
+import gbpy
 
-import os;
-import byxtal
-path = os.path.dirname(byxtal.__file__)+'/data_files/'
+byxtal_dir = os.path.dirname((inspect.getfile(gbpy.byxtal)))
+path = byxtal_dir+'/data_files/'
 
 fstr = ['mats', 'quats'];
 
