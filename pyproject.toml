@@ -1,0 +1,16 @@
+[project]
+name = "gbpy"
+version = "0.1.0"
+description = "Utilities for creating grain boundaries"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "ipykernel>=7.1.0",
+    "ipython>=9.4.0",
+    "jupyterlab>=4.4.10",
+    "matplotlib>=3.10.7",
+    "numpy",
+    "numpydoc>=1.9.0",
+    "scipy",
+    "sympy",
+]
